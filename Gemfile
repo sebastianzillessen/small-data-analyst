@@ -1,3 +1,5 @@
+ruby '2.2.1'
+
 source 'https://rubygems.org'
 
 
@@ -37,6 +39,8 @@ gem 'puma'
 gem 'foreman'
 gem 'rack-timeout'
 
+# heroku stuff
+gem 'rails_12factor', group: :production
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
