@@ -38,6 +38,8 @@ gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
 gem 'rack-timeout'
+gem 'turbolinks'
+
 
 # heroku stuff
 gem 'rails_12factor', group: :production
@@ -47,7 +49,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'capybara'
-
+  gem 'teaspoon-jasmine'
 end
 
 group :development do
