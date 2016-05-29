@@ -38,7 +38,6 @@ gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
 gem 'rack-timeout'
-gem 'turbolinks'
 
 
 # heroku stuff
