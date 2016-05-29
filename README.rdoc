@@ -1,3 +1,9 @@
+Master: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=master" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+Develop: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=develop" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+RC1: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=rc1" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+RC2: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=rc2" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+RC3: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=rc3" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+RC4: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=rc4" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
 == README
 
 This README would normally document whatever steps are necessary to get the
