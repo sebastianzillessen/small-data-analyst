@@ -35,7 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 gem 'haml-rails'
-gem 'puma'
+#gem 'puma'
 gem 'foreman'
 gem 'rack-timeout'
 
