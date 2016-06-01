@@ -13,7 +13,6 @@ FactoryGirl.define do
   #    :required_dataset_fields => "MyText",
   #    :fail_on_missing => false,
   #    :r_code => "MyText",
-  #    :mandatory_type => 1,
   #    :question => "MyText",
   #    :argument_inverted => false
 

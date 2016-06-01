@@ -69,6 +69,6 @@ class AssumptionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def assumption_params
-    params.require(:assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :mandatory_type, :question, :argument_inverted, required_dataset_fields: [])
+    params.require(:assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :question, :argument_inverted, required_dataset_fields: [])
   end
 end

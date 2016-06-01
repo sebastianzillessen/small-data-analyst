@@ -8,7 +8,6 @@ RSpec.describe "assumptions/new", type: :view do
       :critical => false,
       :fail_on_missing => false,
       :r_code => "MyText",
-      :mandatory_type => 1,
       :question => "MyText",
       :argument_inverted => false
     ))
@@ -30,8 +29,6 @@ RSpec.describe "assumptions/new", type: :view do
       assert_select "input#assumption_fail_on_missing[name=?]", "assumption[fail_on_missing]"
 
       assert_select "textarea#assumption_r_code[name=?]", "assumption[r_code]"
-
-      assert_select "input#assumption_mandatory_type[name=?]", "assumption[mandatory_type]"
 
       assert_select "textarea#assumption_question[name=?]", "assumption[question]"
 

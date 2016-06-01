@@ -24,8 +24,6 @@ RSpec.describe "assumptions/edit", type: :view do
 
       assert_select "textarea#assumption_r_code[name=?]", "assumption[r_code]"
 
-      assert_select "input#assumption_mandatory_type[name=?]", "assumption[mandatory_type]"
-
       assert_select "textarea#assumption_question[name=?]", "assumption[question]"
 
       assert_select "input#assumption_argument_inverted[name=?]", "assumption[argument_inverted]"
