@@ -37,13 +37,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
-gem 'rack-timeout'
+#gem 'rack-timeout'
 
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 gem 'formtastic'
 gem 'formtastic-bootstrap'
+gem 'rinruby'
 
 
 # heroku stuff
@@ -55,6 +56,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'teaspoon-jasmine'
+  gem 'pry'
+  gem 'factory_girl_rails'
+  gem 'faker'
+  gem 'shoulda-matchers'
 end
 
 group :development do

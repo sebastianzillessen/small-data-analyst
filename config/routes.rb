@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :assumptions
+  resources :models
+  resources :research_questions
   resources :home
 
   # The priority is based upon order of creation: first created -> highest priority.

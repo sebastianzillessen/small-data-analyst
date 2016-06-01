@@ -1,0 +1,15 @@
+= semantic_form_for @assumption do |f|
+  = f.inputs do
+    = f.input :name
+    = f.input :description
+    = f.input :critical
+    = f.input :type
+    = f.input :required_dataset_fields
+    = f.input :fail_on_missing
+    = f.input :r_code
+    = f.input :mandatory_type
+    = f.input :question
+    = f.input :argument_inverted
+
+  = f.actions do
+    = f.action :submit, :as => :input

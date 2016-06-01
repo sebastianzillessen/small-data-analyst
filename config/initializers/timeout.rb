@@ -1,2 +1,2 @@
-# config/initializers/timeout.rbrai
-Rack::Timeout.timeout = 20  # seconds
+# config/initializers/timeout.rb
+#Rack::Timeout.timeout = 20

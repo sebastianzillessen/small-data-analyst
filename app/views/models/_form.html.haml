@@ -1,0 +1,8 @@
+= semantic_form_for @model do |f|
+  = f.inputs do
+    = f.input :name
+    = f.input :description
+    = f.input :research_questions, :as => :check_boxes, :collection => ResearchQuestion.order(:name).all
+
+  = f.actions do
+    = f.action :submit, :as => :input

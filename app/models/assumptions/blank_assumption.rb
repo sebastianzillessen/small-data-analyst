@@ -1,0 +1,3 @@
+class BlankAssumption < Assumption
+
+end

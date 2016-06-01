@@ -1,0 +1,23 @@
+%h1 Listing models
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th
+      %th
+      %th
+
+  %tbody
+    - @models.each do |model|
+      %tr
+        %td= model.name
+        %td= model.description
+        %td= link_to 'Show', model
+        %td= link_to 'Edit', edit_model_path(model)
+        %td= link_to 'Destroy', model, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Model', new_model_path

@@ -1,0 +1,25 @@
+%h1 Listing research_questions
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th Private
+      %th
+      %th
+      %th
+
+  %tbody
+    - @research_questions.each do |research_question|
+      %tr
+        %td= research_question.name
+        %td= research_question.description
+        %td= research_question.private
+        %td= link_to 'Show', research_question
+        %td= link_to 'Edit', edit_research_question_path(research_question)
+        %td= link_to 'Destroy', research_question, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Research question', new_research_question_path

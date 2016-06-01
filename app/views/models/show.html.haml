@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @model.name
+%p
+  %b Description:
+  = @model.description
+%p
+  %b Associated to research questions:
+  %ul
+    - @model.research_questions.each do |rq|
+      %li
+        =link_to rq.name, research_question_path(rq)
+
+= link_to 'Edit', edit_model_path(@model)
+\|
+= link_to 'Back', models_path

@@ -11,10 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601121024) do
+ActiveRecord::Schema.define(version: 20160601154405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assumption_attacks", force: :cascade do |t|
+    t.integer "attacker_id"
+    t.integer "attacked_id"
+  end
+
+  create_table "assumptions", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.boolean  "critical"
+    t.string   "type"
+    t.text     "required_dataset_fields"
+    t.boolean  "fail_on_missing"
+    t.text     "r_code"
+    t.text     "question"
+    t.boolean  "argument_inverted",       default: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  create_table "models", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "models_research_questions", force: :cascade do |t|
+    t.integer "model_id"
+    t.integer "research_question_id"
+  end
 
   create_table "research_questions", force: :cascade do |t|
     t.string   "name"

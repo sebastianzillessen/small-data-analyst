@@ -1,0 +1,22 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @research_question.name
+%p
+  %b Description:
+  = @research_question.description
+%p
+  %b Private:
+  = @research_question.private
+%p
+  %b Models:
+  %ul
+    - @research_question.models.each do |m|
+      %li
+        =link_to m.name, model_path(m)
+
+
+= link_to 'Edit', edit_research_question_path(@research_question)
+\|
+= link_to 'Back', research_questions_path

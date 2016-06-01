@@ -1,0 +1,3 @@
+class QueryAssumption < Assumption
+
+end
