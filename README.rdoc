@@ -32,3 +32,6 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+rm app/assets/javascripts/models.coffee app/assets/javascripts/research_questions.coffee app/assets/stylesheets/models.scss	app/assets/stylesheets/research_questions.scss	app/assets/stylesheets/scaffolds.scss	app/controllers/models_controller.rb	app/controllers/research_questions_controller.rb	app/helpers/models_helper.rb	app/helpers/research_questions_helper.rb	app/models/model.rb	app/models/research_question.rb	app/views/models/	app/views/research_questions/	config/initializers/formtastic.rb	db/migrate/	spec/controllers/models_controller_spec.rb	spec/controllers/research_questions_controller_spec.rb	spec/helpers/models_helper_spec.rb	spec/helpers/research_questions_helper_spec.rb	spec/models/	spec/requests/	spec/routing/	spec/views/models/	spec/views/research_questions/
