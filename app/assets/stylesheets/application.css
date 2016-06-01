@@ -11,5 +11,8 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require formtastic-bootstrap
  *= require_self
  */
+
+
