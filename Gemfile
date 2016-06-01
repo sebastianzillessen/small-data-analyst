@@ -47,6 +47,7 @@ gem 'formtastic-bootstrap'
 #gem 'rinruby'
 
 
+
 # heroku stuff
 gem 'rails_12factor', group: :production
 
