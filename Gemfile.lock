@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/custora/rsruby.git
+  revision: e72a8dc61617b711f7560ad14cdb6b49591f9ecc
+  specs:
+    rsruby (0.5.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -163,7 +169,6 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     ref (2.0.0)
-    rinruby (2.0.3)
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -197,7 +202,6 @@ GEM
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     slop (3.6.0)
-    spring (1.7.1)
     sprockets (3.6.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -255,12 +259,11 @@ DEPENDENCIES
   puma
   rails (= 4.2.6)
   rails_12factor
-  rinruby
   rspec-rails
+  rsruby!
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   shoulda-matchers
-  spring
   teaspoon-jasmine
   therubyracer
   turbolinks
