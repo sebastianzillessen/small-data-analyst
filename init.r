@@ -1,4 +1,4 @@
 # Example `init.r` file
 install.packages("Rserve")
 library(Rserve)
-Rserve()
+Rserve(args="--no-save")

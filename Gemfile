@@ -44,7 +44,7 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails"
 gem 'formtastic'
 gem 'formtastic-bootstrap'
-gem 'rsruby'
+#gem 'rsruby'
 
 
 
