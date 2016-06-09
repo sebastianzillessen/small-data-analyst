@@ -1,10 +1,15 @@
 FactoryGirl.define do
   factory :assumption do
     name { Faker::Lorem.sentence(4) }
+    factory :query_assumption, class: QueryAssumption
+    factory :blank_assumption, class: BlankAssumption
   end
 
   factory :critical_assumption, parent: :assumption do
     critical true
+
+    factory :critical_blank_assumption, class: BlankAssumption
+    factory :critical_query_assumption, class: QueryAssumption
   end
   #    :name => "MyString",
   #    :description => "MyText",
@@ -21,8 +26,6 @@ FactoryGirl.define do
     fail_on_missing false
     r_code { "result <- true" }
   end
-
-  factory :blank_assumption, class: BlankAssumption, parent: :critical_assumption
 
 
 end

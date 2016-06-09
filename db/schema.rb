@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160609084742) do
+ActiveRecord::Schema.define(version: 20160609090548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,19 @@ ActiveRecord::Schema.define(version: 20160609084742) do
     t.integer "research_question_id"
   end
 
+  create_table "query_assumption_results", force: :cascade do |t|
+    t.boolean  "result"
+    t.integer  "dataset_id"
+    t.integer  "assumption_id"
+    t.integer  "analysis_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "query_assumption_results", ["analysis_id"], name: "index_query_assumption_results_on_analysis_id", using: :btree
+  add_index "query_assumption_results", ["assumption_id"], name: "index_query_assumption_results_on_assumption_id", using: :btree
+  add_index "query_assumption_results", ["dataset_id"], name: "index_query_assumption_results_on_dataset_id", using: :btree
+
   create_table "research_questions", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -96,4 +109,7 @@ ActiveRecord::Schema.define(version: 20160609084742) do
   add_foreign_key "analyses", "research_questions"
   add_foreign_key "dataset_test_assumption_results", "assumptions"
   add_foreign_key "dataset_test_assumption_results", "datasets"
+  add_foreign_key "query_assumption_results", "analyses"
+  add_foreign_key "query_assumption_results", "assumptions"
+  add_foreign_key "query_assumption_results", "datasets"
 end
