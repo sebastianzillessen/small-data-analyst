@@ -75,3 +75,7 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+FactoryGirl::SyntaxRunner.class_eval do
+  include RSpec::Mocks::ExampleMethods
+end

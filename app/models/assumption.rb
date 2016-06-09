@@ -4,16 +4,16 @@ class Assumption < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
 
 
-
   def evaluate_critical
-    evaluate_attackers_critical
+    evaluate_attackers_critical.tap { |x| puts "Evaluate critical for #{name}:#{x}" }
   end
 
   protected
 
   def evaluate_attackers_critical
-    attackers.where(critical: true).each do |a|
-      if (a.evaluate_critical == !!argument_inverted )
+    attackers.select(&:critical).each do |a|
+      puts "eval #{a.name} for #{self.name}:"
+      if (a.evaluate_critical == !!argument_inverted)
         return false
       end
     end

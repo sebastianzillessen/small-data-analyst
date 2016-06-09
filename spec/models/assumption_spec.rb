@@ -10,13 +10,11 @@ RSpec.describe Assumption, type: :model do
       expect(subject).to validate_presence_of(:type)
     }
     it { expect(subject).to respond_to :attackers }
-    it { expect(subject).to respond_to :attacking }
   end
 
   describe 'attackers and attacking' do
     subject { FactoryGirl.create(:assumption) }
     it { expect(subject.attackers).to be_empty }
-    it { expect(subject.attacking).to be_empty }
   end
 
 
@@ -29,12 +27,14 @@ RSpec.describe Assumption, type: :model do
     end
 
     it 'argument with no critical attacker should be critical true' do
-      subject.attackers << FactoryGirl.create(:false_assumption)
+      subject.attackers << FactoryGirl.create(:assumption)
       expect(subject.evaluate_critical).to be_truthy
     end
 
+
     it 'argument with a critical false assumption attacker should be critical false' do
-      f= FactoryGirl.create(:false_critical_assumption)
+      f= FactoryGirl.create(:critical_assumption, name: "faked false critical")
+      allow(f).to receive(:evaluate_critical).and_return(false)
       subject.attackers << f
       expect(subject.evaluate_critical).to be_falsey
     end

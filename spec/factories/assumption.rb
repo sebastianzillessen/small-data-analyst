@@ -21,7 +21,7 @@ FactoryGirl.define do
     fail_on_missing false
   end
 
-  factory :false_assumption, class: FalseAssumption, parent: :assumption
-  factory :false_critical_assumption, class: FalseAssumption, parent: :critical_assumption
+  factory :blank_assumption, class: BlankAssumption, parent: :critical_assumption
+
 
 end
