@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601154405) do
+ActiveRecord::Schema.define(version: 20160609084742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "analyses", force: :cascade do |t|
+    t.boolean  "in_progress",          default: true
+    t.integer  "research_question_id"
+    t.boolean  "private"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "dataset_id"
+  end
+
+  add_index "analyses", ["dataset_id"], name: "index_analyses_on_dataset_id", using: :btree
+  add_index "analyses", ["research_question_id"], name: "index_analyses_on_research_question_id", using: :btree
+
+  create_table "analyses_models", force: :cascade do |t|
+    t.integer "model_id"
+    t.integer "analysis_id"
+  end
 
   create_table "assumption_attacks", force: :cascade do |t|
     t.integer "attacker_id"
@@ -33,6 +50,26 @@ ActiveRecord::Schema.define(version: 20160601154405) do
     t.boolean  "argument_inverted",       default: false
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+  end
+
+  create_table "dataset_test_assumption_results", force: :cascade do |t|
+    t.integer  "dataset_id"
+    t.integer  "assumption_id"
+    t.boolean  "result"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "dataset_test_assumption_results", ["assumption_id"], name: "index_dataset_test_assumption_results_on_assumption_id", using: :btree
+  add_index "dataset_test_assumption_results", ["dataset_id"], name: "index_dataset_test_assumption_results_on_dataset_id", using: :btree
+
+  create_table "datasets", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "data"
+    t.text     "columns"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "models", force: :cascade do |t|
@@ -55,4 +92,8 @@ ActiveRecord::Schema.define(version: 20160601154405) do
     t.datetime "updated_at",  null: false
   end
 
+  add_foreign_key "analyses", "datasets"
+  add_foreign_key "analyses", "research_questions"
+  add_foreign_key "dataset_test_assumption_results", "assumptions"
+  add_foreign_key "dataset_test_assumption_results", "datasets"
 end

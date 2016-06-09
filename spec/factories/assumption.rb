@@ -19,6 +19,7 @@ FactoryGirl.define do
   factory :test_assumption, class: TestAssumption, parent: :assumption do
     description { Faker::Lorem.sentences(4) }
     fail_on_missing false
+    r_code { "result <- true" }
   end
 
   factory :blank_assumption, class: BlankAssumption, parent: :critical_assumption
