@@ -24,7 +24,7 @@ RSpec.describe QueryAssumptionResult, type: :model do
 
     it 'should not be possible to add Assumptions' do
       expect {
-        subject.test_assumption = assumption
+        subject.query_assumption = assumption
       }.to raise_error ActiveRecord::AssociationTypeMismatch
     end
   end

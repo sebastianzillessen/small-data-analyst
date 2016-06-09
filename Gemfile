@@ -46,8 +46,7 @@ gem "twitter-bootstrap-rails"
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 #gem 'rsruby'
-gem 'rootapp-rinruby', :git => 'https://github.com/sebastianzillessen/rinruby.git'
-
+gem 'rootapp-rinruby', '>= 3.1.1', :git => 'https://github.com/sebastianzillessen/rinruby.git'
 
 
 # heroku stuff

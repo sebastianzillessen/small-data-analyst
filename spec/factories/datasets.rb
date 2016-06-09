@@ -1,8 +1,6 @@
 FactoryGirl.define do
   factory :dataset do
-    name "MyString"
-    description "MyText"
-    data "MyText"
-    columns "MyText"
+    name { Faker::Name.name }
+    description { Faker::Lorem.sentence(5) }
   end
 end

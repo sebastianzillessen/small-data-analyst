@@ -6,6 +6,7 @@ RSpec.describe BlankAssumption, type: :model do
 
   describe 'general BlankAssumptions' do
     it { expect(subject).to respond_to :attacking }
+    it { expect(subject).to respond_to :attackers}
   end
 
   describe 'attackers and attacking' do

@@ -5,4 +5,5 @@ RSpec.describe Model, type: :model do
   it { should respond_to(:name, :description) }
   it { should respond_to(:analysises) }
   it { should respond_to(:research_questions) }
+  it { should respond_to(:assumptions) }
 end

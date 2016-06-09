@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sebastianzillessen/rinruby.git
-  revision: 3b9005637cd752bac3ffdf64a5c9a4e60e43386c
+  revision: d3767f9744252129f4822a60b836fb1360075d02
   specs:
-    rootapp-rinruby (3.1.0)
+    rootapp-rinruby (3.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -261,7 +261,7 @@ DEPENDENCIES
   puma
   rails (>= 4.0.0)
   rails_12factor
-  rootapp-rinruby!
+  rootapp-rinruby (>= 3.1.1)!
   rspec-rails
   sass-rails
   sdoc
