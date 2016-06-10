@@ -1,20 +1,21 @@
 %h1 Listing models
 
-%table
+%table.table
   %thead
     %tr
       %th Name
       %th Description
-      %th
-      %th
-      %th
+      %th(colspan=3) Actions
 
   %tbody
     - @models.each do |model|
       %tr
         %td= model.name
         %td= model.description
-        %td= link_to 'Show', model
+        %td
+          = button_to model, class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
+            .glyphicon.glyphicon-open
+
         %td= link_to 'Edit', edit_model_path(model)
         %td= link_to 'Destroy', model, :method => :delete, :data => { :confirm => 'Are you sure?' }
 

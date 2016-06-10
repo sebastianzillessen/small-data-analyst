@@ -1,3 +1,11 @@
 $(function () {
+  <%- if @parameter_ok %>
   alert("Could not update the remaining question '<%= @query_assumption_result.query_assumption.question %>'. \nThe errors where: \n<%= @query_assumption_result.errors.full_messages.join("\n")%>");
+  <%- else %>
+  var $popover = $('#open_questions #<%= dom_id(@query_assumption_result)=%> input#query_assumption_result_result_-1').parent().popover({content: "Please answer the question."});
+  $popover.popover('show');
+  setTimeout(function () {
+    $popover.popover('hide');
+  }, 2000);
+  <%- end %>
 })

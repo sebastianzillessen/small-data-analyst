@@ -15,4 +15,10 @@ class Assumption < ActiveRecord::Base
   def get_critical_queries
     []
   end
+
+  def get_associated_models
+    associated_models = required_by.map(&:get_associated_models)
+    associated_models << models
+    associated_models.flatten.uniq
+  end
 end

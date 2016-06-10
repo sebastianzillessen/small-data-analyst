@@ -1,10 +1,14 @@
 #flashes {
   position: relative;
   .alert {
+    -webkit-transition: top 0.5s ease;
+    -o-transition: top 0.5s ease;
+    transition: top 0.5s ease;
     &.alert-overlay {
       position: absolute;
       left: 10px;
       right: 10px;
+      top: 0;
     }
     &.has-timeout {
       .progress {

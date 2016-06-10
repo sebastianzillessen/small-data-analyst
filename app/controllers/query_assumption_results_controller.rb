@@ -5,7 +5,9 @@ class QueryAssumptionResultsController < ApplicationController
   # PATCH/PUT /query_assumption_results/1.json
   def update
     respond_to do |format|
-      if @query_assumption_result.update(query_assumption_result_params)
+      input = query_assumption_result_params[:result].to_s
+      @parameter_ok = input == "true" || input == "false"
+      if @parameter_ok && @query_assumption_result.update(query_assumption_result_params)
         format.js
       else
         format.js { render 'update_error' }

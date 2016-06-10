@@ -2,7 +2,7 @@ class Analysis < ActiveRecord::Base
   belongs_to :research_question
   belongs_to :dataset
   has_and_belongs_to_many :possible_models, class_name: 'Model'
-  has_many :query_assumption_results
+  has_many :query_assumption_results, autosave: true
 
   validates :research_question, :dataset, presence: true
 
@@ -17,6 +17,20 @@ class Analysis < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def updated_query_assumption_result(q)
+    if (q.result == false)
+      self.possible_models -= q.query_assumption.get_associated_models
+      # update query_assumption_results and check if there is one which needs only to be answered for a not possible model anymore
+      self.query_assumption_results.where(ignore: false, result: nil).where.not(id: q.id).each do |qar|
+        if (qar.query_assumption.get_associated_models & self.possible_models).empty?
+          puts "set #{qar.query_assumption.name} to ignore"
+          qar.update(ignore: true)
+        end
+      end
+    end
+    save
   end
 
   private

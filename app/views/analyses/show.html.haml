@@ -1,15 +1,29 @@
-%h3 Currently possible models
-%ul
-  - @analysis.possible_models.each do |model|
-    %li
-      =model.name
-%h3 Remaining Questions
-%ul
-  - @analysis.query_assumption_results.each do |question|
+%h3 Currently Possible Models
+%ul#possible_models
+  = render 'possible_models', analysis: @analysis
+
+%h3 Open Query Assumptions
+%ul#open_questions
+  - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
     %li[question]
       = question.query_assumption.question
       = render "query_assumption_results/form", question: question
+  %li.auto-show-empty
+    No remaining open query assumptions.
 
+%h3 Answered Query Assumptions
+%ul#answered_questions
+  - @analysis.query_assumption_results.where.not(result: nil).each do |question|
+    = render "answered_question", qar: question
+  %li.auto-show-empty
+    No answered query assumptions.
+
+%h3 Ignored Query Assumptions
+%ul#ignored_questions
+  - @analysis.query_assumption_results.where(ignore: true).each do |question|
+    = render "answered_question", qar: question
+  %li.auto-show-empty
+    No ignored query assumptions.
 
 = link_to 'Edit', edit_analysis_path(@analysis)
 \|

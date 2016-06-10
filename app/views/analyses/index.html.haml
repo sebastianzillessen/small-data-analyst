@@ -1,12 +1,14 @@
 %h1 Listing analyses
 
-%table
+%table.table
   %thead
     %tr
       %th Completed
       %th Created At
       %th Research Question
       %th Dataset Name
+      %th Possible Models
+      %th Remaining Questions
       %th(colspan=3) Actions
 
   %tbody
@@ -20,6 +22,8 @@
         %td= l(analysis.created_at, format: :short)
         %td= analysis.research_question.name
         %td= analysis.dataset.name
+        %td= analysis.possible_models.count
+        %td= analysis.query_assumption_results.where(result:nil, ignore:false).count
 
         %td= link_to 'Show', analysis
         %td= link_to 'Edit', edit_analysis_path(analysis)

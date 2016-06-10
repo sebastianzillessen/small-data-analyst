@@ -1,0 +1,9 @@
+ul {
+  li {
+    &.auto-show-empty {
+      &:not(:only-child){
+        display: none;
+      }
+    }
+  }
+}

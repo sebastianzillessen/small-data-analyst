@@ -1,11 +1,16 @@
-.navbar.navbar-default.navbar-static-top
-  .container
-    %button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse")
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    %a.navbar-brand(href="#") SmallDataAnalyst
-    .navbar-collapse.collapse.navbar-responsive-collapse
-      %ul.nav.navbar-nav
-        = nav_link Model.name.pluralize, models_path, 'models'
-        = nav_link ResearchQuestion.name.pluralize, research_questions_path, 'research_questions'
+= nav_bar fixed: :top, brand: "Small Data Analyst", responsive: true do
+  = menu_group do 
+    = menu_item "Home", root_path 
+    = menu_divider
+    = menu_item "Analysis", analyses_path
+    = menu_item "Research Questions", research_questions_path
+  = menu_group pull: :right do
+    = menu_item "Log Out", root_path
+
+    -# if current_user
+      -# menu_item "Log Out", log_out_path
+        -# else
+      -# form_for @user, url: session_path(:user), html => {class: "navbar-form pull-right"} do |f| -
+        -#<p>= f.text_field :email </p>
+        -#<p>= f.password_field :password </p>
+        -#<p>= f.submit "Sign in" </p>

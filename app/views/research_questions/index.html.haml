@@ -1,14 +1,12 @@
 %h1 Listing research_questions
 
-%table
+%table.table
   %thead
     %tr
       %th Name
       %th Description
       %th Private
-      %th
-      %th
-      %th
+      %th(colspan=3) Actions
 
   %tbody
     - @research_questions.each do |research_question|

@@ -1,0 +1,6 @@
+- analysis.possible_models.each do |model|
+  %li
+    =model.name
+- if analysis.possible_models.empty?
+  %p
+    No possible models found for that analysis and the provided answers.
