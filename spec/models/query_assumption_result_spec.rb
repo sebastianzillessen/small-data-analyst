@@ -29,4 +29,15 @@ RSpec.describe QueryAssumptionResult, type: :model do
     end
   end
 
+  describe 'only one per analysis and assumption' do
+    let(:element) { create(:query_assumption_result) }
+    it 'should be invalid to have a second query_assumption' do
+      subject.query_assumption = element.query_assumption
+      subject.analysis = element.analysis
+      expect(subject).not_to be_valid
+    end
+
+  end
+
+
 end

@@ -5,14 +5,14 @@ RSpec.describe BlankAssumption, type: :model do
   subject { BlankAssumption.new }
 
   describe 'general BlankAssumptions' do
-    it { expect(subject).to respond_to :attacking }
-    it { expect(subject).to respond_to :attackers}
+    it { expect(subject).to respond_to :assumptions }
+    it { expect(subject).to respond_to :assumptions}
   end
 
-  describe 'attackers and attacking' do
+  describe 'assumptions and assumptions' do
     subject { FactoryGirl.create(:blank_assumption) }
-    it { expect(subject.attackers).to be_empty }
-    it { expect(subject.attacking).to be_empty }
+    it { expect(subject.assumptions).to be_empty }
+    it { expect(subject.assumptions).to be_empty }
   end
   describe 'attributes access' do
     it { pending("How to hide attributes in STI"); is_expected.not_to respond_to :name }

@@ -1,0 +1,6 @@
+$(function () {
+  $('#<%= dom_id(@query_assumption_result)=%>').slideUp().promise().done(function () {
+    $(this).remove();
+  })
+  showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
+});

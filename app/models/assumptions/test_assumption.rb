@@ -29,7 +29,7 @@ class TestAssumption < Assumption
   def evaluate_critical
     r = RinRuby.new
     r.eval r_code
-    result = r.pull('result')
+    result = r.pull_boolean('result')
     r.quit
     return result
   end

@@ -1,0 +1,14 @@
+%h4.list-group-item-heading
+  = assumption.name
+%p.list-group-item-text
+  %p=assumption.description
+  - if assumption.is_a? TestAssumption
+    %code.r
+      = assumption.r_code
+  - if assumption.is_a? QueryAssumption
+    %div.alert.alert-info
+      %span.glyphicon.glyphicon-question-sign
+      = assumption.question
+  - if assumption.is_a?(BlankAssumption) && assumption.assumptions.any?
+    = render 'assumptions', assumptions: assumption.assumptions
+

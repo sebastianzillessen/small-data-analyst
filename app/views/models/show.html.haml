@@ -12,6 +12,10 @@
     - @model.research_questions.each do |rq|
       %li
         =link_to rq.name, research_question_path(rq)
+%p
+  %b Assumptions required
+
+  = render 'assumptions', assumptions: @model.assumptions
 
 = link_to 'Edit', edit_model_path(@model)
 \|

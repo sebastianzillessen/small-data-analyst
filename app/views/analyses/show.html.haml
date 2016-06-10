@@ -1,0 +1,16 @@
+%h3 Currently possible models
+%ul
+  - @analysis.possible_models.each do |model|
+    %li
+      =model.name
+%h3 Remaining Questions
+%ul
+  - @analysis.query_assumption_results.each do |question|
+    %li[question]
+      = question.query_assumption.question
+      = render "query_assumption_results/form", question: question
+
+
+= link_to 'Edit', edit_analysis_path(@analysis)
+\|
+= link_to 'Back', analyses_path
