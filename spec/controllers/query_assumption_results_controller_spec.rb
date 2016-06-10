@@ -66,7 +66,7 @@ RSpec.describe QueryAssumptionResultsController, type: :controller do
       it "re-renders the 'edit' template" do
         query_assumption_result = QueryAssumptionResult.create! valid_attributes
         xhr :patch, :update, {:id => query_assumption_result.to_param, :query_assumption_result => invalid_attributes}, valid_session
-        expect(response).to render_template("update")
+        expect(response).to render_template("update_error")
       end
     end
   end
