@@ -6,7 +6,7 @@
       %th Name
       %th Description
       %th Private
-      %th(colspan=3) Actions
+      %th Actions
 
   %tbody
     - @research_questions.each do |research_question|
@@ -14,10 +14,14 @@
         %td= research_question.name
         %td= research_question.description
         %td= research_question.private
-        %td= link_to 'Show', research_question
-        %td= link_to 'Edit', edit_research_question_path(research_question)
-        %td= link_to 'Destroy', research_question, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td
+          = button_to research_question, class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+            .glyphicon.glyphicon-trash
+          = button_to edit_research_question_path(research_question), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+            .glyphicon.glyphicon-edit
+          = button_to research_question, class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
+            .glyphicon.glyphicon-open
 
 %br
 
-= link_to 'New Research question', new_research_question_path
+= button_to 'New Research Question', new_research_question_path, class: 'btn btn-success pull-right'

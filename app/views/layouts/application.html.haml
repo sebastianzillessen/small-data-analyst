@@ -25,6 +25,7 @@
         .col-lg-9
           #flashes
             = bootstrap_flash
+            = devise_error_messages!
           = yield
         .col-lg-3
           = render 'shared/sidebar'

@@ -5,7 +5,7 @@
     %tr
       %th Name
       %th Description
-      %th(colspan=3) Actions
+      %th Actions
 
   %tbody
     - @models.each do |model|
@@ -13,12 +13,13 @@
         %td= model.name
         %td= model.description
         %td
-          = button_to model, class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
+          = button_to model, class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+            .glyphicon.glyphicon-trash
+          = button_to edit_model_path(model), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+            .glyphicon.glyphicon-edit
+          = button_to model, class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
             .glyphicon.glyphicon-open
-
-        %td= link_to 'Edit', edit_model_path(model)
-        %td= link_to 'Destroy', model, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Model', new_model_path
+= button_to 'New Model', new_model_path, class: 'btn btn-success pull-right'

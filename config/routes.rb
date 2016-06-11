@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :assumptions
   resources :models
   resources :research_questions
