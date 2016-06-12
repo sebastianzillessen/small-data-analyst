@@ -66,6 +66,8 @@ GEM
     coffee-script-source (1.10.0)
     commonjs (0.2.7)
     concurrent-ruby (1.0.2)
+    data_migrate (2.1.0)
+      rails (>= 4.0)
     debug_inspector (0.0.2)
     devise (4.1.1)
       bcrypt (~> 3.0)
@@ -259,6 +261,7 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails
+  data_migrate
   devise
   factory_girl_rails
   faker

@@ -59,6 +59,12 @@ ActiveRecord::Schema.define(version: 20160610143533) do
     t.datetime "updated_at",    null: false
   end
 
+  create_table "data_migrations", id: false, force: :cascade do |t|
+    t.string "version", null: false
+  end
+
+  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
+
   create_table "dataset_test_assumption_results", force: :cascade do |t|
     t.integer  "dataset_id"
     t.integer  "assumption_id"
