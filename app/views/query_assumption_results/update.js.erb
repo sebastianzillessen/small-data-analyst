@@ -20,4 +20,8 @@ $(function () {
   $('#answered_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: @query_assumption_result %>").hide().slideDown();
   showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
 
+  <%- countQueries = @query_assumption_result.analysis.query_assumption_results.where(result: nil, ignore: false).count %>
+  <%- if countQueries == 0 %>
+  showDismissableAlert("Analysis is now complete. ", "success");
+  <%- end %>
 });

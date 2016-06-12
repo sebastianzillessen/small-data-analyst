@@ -8,8 +8,8 @@ RSpec.describe "assumptions/index", type: :view do
 
   it "renders a list of assumptions" do
     render
-    assert_select "tr>td", :text => subject.first.name
-    assert_select "tr>td", :text => subject.last.name
+    expect(rendered).to match subject.first.name
+    expect(rendered).to match subject.last.name
     # todo further test
   end
 end

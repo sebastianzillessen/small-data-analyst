@@ -1,38 +1,57 @@
 require 'rails_helper'
 
 RSpec.describe "assumptions/new", type: :view do
-  before(:each) do
-    assign(:assumption, Assumption.new(
-      :name => "MyString",
-      :description => "MyText",
-      :critical => false,
-      :fail_on_missing => false,
-      :r_code => "MyText",
-      :question => "MyText",
-      :argument_inverted => false
-    ))
+  describe 'BlankAssumption' do
+    before(:each) do
+      @assumption = FactoryGirl.create(:blank_assumption)
+      # todo: test for other assumption types
+    end
+
+    it "renders the edit assumption form" do
+      render
+
+      assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
+        assert_select "input#blank_assumption_name[name=?]", "blank_assumption[name]"
+        assert_select "textarea#blank_assumption_description[name=?]", "blank_assumption[description]"
+        assert_select "input#blank_assumption_critical[name=?]", "blank_assumption[critical]"
+      end
+    end
   end
 
-  it "renders new assumption form" do
-    render
+  describe 'QueryAssumption' do
+    before(:each) do
+      @assumption = FactoryGirl.create(:query_assumption)
+    end
 
-    assert_select "form[action=?][method=?]", assumptions_path, "post" do
+    it "renders the edit assumption form" do
+      render
 
-      assert_select "input#assumption_name[name=?]", "assumption[name]"
+      assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
+        assert_select "input#query_assumption_name[name=?]", "query_assumption[name]"
+        assert_select "textarea#query_assumption_description[name=?]", "query_assumption[description]"
+        assert_select "input#query_assumption_critical[name=?]", "query_assumption[critical]"
+        assert_select "textarea#query_assumption_question[name=?]", "query_assumption[question]"
 
-      assert_select "textarea#assumption_description[name=?]", "assumption[description]"
+      end
+    end
+  end
+  describe 'TestAssumption' do
+    before(:each) do
+      @assumption = FactoryGirl.create(:test_assumption)
+    end
 
-      assert_select "input#assumption_critical[name=?]", "assumption[critical]"
+    it "renders the edit assumption form" do
+      render
 
-      assert_select "textarea#assumption_required_dataset_fields[name=?]", "assumption[required_dataset_fields]"
+      assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
+        assert_select "input#test_assumption_name[name=?]", "test_assumption[name]"
+        assert_select "textarea#test_assumption_description[name=?]", "test_assumption[description]"
+        assert_select "input#test_assumption_critical[name=?]", "test_assumption[critical]"
+        assert_select "input#test_assumption_type[name=?]", "test_assumption[type]"
+        assert_select "textarea#test_assumption_required_dataset_fields[name=?]", "test_assumption[required_dataset_fields]"
+        assert_select "textarea#test_assumption_r_code[name=?]", "test_assumption[r_code]"
 
-      assert_select "input#assumption_fail_on_missing[name=?]", "assumption[fail_on_missing]"
-
-      assert_select "textarea#assumption_r_code[name=?]", "assumption[r_code]"
-
-      assert_select "textarea#assumption_question[name=?]", "assumption[question]"
-
-      assert_select "input#assumption_argument_inverted[name=?]", "assumption[argument_inverted]"
+      end
     end
   end
 end

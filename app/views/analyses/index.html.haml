@@ -1,12 +1,12 @@
 %h1 Listing analyses
 
-%table.table
+%table.table.table-striped
   %thead
     %tr
-      %th Completed
-      %th Created At
+      -#%th Completed
       %th Research Question
       %th Dataset Name
+      %th Created At
       %th Possible Models
       %th Remaining Questions
       %th Actions
@@ -14,14 +14,14 @@
   %tbody
     - @analyses.each do |analysis|
       %tr
-        %td
+        -#%td
           -if analysis.in_progress?
             %span.glyphicon.glyphicon-play
           -else
             %span.glyphicon.glyphicon-stop
-        %td= l(analysis.created_at, format: :short)
         %td= analysis.research_question.name
         %td= analysis.dataset.name
+        %td= l(analysis.created_at, format: :short)
         %td= analysis.possible_models.count
         %td= analysis.query_assumption_results.where(result:nil, ignore:false).count
         %td

@@ -11,12 +11,11 @@
   = @research_question.private
 %p
   %b Models:
-  %ul
+  .list-group
     - @research_question.models.each do |m|
-      %li
-        =link_to m.name, model_path(m)
+      =link_to m.name, model_path(m), class: 'list-group-item'
 
 
-= link_to 'Edit', edit_research_question_path(@research_question)
-\|
-= link_to 'Back', research_questions_path
+= link_to edit_research_question_path(@research_question), class: 'btn btn-default' do
+  .glyphicon.glyphicon-edit
+  Edit

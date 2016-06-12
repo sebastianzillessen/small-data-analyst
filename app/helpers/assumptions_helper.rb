@@ -1,17 +1,20 @@
 module AssumptionsHelper
   def glyphicon_critcal(assumption, opts={})
     if assumption.critical?
-      Haml::Engine.new(".glyphicon.glyphicon-warning-sign", opts).render
+      Haml::Engine.new(".glyphicon.glyphicon-warning-sign{data:{toggle:'tooltip',placement:'bottom'},title: 'This is a critical assumption'}", opts).render
     end
   end
 
   def glyphicon_type(assumption, opts={})
+    clazz= ""
     if assumption.is_a? TestAssumption
-      Haml::Engine.new(".glyphicon.glyphicon-tasks", opts).render
+      clazz = 'tasks'
     elsif assumption.is_a? BlankAssumption
-      Haml::Engine.new(".glyphicon.glyphicon-unchecked", opts).render
+      clazz = 'unchecked'
     elsif assumption.is_a? QueryAssumption
-      Haml::Engine.new(".glyphicon.glyphicon-question-sign", opts).render
+      clazz = 'question-sign'
     end
+    tooltip = "{data:{toggle:'tooltip',placement:'bottom'},title: 'This is a #{assumption.class.name}'}"
+    Haml::Engine.new(".glyphicon.glyphicon-#{clazz}#{tooltip}", opts).render
   end
 end

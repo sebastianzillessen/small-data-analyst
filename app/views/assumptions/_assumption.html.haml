@@ -11,7 +11,6 @@
   .panel-body
     = assumption.description
     = render "assumption_#{assumption.class.name.underscore}", assumption: assumption
-    %h5 Critical: #{assumption.critical? ? "YES" : "No"}
   .panel-footer
     = link_to edit_assumption_path(assumption), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
       .glyphicon.glyphicon-edit

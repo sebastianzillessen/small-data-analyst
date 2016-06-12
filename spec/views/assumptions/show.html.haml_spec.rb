@@ -2,7 +2,8 @@ require 'rails_helper'
 
 
 RSpec.describe "assumptions/show", type: :view do
-  subject{FactoryGirl.create(:assumption)}
+  subject { FactoryGirl.create(:blank_assumption) }
+  # todo test other types
   before(:each) do
     @assumption = assign(:assumption, subject)
   end

@@ -24,7 +24,8 @@
     = render "answered_question", qar: question
   %li.auto-show-empty
     No ignored query assumptions.
-
-= link_to 'Edit', edit_analysis_path(@analysis)
-\|
-= link_to 'Back', analyses_path
+- if @analysis.query_assumption_results.where(ignore: false).where.not(result:nil).any?
+  :javascript
+    $(function(){
+      showDismissableAlert("Analysis is now complete. ", "success");
+    })

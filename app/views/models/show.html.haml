@@ -8,10 +8,9 @@
   = @model.description
 %p
   %b Associated to research questions:
-  %ul
+  .list-group
     - @model.research_questions.each do |rq|
-      %li
-        =link_to rq.name, research_question_path(rq)
+      = link_to rq.name, research_question_path(rq), class: 'list-group-item'
 %p
   %b Assumptions required
 
