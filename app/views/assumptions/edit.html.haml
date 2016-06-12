@@ -1,7 +1,4 @@
-%h1 Editing assumption
+%h1 Editing #{@assumption.class.name}: #{@assumption.name}
 
-= render 'form'
+= render "form_#{@assumption.class.name.underscore}"
 
-= link_to 'Show', @assumption
-\|
-= link_to 'Back', assumptions_path

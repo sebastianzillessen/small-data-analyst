@@ -33,4 +33,5 @@ class TestAssumption < Assumption
     r.quit
     return result
   end
+
 end

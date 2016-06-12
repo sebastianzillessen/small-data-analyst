@@ -1,0 +1,19 @@
+- options ||= {}
+.panel{class: assumption.critical? ? 'panel-warning' : 'panel-default'}
+  .panel-heading
+
+    = assumption.name
+    = glyphicon_critcal(assumption)
+    .label.pull-right{class: assumption.critical? ? 'label-warning' : 'label-default'}
+      = glyphicon_type(assumption)
+      = assumption.type
+
+  .panel-body
+    = assumption.description
+    = render "assumption_#{assumption.class.name.underscore}", assumption: assumption
+    %h5 Critical: #{assumption.critical? ? "YES" : "No"}
+  .panel-footer
+    = link_to edit_assumption_path(assumption), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+      .glyphicon.glyphicon-edit
+    = button_to assumption_path(assumption), class: 'btn btn-danger btn-xs', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+      .glyphicon.glyphicon-trash

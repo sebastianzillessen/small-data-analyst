@@ -1,32 +1,5 @@
-%p#notice= notice
+= render 'assumption', assumption: @assumption
 
-%p
-  %b Name:
-  = @assumption.name
-%p
-  %b Description:
-  = @assumption.description
-%p
-  %b Critical:
-  = @assumption.critical
-%p
-  %b Type:
-  = @assumption.type
-%p
-  %b Required dataset fields plain:
-  = @assumption.required_dataset_fields
-%p
-  %b Fail on missing:
-  = @assumption.fail_on_missing
-%p
-  %b R code:
-  = @assumption.r_code
-%p
-  %b Question:
-  = @assumption.question
-%p
-  %b Argument inverted:
-  = @assumption.argument_inverted
 
 = link_to 'Edit', edit_assumption_path(@assumption)
 \|

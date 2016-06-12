@@ -1,0 +1,10 @@
+= semantic_form_for @assumption, url: assumption_path(@assumption) do |f|
+  = f.inputs do
+    = f.input :name
+    = f.input :description
+    = f.input :critical
+    = f.input :type, as: :hidden
+    = f.input :question
+
+  = f.actions do
+    = f.action :submit, :as => :input

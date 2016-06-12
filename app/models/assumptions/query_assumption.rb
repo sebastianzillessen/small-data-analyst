@@ -8,4 +8,5 @@ class QueryAssumption < Assumption
       return p.result
     end
   end
+
 end

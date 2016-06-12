@@ -25,13 +25,11 @@
         %td= analysis.possible_models.count
         %td= analysis.query_assumption_results.where(result:nil, ignore:false).count
         %td
-          = button_to analysis, class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
-            .glyphicon.glyphicon-trash
-          = button_to edit_analysis_path(analysis), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
-            .glyphicon.glyphicon-edit
-          = button_to analysis, class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
+          = link_to analysis, class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
             .glyphicon.glyphicon-open
+          = link_to edit_analysis_path(analysis), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+            .glyphicon.glyphicon-edit
+          = button_to analysis, class: 'btn btn-danger btn-xs', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+            .glyphicon.glyphicon-trash
 
-%br
-
-= button_to 'New Analysis', new_analysis_path, class: 'btn btn-success pull-right'
+= link_to 'New Analysis', new_analysis_path, class: 'btn btn-success pull-right'

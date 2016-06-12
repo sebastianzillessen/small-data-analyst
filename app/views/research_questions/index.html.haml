@@ -1,5 +1,5 @@
 %h1 Listing research_questions
-
+= link_to 'New Research Question', new_research_question_path, class: 'btn btn-success pull-right'
 %table.table
   %thead
     %tr
@@ -15,13 +15,11 @@
         %td= research_question.description
         %td= research_question.private
         %td
+          = link_to research_question, class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
+            .glyphicon.glyphicon-open
+          = link_to edit_research_question_path(research_question), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+            .glyphicon.glyphicon-edit
           = button_to research_question, class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
             .glyphicon.glyphicon-trash
-          = button_to edit_research_question_path(research_question), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
-            .glyphicon.glyphicon-edit
-          = button_to research_question, class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
-            .glyphicon.glyphicon-open
 
-%br
 
-= button_to 'New Research Question', new_research_question_path, class: 'btn btn-success pull-right'

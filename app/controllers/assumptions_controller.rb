@@ -28,8 +28,8 @@ class AssumptionsController < ApplicationController
 
     respond_to do |format|
       if @assumption.save
-        format.html { redirect_to @assumption, notice: 'Assumption was successfully created.' }
-        format.json { render :show, status: :created, location: @assumption }
+        format.html { redirect_to @assumption.becomes(Assumption), notice: 'Assumption was successfully created.' }
+        format.json { render :show, status: :created, location: @assumption.becomes(Assumption) }
       else
         format.html { render :new }
         format.json { render json: @assumption.errors, status: :unprocessable_entity }
@@ -42,8 +42,8 @@ class AssumptionsController < ApplicationController
   def update
     respond_to do |format|
       if @assumption.update(assumption_params)
-        format.html { redirect_to @assumption, notice: 'Assumption was successfully updated.' }
-        format.json { render :show, status: :ok, location: @assumption }
+        format.html { redirect_to @assumption.becomes(Assumption), notice: 'Assumption was successfully updated.' }
+        format.json { render :show, status: :ok, location: @assumption.becomes(Assumption) }
       else
         format.html { render :edit }
         format.json { render json: @assumption.errors, status: :unprocessable_entity }
@@ -69,6 +69,14 @@ class AssumptionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def assumption_params
-    params.require(:assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :question, :argument_inverted, required_dataset_fields: [])
+    if (params[:query_assumption])
+      params.require(:query_assumption).permit(:name, :description, :critical, :type, :question, :argument_inverted)
+    elsif (params[:blank_assumption])
+      params.require(:blank_assumption).permit(:name, :description, :critical, :type, :argument_inverted)
+    elsif (params[:test_assumption])
+      params.require(:test_assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :argument_inverted, required_dataset_fields: [])
+    else
+      []
+    end
   end
 end

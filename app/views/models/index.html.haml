@@ -1,5 +1,6 @@
-%h1 Listing models
-
+%h1
+  Listing models
+= link_to 'New Model', new_model_path, class: 'btn btn-success pull-right'
 %table.table
   %thead
     %tr
@@ -10,16 +11,14 @@
   %tbody
     - @models.each do |model|
       %tr
-        %td= model.name
+        %td= link_to model.name, model
         %td= model.description
         %td
-          = button_to model, class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
-            .glyphicon.glyphicon-trash
-          = button_to edit_model_path(model), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+          = link_to edit_model_path(model), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
             .glyphicon.glyphicon-edit
-          = button_to model, class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
-            .glyphicon.glyphicon-open
+          = button_to model, class: 'btn btn-danger btn-xs', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+            .glyphicon.glyphicon-trash
 
 %br
 
-= button_to 'New Model', new_model_path, class: 'btn btn-success pull-right'
+

@@ -1,37 +1,15 @@
-%h1 Listing assumptions
+%h1 Available Assumptions
+.list-group
+  - @assumptions.each do |assumption|
+    .list-group-item{class: assumption.critical? ? 'list-group-item-warning' : ''}
+      = glyphicon_type(assumption)
+      = link_to assumption_path(assumption) do
+        #{assumption.name}: #{truncate(assumption.description, length:100)}
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th Description
-      %th Critical
-      %th Type
-      %th Required dataset fields
-      %th Fail on missing
-      %th R code
-      %th Question
-      %th Argument inverted
-      %th
-      %th
-      %th
+      = button_to assumption_path(assumption), class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
+        .glyphicon.glyphicon-trash
+      = link_to edit_assumption_path(assumption), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
+        .glyphicon.glyphicon-edit
 
-  %tbody
-    - @assumptions.each do |assumption|
-      %tr
-        %td= assumption.name
-        %td= assumption.description
-        %td= assumption.critical
-        %td= assumption.type
-        %td= assumption.required_dataset_fields
-        %td= assumption.fail_on_missing
-        %td= assumption.r_code
-        %td= assumption.question
-        %td= assumption.argument_inverted
-        %td= link_to 'Show', assumption
-        %td= link_to 'Edit', edit_assumption_path(assumption)
-        %td= link_to 'Destroy', assumption, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%br
-
-= link_to 'New Assumption', new_assumption_path
+= link_to 'New Assumption', new_assumption_path, class: 'btn btn-success pull-right'

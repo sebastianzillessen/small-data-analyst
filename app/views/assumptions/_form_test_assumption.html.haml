@@ -1,13 +1,11 @@
-= semantic_form_for @assumption.becomes(Assumption) do |f|
+= semantic_form_for @assumption, url: assumption_path(@assumption) do |f|
   = f.inputs do
     = f.input :name
     = f.input :description
     = f.input :critical
-    = f.input :type
+    = f.input :type, as: :hidden
     = f.input :required_dataset_fields
-    = f.input :fail_on_missing
     = f.input :r_code
-    = f.input :question
     = f.input :argument_inverted
 
   = f.actions do
