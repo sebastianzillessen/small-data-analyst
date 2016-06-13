@@ -26,7 +26,8 @@ class TestAssumption < Assumption
   end
 =end
 
-  def evaluate_critical
+  def evaluate_critical(analysis)
+    return false unless check_dataset_mets_column_names(analysis.dataset)
     r = RinRuby.new
     r.eval r_code
     result = r.pull_boolean('result')
@@ -34,4 +35,9 @@ class TestAssumption < Assumption
     return result
   end
 
+  private
+
+  def check_dataset_mets_column_names(dataset)
+    (required_dataset_fields - dataset.columns).empty?
+  end
 end
