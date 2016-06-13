@@ -29,6 +29,9 @@ class TestAssumption < Assumption
   def evaluate_critical(analysis)
     return false unless check_dataset_mets_column_names(analysis.dataset)
     r = RinRuby.new
+    r.assign "data", analysis.dataset.data
+    # make data to list according to csv.
+    r.eval("tabular_data=read.csv(textConnection(data))")
     r.eval r_code
     result = r.pull_boolean('result')
     r.quit

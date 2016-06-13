@@ -7,19 +7,19 @@ class Model < ActiveRecord::Base
   validates :research_questions, presence: true
 
 
-  def evaluate_critical
+  def evaluate_critical(analysis)
     assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-      return false unless (a.evaluate_critical)
+      return false unless (a.evaluate_critical(analysis))
     end
     return true
   end
 
-  def get_critical_queries
+  def get_critical_queries(analysis)
     queries = []
-    if (evaluate_critical)
+    if (evaluate_critical(analysis))
       # get sub critical queries
       assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        queries << a.get_critical_queries
+        queries << a.get_critical_queries(analysis)
       end
       queries << assumptions.select(&:critical).select { |a| a.class == QueryAssumption }
     end
