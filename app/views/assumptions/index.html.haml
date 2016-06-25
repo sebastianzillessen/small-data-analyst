@@ -5,11 +5,11 @@
       = glyphicon_type(assumption)
       = link_to assumption_path(assumption) do
         #{assumption.name}: #{truncate(assumption.description, length:100)}
-
-      = button_to assumption_path(assumption), class: 'btn btn-danger btn-xs pull-right', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
-        .glyphicon.glyphicon-trash
-      = link_to edit_assumption_path(assumption), class: 'btn btn-default btn-xs pull-right', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
-        .glyphicon.glyphicon-edit
+        = link_icon_to 'edit', edit_assumption_path(assumption), title: "Edit", class: 'btn-xs pull-right' if can? :edit, assumption
+        = link_icon_to 'trash',assumption_path(assumption), method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger pull-right' if can? :destroy, assumption
 
 
-= link_to 'New Assumption', new_assumption_path, class: 'btn btn-success pull-right'
+= link_icon_to 'plus',
+  new_assumption_path,
+  class: 'btn-success pull-right',
+  text: 'New assumption' if can? :create, Assumption

@@ -17,4 +17,8 @@ module AssumptionsHelper
     tooltip = "{data:{toggle:'tooltip',placement:'bottom'},title: 'This is a #{assumption.class.name}'}"
     Haml::Engine.new(".glyphicon.glyphicon-#{clazz}#{tooltip}", opts).render
   end
+
+  def r_code(assumption)
+    assumption.r_code.gsub(/\n/, '<br/>').html_safe
+  end
 end

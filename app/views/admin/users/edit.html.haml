@@ -1,0 +1,5 @@
+%h1 Editing user
+
+= render 'form'
+%br
+= link_icon_to 'open', [:admin, @user], title: "Show #{@user.email}", text: "Show"

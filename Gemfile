@@ -38,6 +38,8 @@ gem 'sdoc', group: :doc
 gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
+gem 'delayed_job_active_record'
+
 #gem 'rack-timeout'
 
 gem "therubyracer"
@@ -48,6 +50,7 @@ gem 'formtastic-bootstrap'
 #gem 'rsruby'
 gem 'rootapp-rinruby', '>= 3.1.1', :git => 'https://github.com/sebastianzillessen/rinruby.git'
 gem 'devise'
+gem 'cancancan'
 gem 'data_migrate'
 
 # heroku stuff

@@ -1,11 +1,22 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :assumptions
+  # fixing STI problems with assumption paths
+  ['test_assumption', 'query_assumption', 'blank_assumption'].each do |k|
+    get 'assumptions', to: 'assumptions#index', as: k+"s"
+    get 'assumptions/:id', to: 'assumptions#show', as: k
+  end
+
   resources :models
   resources :research_questions
   resources :home
   resources :analyses
   resources :query_assumption_results
+
+  namespace :admin do
+    root to: 'admin#index', controller: 'admin/admin'
+    resources :users
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

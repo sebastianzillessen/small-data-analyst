@@ -9,7 +9,8 @@
       %th Created At
       %th Possible Models
       %th Remaining Questions
-      %th Actions
+      %th User
+      %th.btn-xs.btn Actions
 
   %tbody
     - @analyses.each do |analysis|
@@ -24,12 +25,10 @@
         %td= l(analysis.created_at, format: :short)
         %td= analysis.possible_models.count
         %td= analysis.query_assumption_results.where(result:nil, ignore:false).count
+        %td= analysis.user.try(:email)
         %td
-          = link_to analysis, class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Show" do
-            .glyphicon.glyphicon-open
-          = link_to edit_analysis_path(analysis), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
-            .glyphicon.glyphicon-edit
-          = button_to analysis, class: 'btn btn-danger btn-xs', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
-            .glyphicon.glyphicon-trash
+          = link_icon_to 'open', analysis, title: "Show", class: 'btn-xs' if can? :read, analysis
+          = link_icon_to 'edit', edit_analysis_path(analysis), title: "Edit", class: 'btn-xs' if can? :edit, analysis
+          = link_icon_to 'trash',analysis, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, analysis
 
-= link_to 'New Analysis', new_analysis_path, class: 'btn btn-success pull-right'
+= link_icon_to 'plus',new_analysis_path, class: 'btn-success pull-right', text: 'Start new analysis' if can? :create, Analysis
