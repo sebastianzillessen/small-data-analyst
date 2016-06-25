@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   resources :analyses
   resources :query_assumption_results
 
+  namespace :admin do
+    root to: 'admin#index', controller: 'admin/admin'
+    resources :users
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

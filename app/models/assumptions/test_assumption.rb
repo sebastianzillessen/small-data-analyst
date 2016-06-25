@@ -35,6 +35,9 @@ class TestAssumption < Assumption
     result = r.pull_boolean('result')
     r.quit
     return result
+  rescue Exception => e
+    puts "\n \n ERROR: #{e.inspect}\n While running on: #{self.inspect}"
+    false
   end
 
 end

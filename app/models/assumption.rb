@@ -4,6 +4,7 @@ class Assumption < ActiveRecord::Base
 
   has_and_belongs_to_many :required_by, class_name: 'Assumption', join_table: :assumption_attacks, foreign_key: :attacker_id, association_foreign_key: :attacked_id
   has_and_belongs_to_many :models
+  belongs_to :user
 
   validates :name, presence: true, uniqueness: true
 

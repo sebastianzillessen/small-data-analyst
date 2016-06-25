@@ -4,7 +4,7 @@ class AnalysesController < ApplicationController
   # GET /analyses
   # GET /analyses.json
   def index
-    @analyses = Analysis.all
+    @analyses = Analysis.all.select { |a| can? :read, a }
   end
 
   # GET /analyses/1
@@ -70,6 +70,8 @@ class AnalysesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def analysis_params
-    params.require(:analysis).permit(:research_question_id, :dataset_id, query_assumption_results: [:result])
+    res = params.require(:analysis).permit(:research_question_id, :dataset_id, query_assumption_results: [:result])
+    res[:user] = current_user
+    res
   end
 end

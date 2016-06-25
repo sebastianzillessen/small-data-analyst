@@ -48,6 +48,7 @@ gem 'formtastic-bootstrap'
 #gem 'rsruby'
 gem 'rootapp-rinruby', '>= 3.1.1', :git => 'https://github.com/sebastianzillessen/rinruby.git'
 gem 'devise'
+gem 'cancancan'
 gem 'data_migrate'
 
 # heroku stuff

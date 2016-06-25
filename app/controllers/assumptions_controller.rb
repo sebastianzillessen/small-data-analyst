@@ -69,14 +69,16 @@ class AssumptionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def assumption_params
-    if (params[:query_assumption])
-      params.require(:query_assumption).permit(:name, :description, :critical, :type, :question, :argument_inverted)
-    elsif (params[:blank_assumption])
-      params.require(:blank_assumption).permit(:name, :description, :critical, :type, :argument_inverted)
-    elsif (params[:test_assumption])
-      params.require(:test_assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :argument_inverted, required_dataset_fields: [])
-    else
-      []
-    end
+    res = if (params[:query_assumption])
+            params.require(:query_assumption).permit(:name, :description, :critical, :type, :question, :argument_inverted)
+          elsif (params[:blank_assumption])
+            params.require(:blank_assumption).permit(:name, :description, :critical, :type, :argument_inverted)
+          elsif (params[:test_assumption])
+            params.require(:test_assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :argument_inverted, required_dataset_fields: [])
+          else
+            []
+          end
+    res[:user] = current_user
+    res
   end
 end

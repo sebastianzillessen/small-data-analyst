@@ -2,10 +2,15 @@
   = menu_group do 
     = menu_item "Home", root_path 
     = menu_divider
-    = menu_item "Analysis", analyses_path
-    = menu_item "Research Questions", research_questions_path
-    = menu_item "Models", models_path
-    = menu_item "Assumptions", assumptions_path
+    = menu_item "Analysis", analyses_path if can? :index, Analysis
+    = menu_item "Research Questions", research_questions_path if can? :index, ResearchQuestion
+    = menu_item "Models", models_path if can? :index, Model
+    = menu_item "Assumptions", assumptions_path if can? :index, Assumption
+    - if can? :manage, :users
+      = menu_divider
+      = drop_down 'Administration' do
+        = menu_item 'Admin-Dashboard', admin_root_path if can? :index, Admin
+        = menu_item 'User Management', admin_users_path if can? :index, Admin::UsersController
   = menu_group pull: :right do
     - if current_user
       = menu_item "Log out (#{current_user.email})", destroy_user_session_path, method: :delete

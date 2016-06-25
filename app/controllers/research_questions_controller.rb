@@ -4,7 +4,7 @@ class ResearchQuestionsController < ApplicationController
   # GET /research_questions
   # GET /research_questions.json
   def index
-    @research_questions = ResearchQuestion.all
+    @research_questions = ResearchQuestion.all.select { |r| can? :read, r }
   end
 
   # GET /research_questions/1
@@ -62,13 +62,15 @@ class ResearchQuestionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_research_question
-      @research_question = ResearchQuestion.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_research_question
+    @research_question = ResearchQuestion.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def research_question_params
-      params.require(:research_question).permit(:name, :description, :private, :model_ids => [])
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def research_question_params
+    res = params.require(:research_question).permit(:name, :description, :private, :model_ids => [])
+    res[:user] = current_user
+    res
+  end
 end

@@ -1,0 +1,16 @@
+%h1 User #{@user.email}
+
+%p
+  %b Role:
+  = @user.role
+%p
+  %b Created at:
+  =l(@user.created_at, format: :short)
+%p
+  %b Last updated at:
+  =l(@user.updated_at, format: :short)
+%p
+  %b Approved:
+  =@user.approved
+
+= link_icon_to 'edit', edit_admin_user_path(@user), title: "Edit", text: "Edit"
