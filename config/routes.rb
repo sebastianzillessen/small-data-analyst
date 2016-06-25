@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :assumptions
+  # fixing STI problems with assumption paths
+  ['test_assumption', 'query_assumption', 'blank_assumption'].each do |k|
+    get 'assumptions', to: 'assumptions#index', as: k+"s"
+    get 'assumptions/:id', to: 'assumptions#show', as: k
+  end
+
   resources :models
   resources :research_questions
   resources :home

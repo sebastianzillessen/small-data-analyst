@@ -2,7 +2,8 @@
   = f.inputs do
     = f.input :name
     = f.input :description
-    = f.input :research_questions, :as => :check_boxes, :collection => ResearchQuestion.order(:name).all
+    = f.input :research_questions, :as => :check_boxes, :collection => ResearchQuestion.order(:name).all.select { |a| can? :read, a }
+    = f.input :assumptions, :as => :check_boxes, :collection => Assumption.order(:name).all.select { |a| can? :read, a }
 
   = f.actions do
     = f.action :submit, :as => :input

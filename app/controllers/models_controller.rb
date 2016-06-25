@@ -4,7 +4,7 @@ class ModelsController < ApplicationController
   # GET /models
   # GET /models.json
   def index
-    @models = Model.all
+    @models = Model.all.select { |a| can? :read, a }
   end
 
   # GET /models/1
@@ -69,7 +69,7 @@ class ModelsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def model_params
-      res = params.require(:model).permit(:name, :description, research_question_ids: [])
+      res = params.require(:model).permit(:name, :description, research_question_ids: [], assumption_ids: [])
       res[:user] = current_user
       res
     end

@@ -19,18 +19,18 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe AnalysesController, type: :controller do
-  login_user
+
+  login_admin
 
 
-  # This should return the minimal set of attributes required to create a valid
-  # Analysis. As you add validations to Analysis, be sure to
-  # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    build(:analysis).attributes
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    a=create(:analysis).attributes
+    a["dataset_id"] = nil
+    a
   }
 
   # This should return the minimal set of values that should be in the session
@@ -40,31 +40,31 @@ RSpec.describe AnalysesController, type: :controller do
 
   describe "GET #index" do
     it "assigns all analyses as @analyses" do
-      analysis = Analysis.create! valid_attributes
-      get :index, {}, valid_session
+      analysis =create(:analysis, user: @user)
+      get :index, {}
       expect(assigns(:analyses)).to eq([analysis])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested analysis as @analysis" do
-      analysis = Analysis.create! valid_attributes
-      get :show, {:id => analysis.to_param}, valid_session
+      analysis = create(:analysis, user: @user)
+      get :show, {:id => analysis.to_param}
       expect(assigns(:analysis)).to eq(analysis)
     end
   end
 
   describe "GET #new" do
     it "assigns a new analysis as @analysis" do
-      get :new, {}, valid_session
+      get :new, {}
       expect(assigns(:analysis)).to be_a_new(Analysis)
     end
   end
 
   describe "GET #edit" do
     it "assigns the requested analysis as @analysis" do
-      analysis = Analysis.create! valid_attributes
-      get :edit, {:id => analysis.to_param}, valid_session
+      analysis = create(:analysis)
+      get :edit, {:id => analysis.to_param}
       expect(assigns(:analysis)).to eq(analysis)
     end
   end
@@ -73,30 +73,30 @@ RSpec.describe AnalysesController, type: :controller do
     context "with valid params" do
       it "creates a new Analysis" do
         expect {
-          post :create, {:analysis => valid_attributes}, valid_session
+          post :create, {:analysis => valid_attributes}
         }.to change(Analysis, :count).by(1)
       end
 
       it "assigns a newly created analysis as @analysis" do
-        post :create, {:analysis => valid_attributes}, valid_session
+        post :create, {:analysis => valid_attributes}
         expect(assigns(:analysis)).to be_a(Analysis)
         expect(assigns(:analysis)).to be_persisted
       end
 
       it "redirects to the created analysis" do
-        post :create, {:analysis => valid_attributes}, valid_session
+        post :create, {:analysis => valid_attributes}
         expect(response).to redirect_to(Analysis.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved analysis as @analysis" do
-        post :create, {:analysis => invalid_attributes}, valid_session
+        post :create, {:analysis => invalid_attributes}
         expect(assigns(:analysis)).to be_a_new(Analysis)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:analysis => invalid_attributes}, valid_session
+        post :create, {:analysis => invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -105,39 +105,39 @@ RSpec.describe AnalysesController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {dataset_id: create(:dataset).id}
       }
 
       it "updates the requested analysis" do
-        analysis = Analysis.create! valid_attributes
-        put :update, {:id => analysis.to_param, :analysis => new_attributes}, valid_session
+        analysis = create(:analysis)
+        put :update, {:id => analysis.to_param, :analysis => new_attributes}
         analysis.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested analysis as @analysis" do
-        analysis = Analysis.create! valid_attributes
-        put :update, {:id => analysis.to_param, :analysis => valid_attributes}, valid_session
+        analysis = create(:analysis)
+        put :update, {:id => analysis.to_param, :analysis => valid_attributes}
         expect(assigns(:analysis)).to eq(analysis)
       end
 
       it "redirects to the analysis" do
-        analysis = Analysis.create! valid_attributes
-        put :update, {:id => analysis.to_param, :analysis => valid_attributes}, valid_session
+        analysis = create(:analysis)
+        put :update, {:id => analysis.to_param, :analysis => valid_attributes}
         expect(response).to redirect_to(analysis)
       end
     end
 
     context "with invalid params" do
       it "assigns the analysis as @analysis" do
-        analysis = Analysis.create! valid_attributes
-        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}, valid_session
+        analysis = create(:analysis)
+        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}
         expect(assigns(:analysis)).to eq(analysis)
       end
 
       it "re-renders the 'edit' template" do
-        analysis = Analysis.create! valid_attributes
-        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}, valid_session
+        analysis = create(:analysis)
+        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}
         expect(response).to render_template("edit")
       end
     end
@@ -145,15 +145,15 @@ RSpec.describe AnalysesController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested analysis" do
-      analysis = Analysis.create! valid_attributes
+      analysis = create(:analysis)
       expect {
-        delete :destroy, {:id => analysis.to_param}, valid_session
+        delete :destroy, {:id => analysis.to_param}
       }.to change(Analysis, :count).by(-1)
     end
 
     it "redirects to the analyses list" do
-      analysis = Analysis.create! valid_attributes
-      delete :destroy, {:id => analysis.to_param}, valid_session
+      analysis = create(:analysis)
+      delete :destroy, {:id => analysis.to_param}
       expect(response).to redirect_to(analyses_url)
     end
   end

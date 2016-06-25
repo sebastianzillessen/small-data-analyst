@@ -27,10 +27,7 @@ class TestAssumption < Assumption
 =end
 
   def evaluate_critical(analysis)
-<<<<<<< HEAD
     return false unless check_dataset_mets_column_names(analysis.dataset)
-=======
->>>>>>> 2812700... added transformation of dataset into test_assumptions
     r = RinRuby.new
     r.assign "data", analysis.dataset.data
     # make data to list according to csv.

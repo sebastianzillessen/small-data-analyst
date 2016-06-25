@@ -3,5 +3,5 @@
 
 %p
   A new user with the email #{@user.email} has registered on #{root_url}.
-  Please go to #{link_to(@user, @user)} to activate him.
+  Please go to #{link_to(admin_user_url(@user), admin_user_url(@user))} to activate him.
 

@@ -17,6 +17,10 @@ class Assumption < ActiveRecord::Base
     []
   end
 
+  def to_s
+    "#{name} (#{self.class})"
+  end
+
   def get_associated_models
     associated_models = required_by.map(&:get_associated_models)
     associated_models << models

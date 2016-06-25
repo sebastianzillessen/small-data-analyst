@@ -4,7 +4,7 @@ class AssumptionsController < ApplicationController
   # GET /assumptions
   # GET /assumptions.json
   def index
-    @assumptions = Assumption.all
+    @assumptions = Assumption.all.select { |a| can? :read, a }
   end
 
   # GET /assumptions/1
@@ -14,7 +14,14 @@ class AssumptionsController < ApplicationController
 
   # GET /assumptions/new
   def new
-    @assumption = Assumption.new
+    @assumption = Assumption.new()
+    if (params[:assumption] && type = params[:assumption][:type])
+      puts "Type detected: #{type}"
+      @assumption = @assumption.becomes!(type.constantize)
+
+    end
+    puts @assumption.class
+
   end
 
   # GET /assumptions/1/edit
@@ -76,9 +83,9 @@ class AssumptionsController < ApplicationController
           elsif (params[:test_assumption])
             params.require(:test_assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :argument_inverted, required_dataset_fields: [])
           else
-            []
+            {}
           end
     res[:user] = current_user
-    res
+    res.tap { |t| puts t.inspect }
   end
 end

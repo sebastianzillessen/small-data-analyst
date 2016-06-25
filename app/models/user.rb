@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
   end
 
   def send_admin_mail
-    AdminMailer.new_user_waiting_for_approval(self).deliver unless (approved)
+    AdminMailer.new_user_waiting_for_approval(self).deliver_later unless (approved)
   end
 end
 

@@ -6,7 +6,7 @@ module Admin
     # GET /users
     # GET /users.json
     def index
-      @users = User.all
+      @users = User.all.select { |a| can? :read, a }
     end
 
     # GET /users/1
