@@ -24,6 +24,15 @@
     = render "answered_question", qar: question
   %li.auto-show-empty
     No ignored query assumptions.
+
+%h3 Test Assumption Results
+%ul
+  - @analysis.query_assumption_results.where(ignore: true).each do |question|
+    = render "answered_question", qar: question
+  %li.auto-show-empty
+    No ignored query assumptions.
+
+
 - if @analysis.query_assumption_results.where(ignore: false).where.not(result:nil).any?
   :javascript
     $(function(){
