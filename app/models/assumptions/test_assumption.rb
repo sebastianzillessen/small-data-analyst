@@ -26,8 +26,11 @@ class TestAssumption < Assumption
   end
 =end
 
-  def evaluate_critical
+  def evaluate_critical(analysis)
     r = RinRuby.new
+    r.assign "data", analysis.dataset.data
+    # make data to list according to csv.
+    r.eval("tabular_data=read.csv(textConnection(data))")
     r.eval r_code
     result = r.pull_boolean('result')
     r.quit

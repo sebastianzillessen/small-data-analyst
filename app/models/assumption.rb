@@ -8,11 +8,11 @@ class Assumption < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
 
 
-  def evaluate_critical
+  def evaluate_critical(analysis)
     raise 'Must be overwritten'
   end
 
-  def get_critical_queries
+  def get_critical_queries(analysis)
     []
   end
 

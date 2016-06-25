@@ -9,9 +9,9 @@ class Analysis < ActiveRecord::Base
 
   def start
     research_question.models.each do |m|
-      if (m.evaluate_critical)
+      if (m.evaluate_critical(self))
         possible_models << m
-        m.get_critical_queries.each do |q|
+        m.get_critical_queries(self).each do |q|
           q = QueryAssumptionResult.new(analysis: self, query_assumption: q, result: nil)
           self.query_assumption_results << q if (q.valid?)
         end
