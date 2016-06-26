@@ -61,14 +61,6 @@ RSpec.describe AnalysesController, type: :controller do
     end
   end
 
-  describe "GET #edit" do
-    it "assigns the requested analysis as @analysis" do
-      analysis = create(:analysis)
-      get :edit, {:id => analysis.to_param}
-      expect(assigns(:analysis)).to eq(analysis)
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Analysis" do
@@ -102,46 +94,6 @@ RSpec.describe AnalysesController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        {dataset_id: create(:dataset).id}
-      }
-
-      it "updates the requested analysis" do
-        analysis = create(:analysis)
-        put :update, {:id => analysis.to_param, :analysis => new_attributes}
-        analysis.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "assigns the requested analysis as @analysis" do
-        analysis = create(:analysis)
-        put :update, {:id => analysis.to_param, :analysis => valid_attributes}
-        expect(assigns(:analysis)).to eq(analysis)
-      end
-
-      it "redirects to the analysis" do
-        analysis = create(:analysis)
-        put :update, {:id => analysis.to_param, :analysis => valid_attributes}
-        expect(response).to redirect_to(analysis)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the analysis as @analysis" do
-        analysis = create(:analysis)
-        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}
-        expect(assigns(:analysis)).to eq(analysis)
-      end
-
-      it "re-renders the 'edit' template" do
-        analysis = create(:analysis)
-        put :update, {:id => analysis.to_param, :analysis => invalid_attributes}
-        expect(response).to render_template("edit")
-      end
-    end
-  end
 
   describe "DELETE #destroy" do
     it "destroys the requested analysis" do
