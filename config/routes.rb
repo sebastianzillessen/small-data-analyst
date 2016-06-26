@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {confirmations: 'confirmations'} # we use a custom confirmation controller
+  devise_scope :user do
+    patch "/confirm" => "confirmations#confirm"
+  end
   resources :assumptions
   # fixing STI problems with assumption paths
   ['test_assumption', 'query_assumption', 'blank_assumption'].each do |k|

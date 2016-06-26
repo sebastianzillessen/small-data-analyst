@@ -6,7 +6,7 @@ module Admin
     # GET /users
     # GET /users.json
     def index
-      @users = User.all.select { |a| can? :read, a }
+      @users = Admin::User.all.select { |a| can? :read, a }
     end
 
     # GET /users/1
@@ -16,7 +16,7 @@ module Admin
 
     # GET /users/new
     def new
-      @user = User.new(approved: true)
+      @user = Admin::User.new(approved: true)
     end
 
     # GET /users/1/edit
@@ -26,11 +26,11 @@ module Admin
     # POST /users
     # POST /users.json
     def create
-      @user = User.new(user_params)
+      @user = Admin::User.new(user_params)
 
       respond_to do |format|
         if @user.save
-          format.html { redirect_to [:admin, @user], notice: 'User was successfully created.' }
+          format.html { redirect_to @user, notice: 'User was successfully created.' }
           format.json { render :show, status: :created, location: @user }
         else
           format.html { render :new }
@@ -44,7 +44,7 @@ module Admin
     def update
       respond_to do |format|
         if @user.update(user_params)
-          format.html { redirect_to [:admin, @user], notice: 'User was successfully updated.' }
+          format.html { redirect_to @user, notice: 'User was successfully updated.' }
           format.json { render :show, status: :ok, location: @user }
         else
           format.html { render :edit }
@@ -66,18 +66,12 @@ module Admin
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = Admin::User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      p = params.require(:user).permit(:email, :role, :approved, :password, :password_confirmation)
-      # prevent password changes
-      unless (p[:password].present? || p[:password_confirmation].present?)
-        p.delete(:password)
-        p.delete(:password_confirmation)
-      end
-      p
+      params.require(:admin_user).permit(:email, :role, :approved)
     end
   end
 end

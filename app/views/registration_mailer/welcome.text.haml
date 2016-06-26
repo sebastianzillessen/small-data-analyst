@@ -1,0 +1,9 @@
+Hello #{@user.email}.
+
+You have been added to the the webplatform #{root_url} by an administrator.
+Please follow this link to set your password now:
+
+= edit_password_url(@user, reset_password_token: @token)
+
+You will not be able to login before changing your password.
+  
