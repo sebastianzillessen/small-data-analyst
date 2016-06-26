@@ -22,11 +22,11 @@
     = render 'shared/navbar'
     .container
       .row
-        .col-lg-9
+        .col-lg-12
           #flashes
             = bootstrap_flash
             = devise_error_messages!
           = yield
-        .col-lg-3
-          = render 'shared/sidebar'
+        -#.col-lg-3
+          =# render 'shared/sidebar'
       = render 'shared/footer'

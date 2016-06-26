@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin/users/new", type: :view do
   before(:each) do
-    assign(:user, build(:user))
+    assign(:user, build(:admin_user))
   end
 
   it "renders new user form" do
