@@ -5,6 +5,4 @@ class Admin::User < User
   def password_required?
     new_record? ? false : super
   end
-
-
 end
