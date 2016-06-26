@@ -10,7 +10,7 @@
       %th Possible Models
       %th Remaining Questions
       %th User
-      %th.btn-xs.btn Actions
+      %th Actions
 
   %tbody
     - @analyses.each do |analysis|
@@ -28,7 +28,6 @@
         %td= analysis.user.try(:email)
         %td
           = link_icon_to 'open', analysis, title: "Show", class: 'btn-xs' if can? :read, analysis
-          = link_icon_to 'edit', edit_analysis_path(analysis), title: "Edit", class: 'btn-xs' if can? :edit, analysis
           = link_icon_to 'trash',analysis, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, analysis
 
 = link_icon_to 'plus',new_analysis_path, class: 'btn-success pull-right', text: 'Start new analysis' if can? :create, Analysis
