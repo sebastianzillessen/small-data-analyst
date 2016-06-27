@@ -1,0 +1,26 @@
+- if @assumption.class == Assumption
+  = render "form_assumption"
+- else
+  = semantic_form_for @assumption, html:{validate: true } do |f|
+    = f.inputs 'General' do
+      = f.input :name
+      = f.input :description
+      = f.input :critical, hint: t('.hint.critical')
+      = f.input :type, as: :hidden
+
+    = f.inputs 'Assumptions and models requiring this assumption to hold' do
+      .help-block
+        By selecting one or more of the models and assumptions below, you can build up assumption trees.
+      = f.input :required_by, as: :select, multiple: true,
+        collection: BlankAssumption.order(:critical, :type, :name).all.reject{|a| a == @assumption}.select { |a| can? :read, a }.map{|a| [a.to_s, a.id]},
+        include_blank: true,
+        label: 'Assumptions requiring this assumption to hold'
+      = f.input :models, as: :select, multiple: true,
+         collection: Model.order(:name).all.select { |a| can? :read, a },
+         include_blank: true,
+         label: 'Models requiring this assumption to hold'
+
+    = render "form_#{@assumption.class.name.underscore}", f: f
+
+    = f.actions do
+      = f.action :submit, :as => :input, button_html:{disable_with: 'Please wait...'}

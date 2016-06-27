@@ -87,4 +87,34 @@ RSpec.describe Assumption, type: :model do
   end
 
 
+  describe '#get_all_parents' do
+    subject { create(:blank_assumption) }
+    let(:a2) { create(:blank_assumption, required_by: [subject]) }
+    it 'should return empty for single assumption' do
+      expect(subject.get_all_parents).to eq []
+    end
+    it 'should return only parent' do
+      expect(a2.get_all_parents).to include subject
+      expect(a2.get_all_parents).not_to include a2
+    end
+
+    it 'should return itself if there is a circle' do
+      # a2 -> subject -> a2
+      subject.required_by << a2
+      expect(a2.get_all_parents).to include(subject)
+    end
+
+    it 'should be invalid with a circle' do
+      # a2 -> subject -> a2
+      subject.required_by << a2
+      expect(subject).not_to be_valid
+    end
+
+    it 'should be valid without a circle' do
+      # a2 -> subject
+      expect(a2).to be_valid
+      expect(subject).to be_valid
+    end
+  end
+
 end

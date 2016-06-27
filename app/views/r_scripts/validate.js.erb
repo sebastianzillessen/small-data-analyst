@@ -1,0 +1,3 @@
+<%- id = rand(1000).ceil %>
+$("body").append("<%= escape_javascript(render('r_scripts/modal', id: id)) %>");
+$('#rscript-modal-<%= id %>').modal();

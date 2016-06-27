@@ -4,7 +4,6 @@ RSpec.describe "assumptions/edit", type: :view do
   describe 'BlankAssumption' do
     before(:each) do
       @assumption = FactoryGirl.create(:blank_assumption)
-      # todo: test for other assumption types
     end
 
     it "renders the edit assumption form" do
@@ -52,13 +51,12 @@ RSpec.describe "assumptions/edit", type: :view do
 
     it "renders the edit assumption form" do
       render
-
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#test_assumption_name[name=?]", "test_assumption[name]"
         assert_select "textarea#test_assumption_description[name=?]", "test_assumption[description]"
         assert_select "input#test_assumption_critical[name=?]", "test_assumption[critical]"
         assert_select "input#test_assumption_type[name=?]", "test_assumption[type]"
-        assert_select "textarea#test_assumption_required_dataset_fields[name=?]", "test_assumption[required_dataset_fields]"
+        assert_select "input#test_assumption_required_dataset_fields[name=?]", "test_assumption[required_dataset_fields][]"
         #assert_select "input#test_assumption_fail_on_missing[name=?]", "test_assumption[fail_on_missing]"
         assert_select "textarea#test_assumption_r_code[name=?]", "test_assumption[r_code]"
         #assert_select "textarea#test_assumption_question[name=?]", "test_assumption[question]"

@@ -2,6 +2,7 @@ ruby '2.2.4'
 # ruby 1.9.3 required, as gem `rinruby` only supports ruby 1.9.3
 
 source 'https://rubygems.org'
+source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -19,8 +20,10 @@ gem 'coffee-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+gem 'jquery-turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -42,6 +45,7 @@ gem 'delayed_job_active_record'
 
 #gem 'rack-timeout'
 
+
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
@@ -55,6 +59,11 @@ gem 'data_migrate'
 
 # heroku stuff
 gem 'rails_12factor', group: :production
+
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-chosen'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

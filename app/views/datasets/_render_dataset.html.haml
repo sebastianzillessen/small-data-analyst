@@ -1,0 +1,12 @@
+- rows = defined?(limit) ? dataset.rows.sample(limit) : dataset.rows
+%table.table.table-striped.table-condensed.table-responsive
+  %tr
+    - dataset.columns.each do |c|
+      %th=c
+  - rows.each do |r|
+    %tr
+      - r.each do |e|
+        %td=e
+- if defined?(limit) && (dataset.rows.length > limit)
+  .alert.alert-info
+    The actual dataset is way larger (#{dataset.rows.length} elements), a sample of #{limit} rows has been picked.

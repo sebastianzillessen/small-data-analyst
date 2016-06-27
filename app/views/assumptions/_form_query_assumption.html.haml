@@ -1,10 +1,3 @@
-= semantic_form_for @assumption do |f|
-  = f.inputs do
-    = f.input :name
-    = f.input :description
-    = f.input :critical
-    = f.input :type, as: :hidden
-    = f.input :question
+= f.inputs 'Query specific attributes' do
+  = f.input :question, hint: t('.hint.question').html_safe
 
-  = f.actions do
-    = f.action :submit, :as => :input

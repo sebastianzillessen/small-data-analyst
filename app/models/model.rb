@@ -1,6 +1,6 @@
 class Model < ActiveRecord::Base
   has_and_belongs_to_many :research_questions
-  has_and_belongs_to_many :analysises
+  has_and_belongs_to_many :analyses
   has_and_belongs_to_many :assumptions
   belongs_to :user
 
