@@ -1,6 +1,4 @@
 = render 'assumption', assumption: @assumption
 
 
-= link_to 'Edit', edit_assumption_path(@assumption)
-\|
-= link_to 'Back', assumptions_path
+= link_icon_to 'edit', edit_assumption_path(@assumption), text: 'Edit assumption'

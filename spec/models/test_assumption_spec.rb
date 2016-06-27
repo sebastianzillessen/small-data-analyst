@@ -27,6 +27,15 @@ RSpec.describe TestAssumption, type: :model do
       dataset.columns << 'bar'
       expect(subject.send(:check_dataset_mets_column_names, dataset)).to be_truthy
     end
+
+
+  end
+
+  describe 'check required dataset fields' do
+    subject { create(:test_assumption) }
+    it 'should assign empty array' do
+      skip("write specs")
+    end
   end
 
 

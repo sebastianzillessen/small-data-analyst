@@ -18,7 +18,13 @@ module AssumptionsHelper
     Haml::Engine.new(".glyphicon.glyphicon-#{clazz}#{tooltip}", opts).render
   end
 
-  def r_code(assumption)
-    assumption.r_code.gsub(/\n/, '<br/>').html_safe
+  def r_code(code)
+    if code.present?
+      code.gsub(/\n/, '<br/>').html_safe
+    else
+      "<No code present>"
+    end
   end
+
+
 end

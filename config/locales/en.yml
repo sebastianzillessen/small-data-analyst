@@ -20,4 +20,27 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      query_assumption:
+        question: Question to ask the clinician
+  assumptions:
+    form_query_assumption:
+      hint:
+        question: "The clinician has to answer this question. If he answers it with <i>Yes</i> this argument holds."
+    form_test_assumption:
+      hint:
+        required_dataset_fields: "Please provide a list of dataset fields, that are required for this Test
+          Assumption to be evaluated. If you leave this field empty, only the R-Code below will be executed and the
+          assumption holds only based on this result. Please enter the desired columns comma- or space-seperated."
+        r_code: "This is the actual code that will be executed to test if this assumption holds. Please use R-Syntax.
+          The dataset will be available in the variable <code>tabular_data</code> as tabular data and in
+          <code>data</code> as csv encoded format. To specify if the assumption holds, please set the variable
+          <code>result</code> in your script to a boolean value (TRUE/FALSE)."
+    form:
+      hint:
+        argument_inverted: "Check this option to indicate, that the assumption is inverted. This means, that if the
+          actual test on the assumption returns that the argument does not hold and this option is enabled, then the
+          argument will hold and visversa."
+        critical: "All critical assumptions that are somehow related to a model must hold so that this model is a
+          possible model for a research question."

@@ -16,12 +16,8 @@ class AssumptionsController < ApplicationController
   def new
     @assumption = Assumption.new()
     if (params[:assumption] && type = params[:assumption][:type])
-      puts "Type detected: #{type}"
       @assumption = @assumption.becomes!(type.constantize)
-
     end
-    puts @assumption.class
-
   end
 
   # GET /assumptions/1/edit
@@ -76,12 +72,14 @@ class AssumptionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def assumption_params
+    attribute_for_all = [:name, :description, :critical, :type,]
+    array_for_all = {required_by_ids: [], model_ids: []}
     res = if (params[:query_assumption])
-            params.require(:query_assumption).permit(:name, :description, :critical, :type, :question, :argument_inverted)
+            params.require(:query_assumption).permit(attribute_for_all, :question, :argument_inverted, array_for_all)
           elsif (params[:blank_assumption])
-            params.require(:blank_assumption).permit(:name, :description, :critical, :type, :argument_inverted)
+            params.require(:blank_assumption).permit(attribute_for_all, :argument_inverted, array_for_all, assumption_ids: [])
           elsif (params[:test_assumption])
-            params.require(:test_assumption).permit(:name, :description, :critical, :type, :fail_on_missing, :r_code, :argument_inverted, required_dataset_fields: [])
+            params.require(:test_assumption).permit(attribute_for_all, :r_code, :argument_inverted, array_for_all, required_dataset_fields: [])
           else
             {}
           end

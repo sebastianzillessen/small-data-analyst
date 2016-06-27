@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {confirmations: 'confirmations'} # we use a custom confirmation controller
+
   devise_scope :user do
     patch "/confirm" => "confirmations#confirm"
   end
@@ -20,6 +21,8 @@ Rails.application.routes.draw do
     root to: 'admin#index', controller: 'admin/admin'
     resources :users
   end
+
+  post 'r_scripts/validate', as: 'rscript_validate'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

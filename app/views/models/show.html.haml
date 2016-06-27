@@ -16,6 +16,4 @@
 
   = render 'assumptions', assumptions: @model.assumptions
 
-= link_to 'Edit', edit_model_path(@model)
-\|
-= link_to 'Back', models_path
+= link_icon_to 'edit', edit_model_path(@model), text: 'Edit model'

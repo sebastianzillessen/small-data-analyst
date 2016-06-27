@@ -1,12 +1,17 @@
-= semantic_form_for @assumption do |f|
-  = f.inputs do
-    = f.input :name
-    = f.input :description
-    = f.input :critical
-    = f.input :type, as: :hidden
-    = f.input :required_dataset_fields
-    = f.input :r_code
-    = f.input :argument_inverted
+= f.inputs 'Test assumption specific attributes' do
+  = f.input :required_dataset_fields, as: :string, hint: t('.hint.required_dataset_fields'), input_html:{multiple: true}
+  = f.input :r_code, hint: t('.hint.r_code').html_safe
+  %fieldset.inputs
+    .input.optional.form-group
+      %span.form-label
+        = label_tag('test_dataset_id', "Test the script against an existing dataset", class: 'text-regular control-label')
+      %span.form-wrapper
+        - @datasets = Dataset.all.select{|d| can? :read, d}
+        = select_tag('test_dataset_id', options_for_select(@datasets.collect{ |d| [d.name, d.id] }), include_blank: true, class: 'form-control')
+    .help-block
+      To verify the entered R-Code please use the option below to execute your code. You can as well select an dataset to test your code against.
 
-  = f.actions do
-    = f.action :submit, :as => :input
+  %fieldset.form-actions
+    = link_icon_to 'play', rscript_validate_path(), remote: true, method: :post,
+      data:{ before_submit: {r_script: '#test_assumption_r_code', dataset_id: '#test_dataset_id'}}, text: 'Verify Script',
+      class: 'btn-success btn-xs pull-right'
