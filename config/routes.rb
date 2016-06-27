@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :home
   resources :analyses
   resources :query_assumption_results
+  resources :datasets
 
   namespace :admin do
     root to: 'admin#index', controller: 'admin/admin'

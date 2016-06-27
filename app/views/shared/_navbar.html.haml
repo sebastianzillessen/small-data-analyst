@@ -6,6 +6,7 @@
     = menu_item "Research Questions", research_questions_path if can? :index, ResearchQuestion
     = menu_item "Models", models_path if can? :index, Model
     = menu_item "Assumptions", assumptions_path if can? :index, Assumption
+    = menu_item "Datasets", datasets_path if can? :index, Dataset
     - if can? :manage, :users
       = menu_divider
       = drop_down 'Administration' do

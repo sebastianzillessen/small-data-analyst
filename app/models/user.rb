@@ -10,8 +10,9 @@ class User < ActiveRecord::Base
 
   has_many :assumptions
   has_many :research_questions
-  has_many :analyses
+  has_many :analyses, dependent: :destroy
   has_many :models
+  has_many :datasets, dependent: :destroy
 
 
   after_create :send_admin_mail

@@ -14,6 +14,7 @@ class Ability
       can :crud, Analysis
       can :crud, Assumption
       can :crud, ResearchQuestion
+      can :read, Dataset
     end
 
     if user.is_clinician?
@@ -27,6 +28,8 @@ class Ability
       can :read, ResearchQuestion, private: true, user_id: user.id
       # can update/delete all user-owned research questions
       can :cud, ResearchQuestion, :user_id => user.id
+      can :crud, ResearchQuestion, :user_id => user.id
+      can :crud, Dataset, user_id: user.id
     end
   end
 end

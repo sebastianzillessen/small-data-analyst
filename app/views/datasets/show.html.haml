@@ -1,0 +1,6 @@
+%h2 Dataset: #{@dataset.name}
+
+
+= render 'datasets/render_dataset', dataset: @dataset
+
+= link_to 'Edit', edit_dataset_path(@dataset)
