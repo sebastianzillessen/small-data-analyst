@@ -4,9 +4,6 @@ class DatasetsController < ApplicationController
   # GET /datasets
   # GET /datasets.json
   def index
-    puts "User: #{current_user.id}"
-    puts "Datsets: #{Dataset.all.map(&:id)}"
-    puts "Datsets owners: #{Dataset.all.map(&:user_id)}"
     @datasets = Dataset.all.select { |d| can? :read, d }
   end
 
@@ -28,6 +25,7 @@ class DatasetsController < ApplicationController
   # POST /datasets.json
   def create
     @dataset = Dataset.new(dataset_params)
+    @dataset.user = current_user
 
     respond_to do |format|
       if @dataset.save

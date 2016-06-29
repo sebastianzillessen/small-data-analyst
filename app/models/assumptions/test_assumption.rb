@@ -6,10 +6,17 @@ class TestAssumption < Assumption
   before_validation :parse_required_dataset_fields, if: :required_dataset_fields_changed?
   validate :r_code_syntax, if: :r_code_changed?
 
+
+  def evaluate(analysis)
+    evaluate_critical(analysis)
+  end
+
   def evaluate_critical(analysis)
-    # TODO: Provide better output for user why the assumption does not hold
-    return false unless check_dataset_mets_column_names(analysis.dataset) if required_dataset_fields.any?
-    RScriptExecution.execute r_code, analysis.dataset.data
+    @evaluate_critical ||= begin
+                             # TODO: Provide better output for user why the assumption does not hold
+      return false unless check_dataset_mets_column_names(analysis.dataset) if required_dataset_fields.any?
+      RScriptExecution.execute r_code, analysis.dataset.data
+    end
   rescue Exception => e
     puts "\n \n ERROR: #{e.inspect}\n While running on: #{self.inspect}"
     false

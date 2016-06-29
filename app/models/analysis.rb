@@ -2,7 +2,8 @@ class Analysis < ActiveRecord::Base
   belongs_to :research_question
   belongs_to :dataset
   belongs_to :user
-  has_and_belongs_to_many :possible_models, class_name: 'Model', dependent: :destroy
+  has_and_belongs_to_many :possible_models, class_name: 'Model'
+  #has_and_belongs_to_many :impossible_models, -> { where("analyses_models.possible = ?", false) }, class_name: 'Model'
   has_many :query_assumption_results, autosave: true, dependent: :destroy
 
   validates :research_question, :dataset, presence: true
@@ -32,6 +33,10 @@ class Analysis < ActiveRecord::Base
       end
     end
     save
+  end
+
+  def done?
+    query_assumption_results.where(ignore: false, result: nil).empty?
   end
 
   private

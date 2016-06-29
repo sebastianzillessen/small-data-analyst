@@ -1,0 +1,26 @@
+- holds = assumption.evaluate(analysis)
+- style = if holds.nil?
+  - 'text-muted'
+- elsif holds
+  - 'text-success'
+- else
+  - 'text-danger'
+
+.list-group-item-heading
+
+  - if holds.nil?
+    .glyphicon.glyphicon-minus-sign(class="#{style}")
+  - elsif holds
+    .glyphicon.glyphicon-ok-sign(class="#{style}")
+  - else
+    .glyphicon.glyphicon-remove-sign(class="#{style}")
+
+  %span(class="#{style}")
+    = assumption.name
+  .pull-right
+    =glyphicon_critcal(assumption)
+    =glyphicon_type(assumption)
+- if assumption.is_a?(BlankAssumption) && assumption.assumptions.any?
+  .list-group-item-text
+    = render 'analyses/assumptions', assumptions: assumption.assumptions, analysis: analysis
+

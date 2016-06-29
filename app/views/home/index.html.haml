@@ -1,2 +1,19 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+%h1 Welcome to "Small Data Analyst"
+
+
+.row
+  .col-md-6
+    - unless current_user
+      .panel.panel-default
+        .panel-heading
+          Log in
+        .panel-body
+          = render 'devise/sessions/login'
+    - else
+      .panel.panel-default
+        .panel-body
+          Now that you are logged in, you can even do more. Have a look at the menu bar!
+  .col-md-6
+    .panel.panel-info
+      .panel-body
+        Here we will provide the user with a small explanation

@@ -3,7 +3,7 @@
     = f.input :name
     = f.input :description
     = f.input :private
-    = f.input :models, :as => :check_boxes, :collection => Model.order(:name).all.select { |a| can? :read, a }
+    = f.input :models, :as => :select, :collection => Model.order(:name).all.select { |a| can? :read, a }
 
   = f.actions do
     = f.action :submit, :as => :input

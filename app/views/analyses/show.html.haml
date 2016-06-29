@@ -1,40 +1,52 @@
-%h3 Currently Possible Models
-%ul#possible_models
-  = render 'possible_models', analysis: @analysis
+.row
+  .col-md-6
+    .panel.panel-info
+      .panel-heading
+        Currently Possible Models
+      %ul.list-group#possible_models
+        = render 'possible_models', analysis: @analysis
+  .col-md-6
+    .panel.panel-primary#open_questions_parent
+      .panel-heading
+        Open Query Assumptions
+        = collapse('open_questions')
+      %ul.list-group#open_questions.collapse.in
+        - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
+          %li.list-group-item[question]
+            = question.query_assumption.question
+            = render "query_assumption_results/form", question: question
+        %li.list-group-item.auto-show-empty.text-warning
+          No remaining open query assumptions.
+.row
+  .col-md-6
+    .panel.panel-success#answered_questions_parent
+      .panel-heading
+        Answered Query Assumptions
+        = collapse('answered_questions')
+      %ul.list-group#answered_questions.collapse.in
+        - @analysis.query_assumption_results.where.not(result: nil).each do |question|
+          = render "answered_question", qar: question
+        %li.auto-show-empty.list-group-item
+          No answered query assumptions.
+  .col-md-6
+    .panel.panel-default#ignored_questions_parent
+      .panel-heading
+        Ignored Query Assumptions
+        = collapse('ignored_questions')
+      %ul.list-group#ignored_questions.collapse.in
+        - @analysis.query_assumption_results.where(ignore: true).each do |question|
+          = render "answered_question", qar: question
+        %li.list-group-item.auto-show-empty
+          No ignored query assumptions.
+.row
+  .panel.panel-default#detailed_model_view_parent
+    .panel-heading
+      Detailed view of models
+      = collapse('detailed_model_view')
+    %ul.list-group#detailed_model_view.collapse.in
+      = render 'analyses/detailed_model_view', analysis: @analysis
 
-%h3 Open Query Assumptions
-%ul#open_questions
-  - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
-    %li[question]
-      = question.query_assumption.question
-      = render "query_assumption_results/form", question: question
-  %li.auto-show-empty
-    No remaining open query assumptions.
-
-%h3 Answered Query Assumptions
-%ul#answered_questions
-  - @analysis.query_assumption_results.where.not(result: nil).each do |question|
-    = render "answered_question", qar: question
-  %li.auto-show-empty
-    No answered query assumptions.
-
-%h3 Ignored Query Assumptions
-%ul#ignored_questions
-  - @analysis.query_assumption_results.where(ignore: true).each do |question|
-    = render "answered_question", qar: question
-  %li.auto-show-empty
-    No ignored query assumptions.
-
-%h3 Test Assumption Results
-%ul
-  - @analysis.query_assumption_results.where(ignore: true).each do |question|
-    = render "answered_question", qar: question
-  %li.auto-show-empty
-    No ignored query assumptions.
-
-
-- if @analysis.query_assumption_results.where(ignore: false).where.not(result:nil).any?
+- if @analysis.done?
   :javascript
-    $(function(){
-      showDismissableAlert("Analysis is now complete. ", "success");
-    })
+    showDismissableAlert("Analysis is now complete. ", "success");
+

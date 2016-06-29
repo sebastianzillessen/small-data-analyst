@@ -1,7 +1,5 @@
 = nav_bar fixed: :top, brand: "Small Data Analyst", responsive: true do
   = menu_group do 
-    = menu_item "Home", root_path 
-    = menu_divider
     = menu_item "Analysis", analyses_path if can? :index, Analysis
     = menu_item "Research Questions", research_questions_path if can? :index, ResearchQuestion
     = menu_item "Models", models_path if can? :index, Model

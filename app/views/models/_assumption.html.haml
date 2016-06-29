@@ -6,5 +6,5 @@
 %p.list-group-item-text
   %p=link_to assumption.description, assumption.becomes(Assumption)
   - if assumption.is_a?(BlankAssumption) && assumption.assumptions.any?
-    = render 'assumptions', assumptions: assumption.assumptions
+    = render 'models/assumptions', assumptions: assumption.assumptions
 

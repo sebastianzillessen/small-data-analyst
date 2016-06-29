@@ -1,12 +1,13 @@
 class Model < ActiveRecord::Base
+  default_scope { order('name DESC') }
   has_and_belongs_to_many :research_questions
   has_and_belongs_to_many :analyses
-  has_and_belongs_to_many :assumptions
+  has_and_belongs_to_many :assumptions,
+                          uniq: true
   belongs_to :user
 
   validates :name, presence: true, uniqueness: true
   validates :research_questions, presence: true
-
 
   def evaluate_critical(analysis)
     assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|

@@ -13,9 +13,9 @@ class AddDefaultModels < ActiveRecord::Migration
     o1 = ResearchQuestion.create(name: 'Survival analysis',
                                  description: 'Is there a difference in the survival between the patients?')
     # Create m1, m2, m3
-    m1 = Model.create(name: 'Kaplan Meier')
-    m2 = Model.create(name: 'Cox Proportional Hazards')
-    m3 = Model.create(name: 'Weibull')
+    m1 = Model.create(name: 'Kaplan Meier', research_questions: [o1])
+    m2 = Model.create(name: 'Cox Proportional Hazards', research_questions: [o1])
+    m3 = Model.create(name: 'Weibull', research_questions: [o1])
 
     m1.research_questions << o1
     m2.research_questions << o1

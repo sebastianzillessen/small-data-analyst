@@ -1,1 +1,1 @@
-result <- TRUE
+result <- nrow(tabular_data) >= 10

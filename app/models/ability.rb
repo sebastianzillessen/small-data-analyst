@@ -3,7 +3,7 @@ class Ability
 
   def initialize(user)
     user ||= User.new # guest user (not logged in)
-    alias_action :create, :read, :update, :destroy, :to => :crud
+    alias_action :create, :read, :update, :destroy, :index, :to => :crud
     alias_action :create, :update, :destroy, :to => :cud
 
 
@@ -30,6 +30,9 @@ class Ability
       can :cud, ResearchQuestion, :user_id => user.id
       can :crud, ResearchQuestion, :user_id => user.id
       can :crud, Dataset, user_id: user.id
+      can :crud, QueryAssumptionResult do |qar|
+        qar.analysis.user_id == user.id
+      end
     end
   end
 end
