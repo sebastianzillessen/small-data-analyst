@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160625200553) do
+ActiveRecord::Schema.define(version: 20160629104406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20160625200553) do
   create_table "analyses_models", force: :cascade do |t|
     t.integer "model_id"
     t.integer "analysis_id"
+    t.boolean "possible"
   end
 
   create_table "assumption_attacks", force: :cascade do |t|
@@ -88,7 +89,10 @@ ActiveRecord::Schema.define(version: 20160625200553) do
     t.text     "columns"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "user_id"
   end
+
+  add_index "datasets", ["user_id"], name: "index_datasets_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false

@@ -1,4 +1,6 @@
-%li
-  = qar.query_assumption.question
-  Response:
-  = qar.result ? "Yes" : "No"
+%li.list-group-item
+  - if qar.result
+    .glyphicon.glyphicon-ok-sign.text-success
+  - else
+    .glyphicon.glyphicon-remove-sign.text-danger
+  #{qar.query_assumption.name}: #{qar.query_assumption.question}

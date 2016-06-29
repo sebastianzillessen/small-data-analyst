@@ -9,7 +9,7 @@ class RScriptsController < ApplicationController
     @dataset = params[:dataset_id] && Dataset.where(id: params[:dataset_id]).first
     if (@script.present?)
       begin
-        @result = RScriptExecution.execute(@script, @dataset)
+        @result = RScriptExecution.execute(@script, @dataset.try(:data))
       rescue Exception => e
         @error = e
       end

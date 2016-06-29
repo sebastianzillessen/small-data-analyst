@@ -1,27 +1,25 @@
-$(function () {
-  // remove question
-  $('#open_questions #<%= dom_id(@query_assumption_result)%>').slideUp().promise().done(function () {
+// remove question
+$('#open_questions #<%= dom_id(@query_assumption_result)%>').slideUp().promise().done(function () {
+  $(this).remove();
+});
+<%- @query_assumption_result.analysis.query_assumption_results.where(ignore: true).each do |qar| %>
+var $ignoredQuestion = $('#open_questions #<%= dom_id(qar)%>');
+if ($ignoredQuestion.length > 0) {
+  $ignoredQuestion.slideUp().promise().done(function () {
     $(this).remove();
   });
-  <%- @query_assumption_result.analysis.query_assumption_results.where(ignore: true).each do |qar| %>
-  var $ignoredQuestion = $('#open_questions #<%= dom_id(qar)%>');
-  if ($ignoredQuestion.length > 0) {
-    $ignoredQuestion.slideUp().promise().done(function () {
-      $(this).remove();
-    });
-    $('#ignored_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: qar %>").hide().slideDown();
-    showDismissableAlert("'<%=qar.query_assumption.question%>' has been ignored as you answered '<%= @query_assumption_result.query_assumption.question%>' with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "warning", {timeout: 4000});
-  }
-  <%- end %>
+  $('#ignored_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: qar %>").hide().slideDown();
+  showDismissableAlert("'<%=qar.query_assumption.question%>' has been ignored as you answered '<%= @query_assumption_result.query_assumption.question%>' with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "warning", {timeout: 4000});
+}
+<%- end %>
 
-  // update possible models
-  $("#possible_models").html("<%= escape_javascript render 'analyses/possible_models', analysis: @query_assumption_result.analysis %>");
-  // add to answered questions
-  $('#answered_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: @query_assumption_result %>").hide().slideDown();
-  showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
+// update possible models
+$("#possible_models").html("<%= escape_javascript render 'analyses/possible_models', analysis: @query_assumption_result.analysis %>");
+// add to answered questions
+$('#answered_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: @query_assumption_result %>").hide().slideDown();
+showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
 
-  <%- countQueries = @query_assumption_result.analysis.query_assumption_results.where(result: nil, ignore: false).count %>
-  <%- if countQueries == 0 %>
-  showDismissableAlert("Analysis is now complete. ", "success");
-  <%- end %>
-});
+<%- if @query_assumption_result.analysis.done? %>
+showDismissableAlert("Analysis is now complete. ", "success");
+$('#detailed_model_view').html("<%= escape_javascript render 'analyses/detailed_model_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
+<%- end %>

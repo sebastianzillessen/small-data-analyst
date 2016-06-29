@@ -1,4 +1,5 @@
 class Assumption < ActiveRecord::Base
+  default_scope { order('name DESC') }
   #TODO: Make Assumption abstract
   #self.abstract_class = true
 
@@ -11,6 +12,10 @@ class Assumption < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
+
+  def evaluate(analysis)
+    raise 'Must be overwritten'
+  end
 
   def evaluate_critical(analysis)
     raise 'Must be overwritten'

@@ -1,0 +1,11 @@
+- if analysis.done?
+  - Model.all.select{|m| can? :read, m}.each do |model|
+    -# TODO: Update models after updated possible models
+    %li.list-group-item(class="list-group-item-#{analysis.possible_models.include?(model) ? 'success' : 'danger'}")
+      .list-group-item-heading
+        = model.name
+      .list-group-item-text
+        = render 'assumptions', assumptions: model.assumptions, analysis: analysis
+- else
+  %li.list-group-item.list-group-item-warning
+    The detailed report is only available, once the analysis is complete
