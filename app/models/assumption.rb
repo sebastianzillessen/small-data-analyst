@@ -6,8 +6,9 @@ class Assumption < ActiveRecord::Base
   has_and_belongs_to_many :required_by, class_name: 'BlankAssumption',
                           join_table: :assumption_attacks,
                           foreign_key: :attacker_id,
-                          association_foreign_key: :attacked_id
-  has_and_belongs_to_many :models
+                          association_foreign_key: :attacked_id,
+                          uniq: true
+  has_and_belongs_to_many :models, uniq: true
   belongs_to :user
 
   validates :name, presence: true, uniqueness: true
