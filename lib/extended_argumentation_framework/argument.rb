@@ -46,15 +46,19 @@ module ExtendedArgumentationFramework
       #2. x ∈ in(LA) is legally IN iff ∀(y, x) ∈ R,
       # either LA(y)= OUT or LR((y, x)) = OUT.
       return false unless labelling.arg_in.select { |a| a == self }.any?
-      all_attackers = labelling.R.select { |e, label| e.target == self }.map { |e, label| e.source }
+      all_attackers = labelling.R.select { |e, label| e.target == self }
+                          .map { |e, label| e.source }
       all_attackers.reject { |y| labelling.la(y) == Labels::OUT || labelling.lr(Edge.new(y, self)) == Labels::OUT }.empty?
     end
 
     # @param x \in @x
     def legally_undec?(labelling)
+      #raise RuntimeError, "Not implemented yet"
+      #TODO: implement legally_undec?
       #3. x ∈ undec(LA) is legally UNDEC iff:
       #  (a) ¬∃(y, x) ∈ R such that LA(y) = IN and LR((y, x))= IN, and;
       #  (b) it is not the case that: ∀y ∈ A, (y, x) ∈ R implies LA(y) = OUT or LR((y, x)) = OUT
+
     end
   end
 end

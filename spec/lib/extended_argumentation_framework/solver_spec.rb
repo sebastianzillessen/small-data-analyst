@@ -8,8 +8,8 @@ RSpec.describe ExtendedArgumentationFramework::Solver, type: :class do
 
 
   # outcome:
-  # Arguments IN: c2, b4, a3, a1, b1, c1
-  # Arguments OUT: b3, a2, b2
+  # Arguments IN: a1, a3, b1, b4, c1, c2,
+  # Arguments OUT: a2, b2, b3
   # Arguments UNDEC: -
   # Edges IN:
   # - b4 -> b3
@@ -20,10 +20,6 @@ RSpec.describe ExtendedArgumentationFramework::Solver, type: :class do
   # - b3 -> b4
   # - a1 -> a2
   # - b2 -> b1
-
-  it 'should return one preferred extension' do
-    expect(subject.preferred_extensions.length).to eq 1
-  end
 
   context 'with acceptability check' do
     let(:framework) { ExtendedArgumentationFramework::Framework.new("y1->(z1->y2),y3->(z2->y2),y2->(z3->y3),y4->(z3->y3),z4->y4,z5->(y5->x),y2->x") }

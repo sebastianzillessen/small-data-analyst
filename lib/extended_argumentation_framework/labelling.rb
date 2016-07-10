@@ -4,6 +4,7 @@ module ExtendedArgumentationFramework
     attr_reader :A, :R
 
     def initialize(framework)
+      @framework = framework
       @A = {}
       framework.arguments.each { |a| @A[a]= Labels::IN }
       @R = {}
@@ -39,57 +40,97 @@ module ExtendedArgumentationFramework
       end
     end
 
+    def clone
+      l = Labelling.new(@framework)
+      self.A.each { |k, v| l.set(k, v) }
+      self.R.each { |k, v| l.set(k, v) }
+      l
+    end
+
 
     def step(x)
-      set(x, Labels::OUT)
+      # clone labelling
+      l = self.clone
+      l.set(x, Labels::OUT)
       # todo: complete transition step
+      all = [x] + @framework.attacks(x).map { |a| a.target }
+      all.each do |a|
+        if (a.illegally_out?(l))
+          l.set(a, Labels::UNDEC)
+        end
+      end
+      return l
     end
+
+    def ==(other)
+      return false if other.nil?
+      return false unless other.is_a? Labelling
+      return false if other.instance_variable_get(:@framework) != @framework
+      other.R == self.R && other.A == self.A
+    end
+
+    def to_s
+      "IN: #{arg_in.map(&:to_s).join(",")}\n"+
+          "OUT: #{arg_out.map(&:to_s).join(",")}\n"+
+          "UND: #{arg_undec.map(&:to_s).join(",")}"
+    end
+
+    def eql?(comparee)
+      self == comparee
+    end
+
+    def hash
+      to_s.hash
+    end
+
 
     def illegally_labelled_ins
       arg_in.select { |a| a.illegally_in?(self) }
     end
 
     def super_illegally_labelled_in
+      res = []
       illegally_labelled_ins.each do |a|
-        if edges_with_target(a).select { |e| e.legally_in?(labelling) }.map { |e| e.source }.select { |a| a.legally_in?(self) }.any?
-          return a
+        if edges_with_target(a).select { |e| e.legally_in?(self) }.map { |e| e.source }.select { |a| a.legally_in?(self) }.any?
+          res << a
         end
       end
+      res.uniq
     end
 
     def arg_in
       # labelled in arguments
-      @A.select { |k, v| v == Labels::IN }.map { |k, v| k }
+      @A.select { |k, v| v == Labels::IN }.map { |k, v| k }.sort_by(&:name)
     end
 
     def arg_out
       # labelled out arguments
-      @A.select { |k, v| v == Labels::OUT }.map { |k, v| k }
+      @A.select { |k, v| v == Labels::OUT }.map { |k, v| k }.sort_by(&:name)
     end
 
     def arg_undec
       # labelled undec arguments
-      @A.select { |k, v| v == Labels::UNDEC }.map { |k, v| k }
+      @A.select { |k, v| v == Labels::UNDEC }.map { |k, v| k }.sort_by(&:name)
     end
 
 
     def edges_with_target(a)
-      @R.select { |e, l| e.target == a }
+      @R.select { |e, l| e.target == a }.map { |k, v| k }.sort_by(&:to_s)
     end
 
     def edge_in
       # labelled in arguments
-      @R.select { |k, v| v == Labels::IN }.map { |k, v| k }
+      @R.select { |k, v| v == Labels::IN }.map { |k, v| k }.sort_by(&:to_s)
     end
 
     def edge_out
       # labelled out arguments
-      @R.select { |k, v| v == Labels::OUT }.map { |k, v| k }
+      @R.select { |k, v| v == Labels::OUT }.map { |k, v| k }.sort_by(&:to_s)
     end
 
     def edge_undec
       # labelled undec arguments
-      @R.select { |k, v| v == Labels::UNDEC }.map { |k, v| k }
+      @R.select { |k, v| v == Labels::UNDEC }.map { |k, v| k }.sort_by(&:to_s)
     end
 
     def admissible?

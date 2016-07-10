@@ -8,7 +8,7 @@ class BlankAssumption < Assumption
   validate :prevent_circular_dependencies
 
   def evaluate(analysis)
-    !assumptions.map { |a| a.evaluate(analysis) }.uniq.tap { |x| puts x }.include?(false)
+    !assumptions.map { |a| a.evaluate(analysis) }.uniq.include?(false)
   end
 
   def evaluate_critical(analysis)

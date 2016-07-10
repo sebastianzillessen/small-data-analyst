@@ -84,6 +84,6 @@ class AssumptionsController < ApplicationController
             {}
           end
     res[:user] = current_user
-    res.tap { |t| puts t.inspect }
+    res
   end
 end

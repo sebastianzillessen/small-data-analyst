@@ -27,7 +27,6 @@ class Analysis < ActiveRecord::Base
       # update query_assumption_results and check if there is one which needs only to be answered for a not possible model anymore
       self.query_assumption_results.where(ignore: false, result: nil).where.not(id: q.id).each do |qar|
         if (qar.query_assumption.get_associated_models & self.possible_models).empty?
-          puts "set #{qar.query_assumption.name} to ignore"
           qar.update(ignore: true)
         end
       end

@@ -81,7 +81,7 @@ module ExtendedArgumentationFramework
 
     def parse_rule(rule)
 
-      m = rule.match(/^(?<source>\w+)(->(\((?<complex>.+)\)|(?<single>\w+)))?$/)
+      m = rule.match(/^\(?(?<source>\w+)(->(\((?<complex>.+)\)|(?<single>\w+)))?\)?$/)
       raise ArgumentError, "Cannot parse the rule: #{rule}. Match was: #{m.inspect}" unless m && m[:source]
       edge = Edge.new(Argument.new(m[:source]))
       if (m[:single])
