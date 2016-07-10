@@ -12,10 +12,15 @@ module ExtendedArgumentationFramework
     end
 
     def preferred_extensions
-      find_pref(Labelling.new(@framework)).uniq
+      @pe||=find_pref(Labelling.new(@framework)).uniq
     end
 
-    def acceptable(x)
+    def credulous_acceptable(x)
+      preferred_extensions.each { |pe| return true if pe.arg_in.include?(x) }
+      return false
+    end
+
+    def skeptical_acceptable(x)
       preferred_extensions.each { |pe| return false unless pe.arg_in.include?(x) }
       return true
     end
