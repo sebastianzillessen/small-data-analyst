@@ -19,7 +19,7 @@ class As2Init
   def as2_inits
     found_unanswered_on_this_stage= false
 
-    AS2::AS2.subclasses.sort_by(&:level).each do |c|
+    ASTwo::AS2.subclasses.sort_by(&:level).each do |c|
       puts "adding for #{c}"
       qas = c.arguments.map { |a| QueryAssumption.find_by(name: a) }
       # if we find unanswered queryAssumptions we gonna stop adding them

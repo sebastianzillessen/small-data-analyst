@@ -1,4 +1,4 @@
-module AS2
+module ASTwo
   class CD2 < AS2
     def self.level
       2
