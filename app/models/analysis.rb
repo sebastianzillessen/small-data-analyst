@@ -45,6 +45,14 @@ class Analysis < ActiveRecord::Base
     query_assumption_results.where(ignore: false, result: nil).empty?
   end
 
+  def frameworks(arguments=nil, framework=nil, models_excluded=nil)
+    @frameworks ||= {}
+    if (arguments && framework)
+      @frameworks[arguments] = [framework, models_excluded]
+    end
+    @frameworks
+  end
+
   private
 
 

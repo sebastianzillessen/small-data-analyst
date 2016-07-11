@@ -37,12 +37,21 @@
         %li.list-group-item.auto-show-empty
           No ignored query assumptions.
 .row
-  .panel.panel-default#detailed_model_view_parent
-    .panel-heading
-      Detailed view of models
-      = collapse('detailed_model_view')
-    %ul.list-group#detailed_model_view.collapse.in
-      = render 'analyses/detailed_model_view', analysis: @analysis
+  .col-md-6
+    .panel.panel-default#detailed_model_view_parent
+      .panel-heading
+        Detailed view of models
+        = collapse('detailed_model_view')
+      %ul.list-group#detailed_model_view.collapse.in
+        = render 'analyses/detailed_model_view', analysis: @analysis
+  .col-md-6
+    .panel.panel-default#detailed_argumentation_view
+      .panel-heading
+        Detailed view of argumentation frameworks used
+        = collapse('detailed_argumentation_view')
+      %ul.list-group#detailed_argumentation_view.collapse.in
+        = render 'analyses/detailed_argumentation_view', analysis: @analysis
+
 
 - if @analysis.done?
   :javascript

@@ -30,4 +30,5 @@ showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' 
 <%- if @query_assumption_result.analysis.done? %>
 showDismissableAlert("Analysis is now complete. ", "success");
 $('#detailed_model_view').html("<%= escape_javascript render 'analyses/detailed_model_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
+$('#detailed_argumentation_view').html("<%= escape_javascript render 'analyses/detailed_argumentation_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
 <%- end %>

@@ -17,8 +17,6 @@ class As2Init
   end
 
   def as2_inits
-    found_unanswered_on_this_stage= false
-
     Preferences::AS2.subclasses.sort_by(&:level).each do |c|
       puts "adding for #{c}"
       qas = c.arguments.map { |a| QueryAssumption.find_by(name: a) }
@@ -43,21 +41,21 @@ class As2Init
         framework = ExtendedArgumentationFramework::Framework.new((c.rules(arguments_hold)+model_rules).join(","))
         solver = ExtendedArgumentationFramework::Solver.new(framework)
         subset = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a) }
-        puts framework
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.int_name)) == false)
             puts "Removing possible model: #{p.name}"
             @analysis.possible_models -= [p]
           end
         end
+        # TODO: Store for models for which reason they are excluded.
+        @analysis.frameworks(arguments_hold, framework)
       end
     end
-    []
   end
 
   def build_fw
     fw = model_rules
-    fw += as2_inits
+    as2_inits
     fw
   end
 

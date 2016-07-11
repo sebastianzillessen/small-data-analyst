@@ -1,0 +1,36 @@
+- if analysis.done?
+  - if analysis.frameworks.any?
+    - analysis.frameworks.each do |arguments, set|
+      -framework = set[0]
+      -excluded_models = set[1]
+      %li.list-group-item
+        .list-group-item-heading
+          Preference Argument:
+          - arguments.each do |a|
+            .label.label-default
+              = a
+        .list-group-item-text
+          %b
+            Arguments:
+          %p
+            - framework.arguments.each do |arg|
+              .label.label-info= arg
+
+          %b
+            Framework description:
+          %p
+            - framework.edges.each do |edge|
+              .label.label-primary= edge
+          -# TODO: Show models that have been excluded because of this framework
+          -#%b
+            Models removed by this framework:
+          -#%p
+            %ul
+              - excluded_models.each do |m|
+                %li=m.name
+  - else
+    %li.list-group-item.list-group-item-warning
+      No Frameworks have been evaluated
+- else
+  %li.list-group-item.list-group-item-warning
+    The detailed report is only available, once the analysis is complete
