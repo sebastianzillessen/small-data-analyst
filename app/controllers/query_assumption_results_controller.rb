@@ -8,6 +8,7 @@ class QueryAssumptionResultsController < ApplicationController
       input = query_assumption_result_params[:result].to_s
       @parameter_ok = input == "true" || input == "false"
       if @parameter_ok && @query_assumption_result.update(query_assumption_result_params)
+        @query_assumption_result=@query_assumption_result.reload
         format.js
       else
         format.js { render 'update_error' }

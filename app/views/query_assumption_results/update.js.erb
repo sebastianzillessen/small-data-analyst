@@ -2,6 +2,14 @@
 $('#open_questions #<%= dom_id(@query_assumption_result)%>').slideUp().promise().done(function () {
   $(this).remove();
 });
+// add questions if new have been come
+<%- @query_assumption_result.analysis.query_assumption_results.where(result: nil, ignore: false).each do |qar| %>
+var $el = $('#open_questions #<%= dom_id(qar)%>');
+if ($el.length == 0) {
+  $('#open_questions').append("<%= escape_javascript render 'analyses/question', question: qar%>").hide().slideDown();
+}
+<%- end %>
+
 <%- @query_assumption_result.analysis.query_assumption_results.where(ignore: true).each do |qar| %>
 var $ignoredQuestion = $('#open_questions #<%= dom_id(qar)%>');
 if ($ignoredQuestion.length > 0) {

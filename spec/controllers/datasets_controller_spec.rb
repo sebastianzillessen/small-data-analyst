@@ -33,7 +33,6 @@ RSpec.describe DatasetsController, type: :controller do
 
   describe "GET #index" do
     it "assigns all datasets as @datasets" do
-      puts "Hello"
       get :index, {}
       expect(assigns(:datasets)).to eq([dataset])
     end

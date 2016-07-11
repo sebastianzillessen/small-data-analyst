@@ -4,10 +4,24 @@ class Assumption < ActiveRecord::Base
   #self.abstract_class = true
 
   has_and_belongs_to_many :required_by, class_name: 'BlankAssumption',
+                          join_table: :required_assumptions,
+                          foreign_key: :child_id,
+                          association_foreign_key: :parent_id,
+                          uniq: true
+
+  has_and_belongs_to_many :attacked_by, class_name: 'Assumption',
                           join_table: :assumption_attacks,
-                          foreign_key: :attacker_id,
-                          association_foreign_key: :attacked_id
-  has_and_belongs_to_many :models
+                          foreign_key: :parent_id,
+                          association_foreign_key: :child_id,
+                          uniq: true
+
+  has_and_belongs_to_many :attacking, class_name: 'Assumption',
+                          join_table: :assumption_attacks,
+                          foreign_key: :child_id,
+                          association_foreign_key: :parent_id,
+                          uniq: true
+
+  has_and_belongs_to_many :models, uniq: true
   belongs_to :user
 
   validates :name, presence: true, uniqueness: true

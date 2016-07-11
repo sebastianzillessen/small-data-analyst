@@ -1,14 +1,14 @@
 class BlankAssumption < Assumption
   has_and_belongs_to_many :assumptions,
                           class_name: 'Assumption',
-                          join_table: :assumption_attacks,
-                          foreign_key: :attacked_id,
-                          association_foreign_key: :attacker_id,
+                          join_table: :required_assumptions,
+                          foreign_key: :parent_id,
+                          association_foreign_key: :child_id,
                           uniq: true
   validate :prevent_circular_dependencies
 
   def evaluate(analysis)
-    !assumptions.map { |a| a.evaluate(analysis) }.uniq.tap { |x| puts x }.include?(false)
+    !assumptions.map { |a| a.evaluate(analysis) }.uniq.include?(false)
   end
 
   def evaluate_critical(analysis)

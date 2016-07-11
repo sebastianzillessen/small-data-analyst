@@ -9,7 +9,13 @@ class AddColumnsToTestAssumptions < ActiveRecord::Migration
     a4=TestAssumption.find_by(name: 'a4')
     a7=TestAssumption.find_by(name: 'a7')
     a2.r_code = load_data('a2.r')
-    a2.required_dataset_fields = []
+    a3.r_code = load_data('a3.r')
+    a4.r_code = load_data('a4.r')
+    a7.r_code = load_data('a7.r')
+
+    a2.required_dataset_fields = ['fustat']
+    a2.save
+
   end
 
   def self.down

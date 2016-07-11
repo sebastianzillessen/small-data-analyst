@@ -1,6 +1,6 @@
 class Model < ActiveRecord::Base
   default_scope { order('name DESC') }
-  has_and_belongs_to_many :research_questions
+  has_and_belongs_to_many :research_questions, uniq: true
   has_and_belongs_to_many :analyses
   has_and_belongs_to_many :assumptions,
                           uniq: true
@@ -29,4 +29,7 @@ class Model < ActiveRecord::Base
     queries.flatten.uniq
   end
 
+  def int_name
+    name.parameterize.underscore
+  end
 end

@@ -6,7 +6,6 @@ class QueryAssumption < Assumption
   end
 
   def evaluate_critical(analysis)
-    analysis.query_assumption_results.select { |qa| qa.query_assumption == self }.first.try(:result)
+    analysis.query_assumption_results.where(query_assumption: self).first.try(:result)
   end
-
 end
