@@ -1,4 +1,5 @@
-module ASTwo
+require 'preferences/as2'
+module Preferences
   class CD2 < AS2
     def self.level
       2

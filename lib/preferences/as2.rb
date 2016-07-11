@@ -1,4 +1,4 @@
-module ASTwo
+module Preferences
   class AS2
     def self.level
       raise RuntimeException, "Please overwrite"
