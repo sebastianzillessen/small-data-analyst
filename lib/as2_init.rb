@@ -21,7 +21,7 @@ class As2Init
 
     AS2::AS2.subclasses.sort_by(&:level).each do |c|
       puts "adding for #{c}"
-      qas = c.arguments.map { |a| QueryAssumption.find_or_create_by(name: a, question: a) }
+      qas = c.arguments.map { |a| QueryAssumption.find_by(name: a) }
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
       qas.each do |q|
@@ -47,7 +47,6 @@ class As2Init
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.int_name)) == false)
             puts "Removing possible model: #{p.name}"
-            binding.pry
             @analysis.possible_models -= [p]
           end
         end

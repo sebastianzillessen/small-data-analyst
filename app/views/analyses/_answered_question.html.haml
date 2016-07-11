@@ -1,5 +1,7 @@
 %li.list-group-item
-  - if qar.result
+  - if qar.result.nil?
+    .glyphicon.glyphicon-minus-sign.text-muted
+  - elsif qar.result
     .glyphicon.glyphicon-ok-sign.text-success
   - else
     .glyphicon.glyphicon-remove-sign.text-danger

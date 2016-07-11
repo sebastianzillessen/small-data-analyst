@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627144403) do
+ActiveRecord::Schema.define(version: 20160711075759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20160627144403) do
   end
 
   create_table "assumption_attacks", force: :cascade do |t|
-    t.integer "attacker_id"
-    t.integer "attacked_id"
+    t.integer "child_id"
+    t.integer "parent_id"
   end
 
   create_table "assumptions", force: :cascade do |t|
@@ -135,6 +135,11 @@ ActiveRecord::Schema.define(version: 20160627144403) do
 
   add_index "query_assumption_results", ["analysis_id"], name: "index_query_assumption_results_on_analysis_id", using: :btree
   add_index "query_assumption_results", ["assumption_id"], name: "index_query_assumption_results_on_assumption_id", using: :btree
+
+  create_table "required_assumptions", force: :cascade do |t|
+    t.integer "child_id"
+    t.integer "parent_id"
+  end
 
   create_table "research_questions", force: :cascade do |t|
     t.string   "name"
