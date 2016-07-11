@@ -29,4 +29,7 @@ class Model < ActiveRecord::Base
     queries.flatten.uniq
   end
 
+  def int_name
+    name.parameterize.underscore
+  end
 end

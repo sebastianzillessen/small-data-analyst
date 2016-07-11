@@ -10,6 +10,10 @@ class AnalysesController < ApplicationController
   # GET /analyses/1
   # GET /analyses/1.json
   def show
+    if (@analysis.done?)
+      As2Init.new(@analysis)
+    end
+
   end
 
   # GET /analyses/new

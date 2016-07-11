@@ -10,6 +10,10 @@ module ExtendedArgumentationFramework
       "#{@name}"
     end
 
+    def <=>(per)
+      to_s <=> per.to_s
+    end
+
     def ==(another_argument)
       return false if another_argument.nil? || !another_argument.is_a?(Argument)
       self.name == another_argument.name
