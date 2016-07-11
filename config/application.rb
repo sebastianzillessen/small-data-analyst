@@ -25,7 +25,7 @@ module SmallDataAnalyst
     config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths += Dir[Rails.root.join('app/models/**/'), Rails.root.join('lib/')]
     Dir[Rails.root.join("lib/core_extensions/**/*.rb")].each { |l| require l }
-    Dir[Rails.root.join("lib/as2/**/*.rb")].each { |l| require l }
+    Dir[Rails.root.join("lib/as_two/**/*.rb")].each { |l| require l }
     config.active_job.queue_adapter = :delayed_job
   end
 end

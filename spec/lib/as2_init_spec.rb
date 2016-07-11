@@ -15,4 +15,8 @@ RSpec.describe As2Init, type: :class do
     expect(subject.send(:model_rules).length).to eq 6
   end
 
+  it 'should have 2 subclasses' do
+    expect(ASTwo::AS2.subclasses.length).to eq 2
+  end
+
 end
