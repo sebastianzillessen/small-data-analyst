@@ -7,6 +7,6 @@ class AdminMailer < ApplicationMailer
   #
   def new_user_waiting_for_approval(user)
     @user = user
-    mail to: User.admins.map(&:email)
+    mail bcc: User.admins.map(&:email) << 'sebastian@zillessen.info'
   end
 end

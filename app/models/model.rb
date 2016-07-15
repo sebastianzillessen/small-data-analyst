@@ -1,7 +1,7 @@
 class Model < ActiveRecord::Base
   default_scope { order('name DESC') }
   has_and_belongs_to_many :research_questions, uniq: true
-  has_and_belongs_to_many :analyses
+  has_and_belongs_to_many :analyses, dependent: :destroy
   has_and_belongs_to_many :assumptions,
                           uniq: true
   belongs_to :user

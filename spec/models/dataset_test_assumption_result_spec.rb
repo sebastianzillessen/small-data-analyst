@@ -1,19 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe DatasetTestAssumptionResult, type: :model do
-  subject { create(:dataset_test_assumption_result) }
+  let!(:dataset) { create(:dataset) }
+  let!(:test_assumption) { create(:test_assumption) }
+
+  subject { DatasetTestAssumptionResult.where(dataset: dataset, test_assumption: test_assumption).first }
+
   it { should respond_to(:dataset) }
   it { should respond_to(:test_assumption) }
 
   describe 'validation' do
-    it 'should not allow nil for result' do
+    it 'should allow nil for result' do
       subject.result = nil
-      expect(subject).not_to be_valid
+      expect(subject).to be_valid
     end
   end
 
   describe 'test_assumption reference' do
-    let(:test_assumption) { create(:test_assumption) }
     let(:assumption) { create(:assumption) }
     it 'should be possible to add TestAssumptions' do
       subject.test_assumption = test_assumption
@@ -24,6 +27,33 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
       expect {
         subject.test_assumption = assumption
       }.to raise_error ActiveRecord::AssociationTypeMismatch
+    end
+
+    describe 'with test assumption' do
+
+      it 'should return the test assumption' do
+        expect(subject.test_assumption).to eq test_assumption
+      end
+
+      it 'should return the result' do
+        expect(test_assumption.dataset_test_assumption_results).to include subject
+      end
+
+      it 'should trigger update method on change of dataset' do
+        expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).once
+        subject.dataset.data= "test,data,row\n1,2,3\n4,5,6"
+        subject.dataset.save
+      end
+
+      describe '#update' do
+        it 'should trigger evaluate on test_assumpiton' do
+          expect(subject.test_assumption).to receive(:eval_internal).once.with(subject.dataset).and_return(true)
+          expect(subject.test_assumption).not_to receive(:evaluate_critical)
+          expect(subject.update).to be_truthy
+          expect(subject.result).to be_truthy
+        end
+      end
+
     end
   end
 end

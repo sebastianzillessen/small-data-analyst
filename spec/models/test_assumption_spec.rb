@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe TestAssumption, type: :model do
 
   subject { create(:test_assumption) }
-  let(:dataset) { create(:dataset) }
+  let!(:dataset) { create(:dataset) }
   it { is_expected.to be_valid }
 
   describe 'check if the columns in the dataset are present' do
@@ -27,7 +27,23 @@ RSpec.describe TestAssumption, type: :model do
       dataset.columns << 'bar'
       expect(subject.send(:check_dataset_mets_column_names, dataset)).to be_truthy
     end
+
   end
+  let(:dataset_result) { DatasetTestAssumptionResult.where(dataset: dataset, test_assumption: subject).first }
+
+  it 'should trigger update on dataset_test_assumption_result' do
+    expect(subject).to be_valid
+    expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).once
+    subject.r_code = "Something"
+
+    subject.save
+  end
+
+  it 'should have cached results for all datasets in the system' do
+    dataset = create(:dataset)
+    expect(subject.dataset_test_assumption_results.map(&:dataset)).to include dataset
+  end
+
 
   describe 'check required dataset fields' do
     subject { create(:test_assumption) }
