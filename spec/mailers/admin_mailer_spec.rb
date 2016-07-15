@@ -8,7 +8,7 @@ RSpec.describe AdminMailer, type: :mailer do
 
     it "renders the headers" do
       expect(mail.subject).to eq("New user waiting for approval")
-      expect(mail.to).to eq([admin.email])
+      expect(mail.bcc).to include admin.email
       expect(mail.from).to eq(["from@example.com"])
     end
 

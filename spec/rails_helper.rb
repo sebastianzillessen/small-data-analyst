@@ -67,8 +67,11 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
   config.include DeviseRequestSpecHelpers, type: :request
-
+  config.before(:each) {
+    Delayed::Worker.delay_jobs = false
+  }
 end
+
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
