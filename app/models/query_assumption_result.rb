@@ -6,6 +6,7 @@ class QueryAssumptionResult < ActiveRecord::Base
 
   validates :assumption_id, uniqueness: {scope: :analysis_id}
   validates :result, inclusion: {in: [true, false, nil]}
+  validates :stage, presence: true
 
   private
 

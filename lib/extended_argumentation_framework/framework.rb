@@ -6,9 +6,16 @@ module ExtendedArgumentationFramework
     # @param arguments: a set of atomic arguments as defined in Dung's framework as X
     # @param attacks:   a set of relation between arguments: A \subset X x X
     # @param attacks_on_attacks: a set of relation between arguments and attacks: D \subset X x A = X x (X x X)
+    # TODO: Test auto_generate_nodes option
+    # TODO: Test name option
     def initialize(*args)
       options = {}
       options = args.pop if args.last.is_a? Hash
+      @options = {
+          enforce_counter_attack: false,
+          auto_generate_nodes: false
+      }
+      @options.merge!(options) if options
 
       if (args.length == 1)
         arguments, attacks, attacks_on_attacks = parse(args.first)
@@ -18,21 +25,73 @@ module ExtendedArgumentationFramework
         raise ArgumentError, "a solver needs either (arguments, attacks, attacks_on_attacks) or a string representation to be initiated"
       end
 
-
-      @options = {enforce_counter_attack: false}
-      @options.merge!(options) if options
+      # remove all edges that contain nodes that are not listed in arguments
+      attacks.select! { |a| [a.source, a.target].subseteq?(arguments) }
+      attacks_on_attacks.select! { |a| [a.source, a.target.target, a.target.source].subseteq?(arguments) }
 
       self.arguments = arguments.sort_by(&:to_s)
       self.attacks = attacks.sort_by(&:to_s)
       self.attacks_on_attacks = attacks_on_attacks.sort_by(&:to_s)
+      @options[:name] ||= "Framework with #{arguments.length} Arguments and #{edges.length} Edges."
     end
 
+    def name=(name)
+      @options[:name] = name
+    end
+
+    def name()
+      @options[:name]
+    end
 
     def to_s
       "Arguments: #{arguments.map(&:to_s)}\n"+
           "Attacks: #{attacks.map(&:to_s)}\n"+
           "Attacks on attacks: #{attacks_on_attacks.map(&:to_s)}"
     end
+
+
+    def attacked_edges
+      attacks_on_attacks.map do |a|
+        a.target if a.target.is_a? Edge
+      end
+    end
+
+    def dot_tempnodes
+      attacks_on_attacks.map do |a|
+        "#{a.target.source}__#{a.target.target}"
+      end
+    end
+
+    def dot_edges_without_arrow
+      attacks_on_attacks.map do |a|
+        "#{a.target.source} -> #{a.target.source}__#{a.target.target}"
+      end
+    end
+
+    def dot_edges
+      attacks_on_attacks.map { |a| "#{a.target.source}__#{a.target.target} -> #{a.target.target}" }+
+          attacks_on_attacks.map { |a| "#{a.source} -> #{a.target.source}__#{a.target.target}" }+
+          (attacks-attacked_edges).map { |e| "#{e.source} -> #{e.target}" }
+    end
+
+    def to_dot
+      "digraph G {
+        {node[width=0 shape=point] #{dot_tempnodes.join("; ")}}
+        {edge[arrowhead=none] #{dot_edges_without_arrow.join("; ")}}
+        #{dot_edges.join("; ")}
+      }"
+    end
+
+
+    def to_png
+      require 'graphviz'
+      dir = "public/images"
+      FileUtils.mkdir_p(dir+'/frameworks') unless File.exists?(dir+'/frameworks')
+      path = "frameworks/framework_#{Time.now.to_i}_#{SecureRandom.hex(5)}.png"
+      GraphViz.parse_string(to_dot).output(png: "#{dir}/#{path}")
+      path
+    end
+
 
     def edges(source=nil)
       (attacks(source) + attacks_on_attacks(source)).sort_by { |a| a.to_s }
@@ -80,9 +139,9 @@ module ExtendedArgumentationFramework
 
 
     def parse_rule(rule)
-
       m = rule.match(/^\(?(?<source>\w+)(->(\((?<complex>.+)\)|(?<single>\w+)))?\)?$/)
       raise ArgumentError, "Cannot parse the rule: #{rule}. Match was: #{m.inspect}" unless m && m[:source]
+
       edge = Edge.new(Argument.new(m[:source]))
       if (m[:single])
         edge.target=Argument.new(m[:single])
@@ -90,6 +149,12 @@ module ExtendedArgumentationFramework
         edge.target = parse_rule(m[:complex])
       end
       edge
+    end
+
+    def parse_argument(rule)
+      m = rule.match(/^\(?(?<source>\w+)?\)?$/)
+      return nil unless m && m[:source]
+      Argument.new(m[:source])
     end
 
     def parse(text_or_array)
@@ -101,23 +166,32 @@ module ExtendedArgumentationFramework
                raise ArgumentError, "The provided parameter must be a comma seperated string or an array but was: #{text_or_array.class}"
              end
       edges = []
-      text.gsub(/\s/, '').split(/\s*[\n,]\s*/).each do |rule|
+      arguments = []
+      rules = text.gsub(/\s/, '').split(/\s*[\n,]\s*/)
+      edge_rules = []
+      rules.each do |rule|
+        if (a=parse_argument(rule))
+          arguments << a
+        else
+          edge_rules << rule
+        end
+      end
+      edge_rules.each do |rule|
         edges << parse_rule(rule)
       end
 
 
-      arguments = []
       attacks = []
       attacks_on_attacks = []
 
       all_edges = edges
       while (edge=all_edges.pop) do
-        arguments << edge.source
+        arguments << edge.source if @options[:auto_generate_nodes]
         if (edge.target.is_a? Edge)
           all_edges << edge.target
           attacks_on_attacks << edge
         elsif edge.target.is_a? Argument
-          arguments << edge.target
+          arguments << edge.target if @options[:auto_generate_nodes]
           attacks << edge
         end
       end
@@ -125,5 +199,7 @@ module ExtendedArgumentationFramework
       [arguments.uniq, attacks.uniq, attacks_on_attacks.uniq]
 
     end
+
+
   end
 end

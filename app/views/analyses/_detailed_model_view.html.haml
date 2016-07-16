@@ -1,11 +1,16 @@
 - if analysis.done?
-  - Model.all.select{|m| can? :read, m}.each do |model|
-    -# TODO: Update models after updated possible models
-    %li.list-group-item(class="list-group-item-#{analysis.possible_models.include?(model) ? 'success' : 'danger'}")
+  - analysis.possible_models.each do |pm|
+    %li.list-group-item.list-group-item-success
       .list-group-item-heading
-        = model.name
+        = pm.model.name
       .list-group-item-text
-        = render 'analyses/assumptions', assumptions: model.assumptions, analysis: analysis
+        = render 'analyses/assumptions', assumptions: pm.model.assumptions, analysis: analysis
+  - analysis.impossible_models.sort_by(&:stage_of_first_rejection).each do |pm|
+    %li.list-group-item.list-group-item-danger
+      .list-group-item-heading
+        #{pm.model.name} (Rejected in: AS#{pm.stage_of_first_rejection})
+      .list-group-item-text
+        = render 'analyses/assumptions', assumptions: pm.reasons.map(&:argument), analysis: analysis
 - else
   %li.list-group-item.list-group-item-warning
     The detailed report is only available, once the analysis is complete

@@ -1,0 +1,6 @@
+.panel.panel-success#remaining_models_parent
+  .panel-heading
+    Recommended models
+    = collapse('remaining_models')
+  %ul.list-group#remaining_models.collapse.in
+    = render 'analyses/possible_models', models: analysis.remaining_models

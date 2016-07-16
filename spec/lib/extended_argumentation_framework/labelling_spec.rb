@@ -3,13 +3,12 @@ require 'rails_helper'
 
 RSpec.describe ExtendedArgumentationFramework::Labelling, type: :class do
 
-  let(:framework) { ExtendedArgumentationFramework::Framework.new("a->b") }
+  let(:framework) { ExtendedArgumentationFramework::Framework.new("a,b,a->b") }
   let(:labelling) { ExtendedArgumentationFramework::Labelling.new(framework) }
   subject { labelling }
-  let(:a){ExtendedArgumentationFramework::Argument.new("a")}
-  let(:b){ExtendedArgumentationFramework::Argument.new("b")}
-  let(:c){ExtendedArgumentationFramework::Argument.new("c")}
-
+  let(:a) { ExtendedArgumentationFramework::Argument.new("a") }
+  let(:b) { ExtendedArgumentationFramework::Argument.new("b") }
+  let(:c) { ExtendedArgumentationFramework::Argument.new("c") }
 
 
   describe '#set' do
@@ -99,7 +98,7 @@ RSpec.describe ExtendedArgumentationFramework::Labelling, type: :class do
 
 
   describe 'more complex framework' do
-    let(:framework) { ExtendedArgumentationFramework::Framework.new("a->b, c -> (a -> b)") }
+    let(:framework) { ExtendedArgumentationFramework::Framework.new("a,b,c,a->b, c -> (a -> b)") }
     let(:attack) { framework.attacks(a).first }
     let(:attack_on_attack) { framework.attacks_on_attacks.first }
 

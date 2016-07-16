@@ -26,7 +26,7 @@ RSpec.describe QueryAssumptionResultsController, type: :controller do
   # QueryAssumptionResult. As you add validations to QueryAssumptionResult, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {result: true}
+    {result: true, stage: 1}
   }
 
   let(:invalid_attributes) {

@@ -22,7 +22,7 @@ if ($ignoredQuestion.length > 0) {
 <%- end %>
 
 // update possible models
-$("#possible_models").html("<%= escape_javascript render 'analyses/possible_models', analysis: @query_assumption_result.analysis %>");
+$("#models_panel").html("<%= escape_javascript render 'analyses/models_panel', analysis: @query_assumption_result.analysis %>");
 // add to answered questions
 $('#answered_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: @query_assumption_result %>").hide().slideDown();
 showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
@@ -31,4 +31,5 @@ showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' 
 showDismissableAlert("Analysis is now complete. ", "success");
 $('#detailed_model_view').html("<%= escape_javascript render 'analyses/detailed_model_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
 $('#detailed_argumentation_view').html("<%= escape_javascript render 'analyses/detailed_argumentation_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
+$('#open_questions_parent').html("<%= escape_javascript render 'analyses/recommended_models', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
 <%- end %>

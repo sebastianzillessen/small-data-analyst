@@ -11,6 +11,7 @@ class AnalysesController < ApplicationController
   # GET /analyses/1.json
   def show
     if (@analysis.done?)
+      # TODO: Refactor, this is not nice here.
       As2Init.new(@analysis)
     end
 
@@ -28,7 +29,6 @@ class AnalysesController < ApplicationController
 
     respond_to do |format|
       if @analysis.save
-        @analysis.start
         format.html { redirect_to @analysis, notice: 'Analysis was successfully created.' }
         format.json { render :show, status: :created, location: @analysis }
       else

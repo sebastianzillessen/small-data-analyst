@@ -107,7 +107,7 @@ module ExtendedArgumentationFramework
     end
 
     def framework_from_attacks(attacks)
-      Framework.new(attacks.map(&:to_s).join(","))
+      Framework.new(attacks.map(&:to_s).join(","), auto_generate_nodes: true)
     end
 
     def acceptable_arguments(subset, x, fw=nil)
@@ -127,9 +127,9 @@ module ExtendedArgumentationFramework
       dung_framework = framework_from_attacks(attacks+[x])
       df = DungSolver.new(dung_framework)
       # => x is accepted in all preferred_extensions so it will always be true
-      return true if (df.skeptical_acceptable(x).tap{|sa| puts "Skeptical accepted: #{sa}"})
+      return true if (df.skeptical_acceptable(x).tap { |sa| puts "Skeptical accepted: #{sa}" })
       # => x is not accepted in all preferred extensions so we cannot make a decision on it
-      return nil if (df.credulous_acceptable(x).tap{|sa| puts "Credelous accepted: #{sa}"})
+      return nil if (df.credulous_acceptable(x).tap { |sa| puts "Credelous accepted: #{sa}" })
       # => x is not accepted in any preferred extension, so it will be false
       return false
     end

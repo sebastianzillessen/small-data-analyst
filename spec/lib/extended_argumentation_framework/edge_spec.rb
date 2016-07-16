@@ -6,7 +6,7 @@ RSpec.describe ExtendedArgumentationFramework::Edge, type: :class do
     let(:a1) { ExtendedArgumentationFramework::Argument.new("a1") }
     let(:a2) { ExtendedArgumentationFramework::Argument.new("a2") }
     let(:a3) { ExtendedArgumentationFramework::Argument.new("a3") }
-    let(:framework) { ExtendedArgumentationFramework::Framework.new("a3->(a1->a2)") }
+    let(:framework) { ExtendedArgumentationFramework::Framework.new("a3->(a1->a2)", auto_generate_nodes: true) }
     let(:edge) { ExtendedArgumentationFramework::Edge.new(a1, a2) }
     subject { edge }
 

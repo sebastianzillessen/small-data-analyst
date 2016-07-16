@@ -41,6 +41,7 @@ gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
 gem 'delayed_job_active_record'
+gem 'ruby-graphviz'
 
 #gem 'rack-timeout'
 

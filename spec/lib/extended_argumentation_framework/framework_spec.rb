@@ -61,7 +61,7 @@ RSpec.describe ExtendedArgumentationFramework::Framework, type: :class do
     end
 
     it 'should throw an error if no counterattack available' do
-      expect { ExtendedArgumentationFramework::Framework.new("a, b -> c, a -> (b -> c)", enforce_counter_attack: true) }.to raise_error(RuntimeError)
+      expect { ExtendedArgumentationFramework::Framework.new("a, b -> c, a -> (b -> c)", auto_generate_nodes: true, enforce_counter_attack: true) }.to raise_error(RuntimeError)
     end
   end
 

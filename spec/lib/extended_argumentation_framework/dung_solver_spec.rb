@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ExtendedArgumentationFramework::DungSolver, type: :class do
 
-  let(:framework) { ExtendedArgumentationFramework::Framework.new("a1->a2,a3->a2,a3->a4,a4->a3,a5->a5,a4->a5") }
+  let(:framework) { ExtendedArgumentationFramework::Framework.new("a1,a2,a3,a4,a5,a1->a2,a3->a2,a3->a4,a4->a3,a5->a5,a4->a5") }
   subject { ExtendedArgumentationFramework::DungSolver.new(framework) }
   let(:a1) { ExtendedArgumentationFramework::Argument.new("a1") }
   let(:a2) { ExtendedArgumentationFramework::Argument.new("a2") }

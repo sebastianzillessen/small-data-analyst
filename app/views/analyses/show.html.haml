@@ -1,20 +1,20 @@
 .row
+  .col-md-6#models_panel
+    = render 'models_panel', analysis: @analysis
   .col-md-6
-    .panel.panel-info
-      .panel-heading
-        Currently Possible Models
-      %ul.list-group#possible_models
-        = render 'possible_models', analysis: @analysis
-  .col-md-6
-    .panel.panel-primary#open_questions_parent
-      .panel-heading
-        Open Query Assumptions
-        = collapse('open_questions')
-      %ul.list-group#open_questions.collapse.in
-        - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
-          = render 'question', question: question
-        %li.list-group-item.auto-show-empty.text-warning
-          No remaining open query assumptions.
+    #open_questions_parent
+      - unless @analysis.done?
+        .panel.panel-primary
+          .panel-heading
+            Open Query Assumptions
+            = collapse('open_questions')
+          %ul.list-group#open_questions.collapse.in
+            - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
+              = render 'question', question: question
+            %li.list-group-item.auto-show-empty.text-warning
+              No remaining open query assumptions.
+      - else
+        = render 'recommended_models', analysis: @analysis
 .row
   .col-md-6
     .panel.panel-success#answered_questions_parent
@@ -41,15 +41,15 @@
     .panel.panel-default#detailed_model_view_parent
       .panel-heading
         Detailed view of models
-        = collapse('detailed_model_view')
-      %ul.list-group#detailed_model_view.collapse.in
+        = collapse('detailed_model_view', expanded: false)
+      %ul.list-group#detailed_model_view.collapse
         = render 'analyses/detailed_model_view', analysis: @analysis
   .col-md-6
-    .panel.panel-default#detailed_argumentation_view
+    .panel.panel-default#detailed_argumentation_view_parent
       .panel-heading
         Detailed view of argumentation frameworks used
-        = collapse('detailed_argumentation_view')
-      %ul.list-group#detailed_argumentation_view.collapse.in
+        = collapse('detailed_argumentation_view', expanded: false)
+      %ul.list-group#detailed_argumentation_view.collapse
         = render 'analyses/detailed_argumentation_view', analysis: @analysis
 
 

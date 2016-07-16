@@ -26,7 +26,7 @@ RSpec.describe ExtendedArgumentationFramework::Solver, type: :class do
   # - b2 -> b1
 
   context 'with acceptability check' do
-    let(:framework) { ExtendedArgumentationFramework::Framework.new("y1->(z1->y2),y3->(z2->y2),y2->(z3->y3),y4->(z3->y3),z4->y4,z5->(y5->x),y2->x") }
+    let(:framework) { ExtendedArgumentationFramework::Framework.new("y1,y2,y3,y4,y5,z1,z2,z3,z4,z5,x,y1->(z1->y2),y3->(z2->y2),y2->(z3->y3),y4->(z3->y3),z4->y4,z5->(y5->x),y2->x") }
     let(:z1to5) { framework.arguments.select { |a| a.name.start_with?("z") } }
     let(:z1) { new_arg("z1") }
     let(:x) { new_arg("x") }
@@ -52,6 +52,8 @@ RSpec.describe ExtendedArgumentationFramework::Solver, type: :class do
   context 'with 3 models each attacking each other' do
     let(:fw_string) {
       [
+          "m1,m2,m3,CD1_mild,CD1_heavy,CD2_explain,CD2_predict",
+          "TEST",
           "m1->m2, m1->m3, m2->m1, m2->m3, m3->m1, m3->m2",
           "CD1_no",
           "CD1_mild -> (m3->m2), CD1_mild -> (m3->m1)",

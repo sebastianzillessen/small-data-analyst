@@ -1,6 +1,6 @@
-- analysis.possible_models.each do |model|
+- models.each do |model|
   %li.list-group-item
     =model.name
-- if analysis.possible_models.empty?
+- if models.empty?
   %li.list-group-item.text-warning
     No possible models found for that analysis and the provided answers.
