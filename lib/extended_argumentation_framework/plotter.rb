@@ -62,7 +62,7 @@ module ExtendedArgumentationFramework
         "#{a.target.source.int_name} -> #{a.target.source.int_name}__#{a.target.target.int_name} #{attr}"
       end
       if (res.any?)
-        "{edge[arrowhead=none] #{dot_edges_without_arrow.join("; ")}}"
+        "{edge[arrowhead=none] #{res.join("; ")}}"
       end
     end
 
