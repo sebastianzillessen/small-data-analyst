@@ -37,25 +37,32 @@ module ExtendedArgumentationFramework
 
       res = ""
       res << "{ node[fillcolor=\"green\" style=\"filled\"] #{@nodes_in.join(" ")} }" if @nodes_in.any?
-      res << "{ node[fillcolor= \"green\" style=\"filled\" shape=\"box\"] #{@arguments_hold.map(&:int_name).join(" ")} }" if @arguments_hold.any?
+      res << "{ node[fillcolor=\"green\" style=\"filled\" shape=\"box\"] #{@arguments_hold.map(&:int_name).join(" ")} }" if @arguments_hold.any?
       res << "{ node[fillcolor=\"red\" style=\"filled\"] #{@nodes_out.join(" ")} }" if @nodes_out.any?
       res << "{ node[fillcolor=\"grey\" style=\"filled\"] #{@nodes_undec.join(" ")} }" if @nodes_undec.any?
       res
     end
 
     def dot_tempnodes
-      @framework.attacks_on_attacks.map do |a|
+      res = @framework.attacks_on_attacks.map do |a|
         edge_name="#{a.target.source.int_name}__#{a.target.target.int_name}"
         "#{edge_name} [group=#{edge_name} width=0 shape=point]"
       end.flatten.uniq
+
+      if (res.any?)
+        res.join(";")
+      end
     end
 
     def dot_edges_without_arrow
-      @framework.attacks_on_attacks.map do |a|
+      res = @framework.attacks_on_attacks.map do |a|
         attr = if ((@nodes_in+@arguments_hold.map(&:int_name)).include?(a.source.int_name))
                  "[style=dashed]"
                end
         "#{a.target.source.int_name} -> #{a.target.source.int_name}__#{a.target.target.int_name} #{attr}"
+      end
+      if (res.any?)
+        "{edge[arrowhead=none] #{dot_edges_without_arrow.join("; ")}}"
       end
     end
 
@@ -69,15 +76,18 @@ module ExtendedArgumentationFramework
 
       res <<@framework.attacks_on_attacks.map { |a| "#{a.source.int_name} -> #{a.target.source.int_name}__#{a.target.target.int_name}" }
       res << (@framework.attacks-@framework.attacked_edges).map { |e| "#{e.source.int_name} -> #{e.target.int_name}" }
-      res.flatten.uniq
+      res = res.flatten.uniq
+      if (res.any?)
+        res.join(";")
+      end
     end
 
     def to_dot
       "digraph G {
-        #{dot_tempnodes.join("; ")};
-        #{dot_nodes};
-        {edge[arrowhead=none] #{dot_edges_without_arrow.join("; ")}};
-        #{dot_edges.join("; ")};
+      #{dot_tempnodes}
+      #{dot_nodes}
+      #{dot_edges_without_arrow}
+      #{dot_edges}
       }".tap { |x| puts x }
     end
 
