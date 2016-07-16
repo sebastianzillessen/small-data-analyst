@@ -70,7 +70,9 @@ class Analysis < ActiveRecord::Base
 
   def add_framework(arguments, framework, models_excluded=nil)
     @frameworks ||= {}
-    @frameworks[arguments] = [framework, models_excluded]
+    if (framework.arguments.any? && framework.edges.any?)
+      @frameworks[arguments] = [framework, models_excluded]
+    end
     @frameworks
   end
 

@@ -26,7 +26,26 @@ module Preferences
 
 
     def self.arguments
-      ["CD2_predict", "CD2_explain"].map { |a| QueryAssumption.find_by(name: a) }
+
+
+      cd2_p = QueryAssumption.find_or_initialize_by(name: "CD2_predict") do |cd|
+        cd.question= "Intention of analysis: predict?"
+        cd.description = "Preferences for CD2"
+      end
+      cd2_e= QueryAssumption.find_or_initialize_by(name: "CD2_explain") do |cd|
+        cd.question= "Intention of analysis: explain?"
+        cd.description= "Preferences for CD2"
+      end
+
+      cd2_p.attacking = [cd2_e]
+      cd2_e.attacking = [cd2_p]
+
+      cd2_p.save
+      cd2_e.save
+
+      [cd2_e, cd2_p]
+
+
     end
 
 

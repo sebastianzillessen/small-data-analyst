@@ -52,6 +52,7 @@ class As2Init
 
         solver = ExtendedArgumentationFramework::Solver.new(framework)
         subset = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.model.int_name)) == false)
             puts "Removing possible model: #{p.model.name}"

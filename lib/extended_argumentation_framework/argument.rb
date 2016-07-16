@@ -6,6 +6,10 @@ module ExtendedArgumentationFramework
       @name = name
     end
 
+    def int_name
+      name.parameterize.underscore
+    end
+
     def to_s
       "#{@name}"
     end

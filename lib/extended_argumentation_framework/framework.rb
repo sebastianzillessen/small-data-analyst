@@ -56,43 +56,6 @@ module ExtendedArgumentationFramework
       end
     end
 
-    def dot_tempnodes
-      attacks_on_attacks.map do |a|
-        "#{a.target.source}__#{a.target.target}"
-      end
-    end
-
-    def dot_edges_without_arrow
-      attacks_on_attacks.map do |a|
-        "#{a.target.source} -> #{a.target.source}__#{a.target.target}"
-      end
-    end
-
-    def dot_edges
-      attacks_on_attacks.map { |a| "#{a.target.source}__#{a.target.target} -> #{a.target.target}" }+
-          attacks_on_attacks.map { |a| "#{a.source} -> #{a.target.source}__#{a.target.target}" }+
-          (attacks-attacked_edges).map { |e| "#{e.source} -> #{e.target}" }
-    end
-
-    def to_dot
-      "digraph G {
-        {node[width=0 shape=point] #{dot_tempnodes.join("; ")}}
-        {edge[arrowhead=none] #{dot_edges_without_arrow.join("; ")}}
-        #{dot_edges.join("; ")}
-      }"
-    end
-
-
-    def to_png
-      require 'graphviz'
-      dir = "public/images"
-      FileUtils.mkdir_p(dir+'/frameworks') unless File.exists?(dir+'/frameworks')
-      path = "frameworks/framework_#{Time.now.to_i}_#{SecureRandom.hex(5)}.png"
-      GraphViz.parse_string(to_dot).output(png: "#{dir}/#{path}")
-      path
-    end
-
-
     def edges(source=nil)
       (attacks(source) + attacks_on_attacks(source)).sort_by { |a| a.to_s }
     end

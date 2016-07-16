@@ -111,7 +111,6 @@ module ExtendedArgumentationFramework
     end
 
     def acceptable_arguments(subset, x, fw=nil)
-      puts "check a-a for #{subset.map(&:to_s).join(", ")} and #{x}"
       fw = @framework if (fw.nil?)
       attacks, attacks_on_attacks = to_dung_framework(subset, x, fw)
       # => we cannot make a clear statement if we still have attacks on attacks after the above algorithm
@@ -121,8 +120,8 @@ module ExtendedArgumentationFramework
         used_arguments.include? edge.source
       end
 
-      puts "remaining attacks: #{attacks}"
-      puts "remaining at-o-at: #{attacks_on_attacks}"
+      puts "remaining attacks: #{attacks.map(&:to_s)}"
+      puts "remaining at-o-at: #{attacks_on_attacks.map(&:to_s)}"
       return nil unless attacks_on_attacks.empty?
       dung_framework = framework_from_attacks(attacks+[x])
       df = DungSolver.new(dung_framework)

@@ -32,30 +32,34 @@ module Preferences
   #   HEAVY -> (m1 -> m2)
 
   class CD1 < AS2
+    CODE = "#no censoring = 0, mild censoring < 0.7, heavy censoring >= 0.7
+            censoring.prop<-(nrow(tabular_data)-sum(tabular_data$fustat))/nrow(tabular_data)"
+
     def self.stage
       2
     end
 
     def self.arguments
       cd1_mild = TestAssumption.find_or_initialize_by(name: "CD1_mild") do |a|
-        a.r_code = "#no censoring = 0, mild censoring < 0.7, heavy censoring >= 0.7
-censoring.prop<-(nrow(tabular_data)-sum(tabular_data$fustat))/nrow(tabular_data)
-result <- (censoring.prop < 0.7)"
+        a.r_code = "#{CODE}\nresult <- (censoring.prop < 0.7)"
         a.required_dataset_fields = ['fustat']
-        a.save
+
       end
       cd1_heavy = TestAssumption.find_or_initialize_by(name: "CD1_heavy") do |a|
-        a.r_code = "#no censoring = 0, mild censoring < 0.7, heavy censoring >= 0.7
-censoring.prop<-(nrow(tabular_data)-sum(tabular_data$fustat))/nrow(tabular_data)
-result <- (censoring.prop >= 0.7)"
+        a.r_code = "#{CODE}\nresult <- (censoring.prop >= 0.7)"
         a.required_dataset_fields = ['fustat']
-        a.save
       end
+      cd1_mild.attacking = [cd1_heavy]
+      cd1_heavy.attacking = [cd1_mild]
+      cd1_mild.save
+      cd1_heavy.save
+
       [cd1_mild, cd1_heavy]
     end
 
 
     protected
+
     def self.all_rules()
       {
           "CD1_mild": ["CD1_mild",

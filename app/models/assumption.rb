@@ -28,7 +28,7 @@ class Assumption < ActiveRecord::Base
 
 
   def evaluate(analysis)
-    raise 'Must be overwritten'
+    raise "Must be overwritten but wasnt for #{self}"
   end
 
   def evaluate_critical(analysis)
@@ -37,6 +37,10 @@ class Assumption < ActiveRecord::Base
 
   def get_critical_queries(analysis)
     []
+  end
+
+  def int_name
+    name.parameterize.underscore
   end
 
   def to_s
