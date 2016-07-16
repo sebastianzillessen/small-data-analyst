@@ -8,7 +8,9 @@
   - analysis.impossible_models.sort_by(&:stage_of_first_rejection).each do |pm|
     %li.list-group-item.list-group-item-danger
       .list-group-item-heading
-        #{pm.model.name} (Rejected in: AS#{pm.stage_of_first_rejection})
+        #{pm.model.name}
+        %span.pull-right
+          (Rejected in: AS#{pm.stage_of_first_rejection > 1 ? '2' : '1' }, Stage: #{pm.stage_of_first_rejection})
       .list-group-item-text
         = render 'analyses/assumptions', assumptions: pm.reasons.map(&:argument), analysis: analysis
 - else
