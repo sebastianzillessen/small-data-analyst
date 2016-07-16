@@ -7,7 +7,7 @@
         .list-group-item-heading
           %b= framework.name
         .list-group-item-text
-          = image_tag(ExtendedArgumentationFramework::Plotter.new(framework, analysis).to_png)
+          = image_tag(ExtendedArgumentationFramework::Plotter.new(framework, arguments).to_png)
   - else
     %li.list-group-item.list-group-item-warning
       No Frameworks have been evaluated

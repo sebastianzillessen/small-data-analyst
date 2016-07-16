@@ -1,8 +1,9 @@
 module ExtendedArgumentationFramework
   class Plotter
-    def initialize(framework, analysis)
+    def initialize(framework, arguments_hold)
       @framework = framework
-      @analysis = analysis
+      @arguments_hold = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+      @solver = Solver.new(framework)
     end
 
     def to_png
@@ -18,20 +19,26 @@ module ExtendedArgumentationFramework
 
 
     def dot_nodes
-      @nodes_in = @analysis.remaining_models.map { |m| m.int_name }
-      @nodes_out = (@analysis.declined_models.map(&:int_name) & @framework.arguments.map(&:int_name))
 
-      @analysis.impossible_models.map(&:reasons).flatten.uniq.map(&:argument).flatten.uniq.
-          select { |a| @framework.arguments.map(&:int_name).include? a.int_name }.each { |a|
-        if a.evaluate(@analysis)
+      @nodes_in =[]
+      @nodes_out = []
+      @nodes_undec = []
+      @framework.arguments.each do |a|
+        res = @solver.acceptable_arguments(@arguments_hold, a)
+        if (res.nil?)
+          @nodes_undec << a.int_name
+        elsif res
           @nodes_in << a.int_name
         else
           @nodes_out << a.int_name
         end
-      }
+      end
 
-      "{ node[fillcolor=\"green\" style=\"filled\"] #{@nodes_in.join(" ")} }"+
-          "{ node[fillcolor=\"red\" style=\"filled\"] #{@nodes_out.join(" ")} }"
+
+      "{ node[fillcolor=\"green\" style=\"filled\"] #{@nodes_in.join(" ")} }
+      { node[fillcolor=\"red\" style=\"filled\"] #{@nodes_out.join(" ")} }
+      { node[fillcolor=\"grey\" style=\"filled\"] #{@nodes_undec.join(" ")} }
+      "
     end
 
     def dot_tempnodes
