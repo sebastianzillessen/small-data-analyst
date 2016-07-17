@@ -10,9 +10,9 @@ class Model < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :research_questions, presence: true
 
-  def evaluate_critical(analysis)
-    assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-      unless (a.evaluate_critical(analysis))
+  def evaluate(analysis)
+    assumptions.where.not(type: QueryAssumption).each do |a|
+      unless (a.evaluate(analysis))
         analysis.possible_models.where(model: self).first.try(:reject!, analysis.stage, a)
         return false
       end
@@ -20,14 +20,16 @@ class Model < ActiveRecord::Base
     return true
   end
 
-  def get_critical_queries(analysis)
+  def get_queries(analysis)
     queries = []
-    if (evaluate_critical(analysis))
-      # get sub critical queries
-      assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        queries << a.get_critical_queries(analysis)
+    if (evaluate(analysis))
+      # get sub queries
+      # TODO: Replace selects with DB access
+      assumptions.where.not(type: QueryAssumption).each do |a|
+        queries << a.get_queries(analysis)
       end
-      queries << assumptions.select(&:critical).select { |a| a.class == QueryAssumption }
+
+      queries << assumptions.select { |a| a.class == QueryAssumption }
     end
 
     queries.flatten.uniq

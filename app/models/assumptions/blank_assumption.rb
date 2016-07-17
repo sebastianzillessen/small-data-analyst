@@ -11,11 +11,11 @@ class BlankAssumption < Assumption
     !assumptions.map { |a| a.evaluate(analysis) }.uniq.include?(false)
   end
 
-  def evaluate_critical(analysis)
-    @evaluate_critical ||= begin
+  def evaluate(analysis)
+    @evaluate ||= begin
       result = true
-      assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        if (!a.evaluate_critical(analysis))
+      assumptions.where.not(type: QueryAssumption).each do |a|
+        if (!a.evaluate(analysis))
           result = false
         end
       end
@@ -23,16 +23,15 @@ class BlankAssumption < Assumption
     end
   end
 
-  def get_critical_queries(analysis)
+  def get_queries(analysis)
     queries = []
-    if (evaluate_critical(analysis))
-      # get sub critical queries
-      assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        queries << a.get_critical_queries(analysis)
+    if (evaluate(analysis))
+      # get sub queries
+      assumptions.where.not(type: QueryAssumption).each do |a|
+        queries << a.get_queries(analysis)
       end
-      queries << assumptions.select(&:critical).select { |a| a.class == QueryAssumption }
+      queries << assumptions.where(type: QueryAssumption)
     end
-
     queries.flatten.uniq
   end
 

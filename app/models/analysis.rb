@@ -32,8 +32,8 @@ class Analysis < ActiveRecord::Base
   def start
     research_question.models.each do |m|
       pm = PossibleModel.create(model: m, analysis: self)
-      if (m.evaluate_critical(self))
-        m.get_critical_queries(self).each do |q|
+      if (m.evaluate(self))
+        m.get_queries(self).each do |q|
           q = QueryAssumptionResult.new(analysis: self, query_assumption: q, result: nil, stage: self.stage)
           self.query_assumption_results << q if (q.valid?)
         end
@@ -71,7 +71,11 @@ class Analysis < ActiveRecord::Base
   def add_framework(arguments, framework, models_excluded=nil)
     @frameworks ||= {}
     if (framework.arguments.any? && framework.edges.any?)
-      @frameworks[arguments] = [framework, models_excluded]
+      @frameworks[arguments] = {
+          framework: framework,
+          excluded_models: models_excluded,
+          plotter: ExtendedArgumentationFramework::Plotter.new(framework, arguments_hold: arguments)
+      }
     end
     @frameworks
   end

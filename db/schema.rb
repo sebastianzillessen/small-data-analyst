@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160716085328) do
+ActiveRecord::Schema.define(version: 20160717063656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 20160716085328) do
   create_table "assumptions", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.boolean  "critical"
     t.string   "type"
     t.text     "required_dataset_fields"
     t.boolean  "fail_on_missing"

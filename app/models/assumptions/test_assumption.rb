@@ -11,11 +11,7 @@ class TestAssumption < Assumption
   after_create :generate_dataset_test_assumptions_results
 
 
-  def evaluate(analysis)
-    evaluate_critical(analysis)
-  end
-
-  def evaluate_critical(analysis_or_dataset)
+  def evaluate(analysis_or_dataset)
     dataset = if (analysis_or_dataset.is_a? Dataset)
                 analysis_or_dataset
               elsif analysis_or_dataset.is_a? Analysis
@@ -25,7 +21,7 @@ class TestAssumption < Assumption
               end
     cached = self.dataset_test_assumption_results.where(dataset: dataset).first.try(:result)
     return cached unless cached.nil?
-    @evaluate_critical ||= eval_internal(dataset)
+    @evaluate ||= eval_internal(dataset)
   end
 
   def eval_internal(dataset)

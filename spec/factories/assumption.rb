@@ -7,16 +7,8 @@ FactoryGirl.define do
     factory :blank_assumption, class: BlankAssumption
   end
 
-  factory :critical_assumption, parent: :assumption do
-    critical true
-    factory :critical_blank_assumption, class: BlankAssumption
-    factory :critical_query_assumption, class: QueryAssumption do
-      question "This is a default question"
-    end
-  end
   #    :name => "MyString",
   #    :description => "MyText",
-  #    :critical => false,
   #    :type => "",
   #    :required_dataset_fields => "MyText",
   #    :fail_on_missing => false,
@@ -29,9 +21,7 @@ FactoryGirl.define do
     fail_on_missing false
     r_code { "result <- TRUE" }
 
-    factory :critical_test_assumption do
-      critical true
-    end
+
   end
 
 

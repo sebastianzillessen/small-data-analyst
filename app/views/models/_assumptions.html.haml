@@ -1,5 +1,5 @@
 %ul.list-group
   - assumptions.each do |ass|
-    %li.list-group-item{class: ass.critical? ? 'list-group-item-warning' : ''}
+    %li.list-group-item
       = render 'models/assumption', assumption: ass
 
