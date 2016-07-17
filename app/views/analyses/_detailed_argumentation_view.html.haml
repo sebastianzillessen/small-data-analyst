@@ -9,7 +9,7 @@
           %b= framework.name
         .list-group-item-text
           .resize-on-click.text-center
-            = image_tag(plotter.to_png), class: 'fit-parent'
+            = image_tag(plotter.to_png, class: 'fit-parent')
   - else
     %li.list-group-item.list-group-item-warning
       No Frameworks have been evaluated
