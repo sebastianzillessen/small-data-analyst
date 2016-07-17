@@ -4,7 +4,8 @@ module ExtendedArgumentationFramework
       @framework = framework
       @options = {
           arguments_hold: [],
-          plot_acceptability: true
+          plot_acceptability: true,
+          edges_style: nil
       }
       @options.merge!(options)
 
@@ -18,7 +19,7 @@ module ExtendedArgumentationFramework
 
     def to_png
       require 'graphviz'
-      dir = "public/images"
+      dir = Plot::BASE_URL
       FileUtils.mkdir_p(dir+'/frameworks') unless File.exists?(dir+'/frameworks')
       path = "frameworks/framework_#{Time.now.to_i}_#{SecureRandom.hex(5)}.png"
       GraphViz.parse_string(to_dot).output(png: "#{dir}/#{path}")
@@ -94,11 +95,12 @@ module ExtendedArgumentationFramework
 
     def to_dot
       "digraph G {
+      edge[#{@options[:edges_style]}];
       #{dot_tempnodes}
       #{dot_nodes}
       #{dot_edges_without_arrow}
       #{dot_edges}
-      }".tap { |x| puts x }
+      } ".tap { |x| puts x }
     end
 
 
