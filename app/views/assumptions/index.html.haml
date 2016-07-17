@@ -1,7 +1,7 @@
 %h1 Available Assumptions
 .list-group
   - @assumptions.each do |assumption|
-    .list-group-item{class: assumption.critical? ? 'list-group-item-warning' : ''}
+    .list-group-item
       = glyphicon_type(assumption)
       = link_to assumption_path(assumption) do
         #{assumption.name}: #{truncate(assumption.description, length:100)}

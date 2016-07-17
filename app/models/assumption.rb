@@ -28,14 +28,10 @@ class Assumption < ActiveRecord::Base
 
 
   def evaluate(analysis)
-    raise "Must be overwritten but wasnt for #{self}"
+    raise "Must be overwritten but #{analysis.inspect} did not do so.#"
   end
 
-  def evaluate_critical(analysis)
-    raise 'Must be overwritten'
-  end
-
-  def get_critical_queries(analysis)
+  def get_queries(analysis)
     []
   end
 
@@ -44,7 +40,7 @@ class Assumption < ActiveRecord::Base
   end
 
   def to_s
-    "#{name} (#{self.critical? ? 'critical ' : ''}#{self.class})"
+    "#{name} (#{self.class})"
   end
 
   def get_associated_models

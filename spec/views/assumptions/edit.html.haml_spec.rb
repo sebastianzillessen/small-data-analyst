@@ -12,7 +12,6 @@ RSpec.describe "assumptions/edit", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#blank_assumption_name[name=?]", "blank_assumption[name]"
         assert_select "textarea#blank_assumption_description[name=?]", "blank_assumption[description]"
-        assert_select "input#blank_assumption_critical[name=?]", "blank_assumption[critical]"
         #assert_select "input#blank_assumption_type[name=?]", "blank_assumption[type]"
         #assert_select "textarea#blank_assumption_required_dataset_fields[name=?]", "blank_assumption[required_dataset_fields]"
         #assert_select "input#blank_assumption_fail_on_missing[name=?]", "blank_assumption[fail_on_missing]"
@@ -34,7 +33,6 @@ RSpec.describe "assumptions/edit", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#query_assumption_name[name=?]", "query_assumption[name]"
         assert_select "textarea#query_assumption_description[name=?]", "query_assumption[description]"
-        assert_select "input#query_assumption_critical[name=?]", "query_assumption[critical]"
         #assert_select "input#query_assumption_type[name=?]", "query_assumption[type]"
         #assert_select "textarea#query_assumption_required_dataset_fields[name=?]", "query_assumption[required_dataset_fields]"
         #assert_select "input#query_assumption_fail_on_missing[name=?]", "query_assumption[fail_on_missing]"
@@ -54,7 +52,6 @@ RSpec.describe "assumptions/edit", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#test_assumption_name[name=?]", "test_assumption[name]"
         assert_select "textarea#test_assumption_description[name=?]", "test_assumption[description]"
-        assert_select "input#test_assumption_critical[name=?]", "test_assumption[critical]"
         assert_select "input#test_assumption_type[name=?]", "test_assumption[type]"
         assert_select "input#test_assumption_required_dataset_fields[name=?]", "test_assumption[required_dataset_fields][]"
         #assert_select "input#test_assumption_fail_on_missing[name=?]", "test_assumption[fail_on_missing]"

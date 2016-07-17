@@ -1,13 +1,14 @@
 - if analysis.done?
   - if analysis.frameworks.any?
     - analysis.frameworks.each do |arguments, set|
-      -framework = set[0]
-      -excluded_models = set[1]
+      -framework = set[:framework]
+      -excluded_models = set[:excluded_models]
+      -plotter = set[:plotter]
       %li.list-group-item
         .list-group-item-heading
           %b= framework.name
         .list-group-item-text
-          = image_tag(ExtendedArgumentationFramework::Plotter.new(framework, arguments).to_png)
+          = image_tag(plotter.to_png)
   - else
     %li.list-group-item.list-group-item-warning
       No Frameworks have been evaluated

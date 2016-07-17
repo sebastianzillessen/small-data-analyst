@@ -72,7 +72,7 @@ class AssumptionsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def assumption_params
-    attribute_for_all = [:name, :description, :critical, :type,]
+    attribute_for_all = [:name, :description, :type,]
     array_for_all = {required_by_ids: [], model_ids: []}
     res = if (params[:query_assumption])
             params.require(:query_assumption).permit(attribute_for_all, :question, :argument_inverted, array_for_all)

@@ -48,7 +48,7 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
       describe '#update' do
         it 'should trigger evaluate on test_assumpiton' do
           expect(subject.test_assumption).to receive(:eval_internal).once.with(subject.dataset).and_return(true)
-          expect(subject.test_assumption).not_to receive(:evaluate_critical)
+          expect(subject.test_assumption).not_to receive(:evaluate)
           expect(subject.update).to be_truthy
           expect(subject.result).to be_truthy
         end

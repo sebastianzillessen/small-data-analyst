@@ -21,68 +21,68 @@ RSpec.describe Assumption, type: :model do
     let(:analysis) { create(:analysis) }
 
     describe 'single argument should be critical true' do
-      it { is_expected.to respond_to(:evaluate_critical) }
-      it { expect(subject.evaluate_critical(analysis)).to be_truthy }
+      it { is_expected.to respond_to(:evaluate) }
+      it { expect(subject.evaluate(analysis)).to be_truthy }
     end
 
     it 'argument with no critical attacker should be critical true' do
       subject.assumptions << FactoryGirl.create(:assumption)
-      expect(subject.evaluate_critical(analysis)).to be_truthy
+      expect(subject.evaluate(analysis)).to be_truthy
     end
 
 
     it 'argument with a critical false assumption attacker should be critical false' do
-      f= FactoryGirl.create(:critical_test_assumption, r_code: "result <- FALSE")
+      f= FactoryGirl.create(:test_assumption, r_code: "result <- FALSE")
       subject.assumptions << f
-      expect(subject.evaluate_critical(analysis)).to be_falsey
+      expect(subject.evaluate(analysis)).to be_falsey
     end
 
     it 'argument with a query critical false assumption attacker should be true as they should be ignored' do
-      f= FactoryGirl.create(:critical_query_assumption)
-      allow(f).to receive(:evaluate_critical).and_return(false)
+      f= FactoryGirl.create(:query_assumption)
+      allow(f).to receive(:evaluate).and_return(false)
       subject.assumptions << f
-      expect(subject.evaluate_critical(analysis)).to be_truthy
+      expect(subject.evaluate(analysis)).to be_truthy
     end
 
     it 'should return the query_assumption' do
-      f= FactoryGirl.create(:critical_query_assumption)
+      f= FactoryGirl.create(:query_assumption)
       subject.assumptions << f
-      expect(subject.get_critical_queries(analysis)).to eq [f]
+      expect(subject.get_queries(analysis)).to eq [f]
     end
 
     it 'should return the query_assumption of a sub critical blank assumption' do
-      f= FactoryGirl.create(:critical_query_assumption)
-      b= FactoryGirl.create(:critical_blank_assumption)
-      b.assumptions << f
-      subject.assumptions << b
-      expect(subject.get_critical_queries(analysis)).to eq [f]
-    end
-
-    it 'should not return the query_assumption of a sub non-critical blank assumption' do
-      f= FactoryGirl.create(:critical_query_assumption)
+      f= FactoryGirl.create(:query_assumption)
       b= FactoryGirl.create(:blank_assumption)
       b.assumptions << f
       subject.assumptions << b
-      expect(subject.get_critical_queries(analysis)).to be_empty
+      expect(subject.get_queries(analysis)).to eq [f]
+    end
+
+    it 'should not return the query_assumption of a sub non-critical blank assumption' do
+      f= FactoryGirl.create(:query_assumption)
+      b= FactoryGirl.create(:blank_assumption)
+      b.assumptions << f
+      subject.assumptions << b
+      expect(subject.get_queries(analysis)).to match_array [f]
     end
 
 
     it 'should not return the query_assumption of a sub critical blank assumption that has a critical evaluating to false assumption' do
-      f= FactoryGirl.create(:critical_query_assumption)
-      b= FactoryGirl.create(:critical_blank_assumption)
-      w= FactoryGirl.create(:critical_blank_assumption)
-      allow(w).to receive(:evaluate_critical).with(analysis).and_return(false)
+      f= FactoryGirl.create(:query_assumption)
+      b= FactoryGirl.create(:blank_assumption)
+      w= FactoryGirl.create(:blank_assumption)
+      allow(w).to receive(:evaluate).with(analysis).and_return(false)
       b.assumptions << f
       subject.assumptions << b
       subject.assumptions << w
-      expect(subject.get_critical_queries(analysis)).to be_empty
+      expect(subject.get_queries(analysis)).to match_array([f])
     end
 
 
     it 'argument with a critical assumption attacker should be critical true' do
-      f= FactoryGirl.create(:critical_test_assumption)
+      f= FactoryGirl.create(:test_assumption)
       subject.assumptions << f
-      expect(subject.evaluate_critical(analysis)).to be_truthy
+      expect(subject.evaluate(analysis)).to be_truthy
     end
   end
 

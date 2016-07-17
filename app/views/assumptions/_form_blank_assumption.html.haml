@@ -1,5 +1,5 @@
 = f.inputs 'Assumptions required for this assumption to hold' do
   = f.input :assumptions, :as => :select, multiple: true,
-    collection: Assumption.order(:critical, :type, :name).all.reject{|a| a == @assumption}.select { |a| can? :read, a }.map{|a|[a.to_s, a.id]},
+    collection: Assumption.order(:type, :name).all.reject{|a| a == @assumption}.select { |a| can? :read, a }.map{|a|[a.to_s, a.id]},
     include_blank: true,
     label: 'Assumptions required to hold so that this assumption holds.'

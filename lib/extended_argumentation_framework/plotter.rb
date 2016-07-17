@@ -1,8 +1,13 @@
 module ExtendedArgumentationFramework
   class Plotter
-    def initialize(framework, arguments_hold)
+    def initialize(framework, options={})
       @framework = framework
-      @arguments_hold = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+      @options = {
+          arguments_hold: []
+      }
+      @options.merge!(options)
+
+      @arguments_hold = options[:arguments_hold].map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
       @solver = Solver.new(framework)
     end
 
