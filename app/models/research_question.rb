@@ -2,6 +2,7 @@ class ResearchQuestion < ActiveRecord::Base
   default_scope { order('name DESC') }
   has_and_belongs_to_many :models, uniq: true
   has_many :analyses, dependent: :destroy
+  has_many :preferences, dependent: :destroy
   belongs_to :user
 
 

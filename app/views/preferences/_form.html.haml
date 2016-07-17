@@ -1,0 +1,14 @@
+= semantic_form_for @preference do |f|
+  = f.inputs do
+    = f.input :name
+    = f.input :research_question, :as => :select, :collection => ResearchQuestion.order(:name).all.select { |a| can? :read, a }
+    = f.input :stage
+    - if can? :edit_global, @preference
+      = f.input :global, hint: "Globally generated preferences will apply for all users"
+
+    = f.semantic_fields_for :preference_arguments do |pa|
+      = render 'preferences/preference_argument_fields', f: pa
+    .links
+      = link_to_add_association 'Add a new definition of an order', f, :preference_arguments, class: 'btn btn-primary'
+  = f.actions do
+    = f.action :submit, :as => :input

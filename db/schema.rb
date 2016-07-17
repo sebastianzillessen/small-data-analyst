@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717080340) do
+ActiveRecord::Schema.define(version: 20160717141023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,23 @@ ActiveRecord::Schema.define(version: 20160717080340) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "model_orders", force: :cascade do |t|
+    t.integer  "preference_argument_id"
+    t.integer  "index"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "model_orders", ["preference_argument_id"], name: "index_model_orders_on_preference_argument_id", using: :btree
+
+  create_table "model_orders_models", force: :cascade do |t|
+    t.integer "model_id"
+    t.integer "model_order_id"
+  end
+
+  add_index "model_orders_models", ["model_id"], name: "index_model_orders_models_on_model_id", using: :btree
+  add_index "model_orders_models", ["model_order_id"], name: "index_model_orders_models_on_model_order_id", using: :btree
+
   create_table "models", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -137,6 +154,29 @@ ActiveRecord::Schema.define(version: 20160717080340) do
     t.datetime "updated_at",                  null: false
     t.boolean  "rejected",    default: false
   end
+
+  create_table "preference_arguments", force: :cascade do |t|
+    t.integer  "preference_id"
+    t.integer  "assumption_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "preference_arguments", ["assumption_id"], name: "index_preference_arguments_on_assumption_id", using: :btree
+  add_index "preference_arguments", ["preference_id"], name: "index_preference_arguments_on_preference_id", using: :btree
+
+  create_table "preferences", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "stage"
+    t.integer  "user_id"
+    t.integer  "research_question_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "global",               default: false
+  end
+
+  add_index "preferences", ["research_question_id"], name: "index_preferences_on_research_question_id", using: :btree
+  add_index "preferences", ["user_id"], name: "index_preferences_on_user_id", using: :btree
 
   create_table "query_assumption_results", force: :cascade do |t|
     t.boolean  "result"
@@ -205,4 +245,11 @@ ActiveRecord::Schema.define(version: 20160717080340) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "model_orders", "preference_arguments"
+  add_foreign_key "model_orders_models", "model_orders"
+  add_foreign_key "model_orders_models", "models"
+  add_foreign_key "preference_arguments", "assumptions"
+  add_foreign_key "preference_arguments", "preferences"
+  add_foreign_key "preferences", "research_questions"
+  add_foreign_key "preferences", "users"
 end

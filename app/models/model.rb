@@ -9,10 +9,10 @@ class Model < ActiveRecord::Base
   has_many :analyses, through: :possible_models
   has_and_belongs_to_many :assumptions, uniq: true
   belongs_to :user
+  has_and_belongs_to_many :model_orders
 
   validates :name, presence: true, uniqueness: true
   validates :research_questions, presence: true
-
 
 
   def evaluate(analysis)
@@ -49,7 +49,6 @@ class Model < ActiveRecord::Base
     end
     rules
   end
-
 
 
 end

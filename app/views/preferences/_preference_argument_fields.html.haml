@@ -1,0 +1,42 @@
+.nested-fields.panel.panel-default
+  .panel-heading
+    Definition of an order over models if an assumption holds
+  .panel-body
+    = f.inputs do
+      = f.input :assumption
+      - random_id = SecureRandom.hex
+      = f.input :order_string, input_html:{data:{selector: random_id}, class: 'hidden'}, label: "Definition of the order of the available models"
+      %div(id="model-order-#{random_id}")
+        .panel.panel-default
+          .panel-heading
+            Remaining available models that can be used to express an order
+          .panel-body
+            .sortable#source{data: {connect_with: "#model-order-#{random_id} .sortable#target", containment: "#model-order-#{random_id}"}}
+              - (Model.order(:name).all-f.object.model_orders.map(&:models).flatten).select { |a| can? :read, a }.each do |m|
+                .label.label-default[m]
+                  = m.name
+        .panel.panel-default
+          .panel-heading
+            Specified order for models if the above selected assumption holds
+            %a.btn.btn-success.pull-right.btn-xs{data:{sortable_add: "<div class='label label-primary remove-on-right'>&lt;</div>",sortable_add_target: "#model-order-#{random_id} #target"}}
+              Add another
+              .label.label-primary
+                <
+          .panel-body
+            .sortable#target{data: {connect_with: "#model-order-#{random_id} .sortable#source", containment: "#model-order-#{random_id}", update_input: "[data-selector=#{random_id}]"}}
+              - f.object.model_orders.each do |mo|
+                - mo.models.each do |m|
+                  .label.label-default[m]
+                    = m.name
+                .label.label-primary.remove-on-right <
+        .inline-hints
+          You can remove an added
+          .label.label-primary <
+          by right clicking on it.
+          %br
+          You can drag and drop models to order them or move them between the list by right clicking.
+
+        .text-right
+          = link_to_remove_association "Remove this definition of an order", f, class: 'btn btn-warning'
+
+  %br

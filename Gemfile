@@ -57,6 +57,9 @@ gem 'rootapp-rinruby', '>= 3.1.1', :git => 'https://github.com/sebastianzillesse
 gem 'devise'
 gem 'cancancan'
 gem 'data_migrate'
+gem 'cocoon'
+gem 'jquery-ui-rails'
+
 
 # heroku stuff
 group :production do
@@ -79,6 +82,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'shoulda-matchers'
+  gem 'rspec-rerun'
 end
 
 group :test do
