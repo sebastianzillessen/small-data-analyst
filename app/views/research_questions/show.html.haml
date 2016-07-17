@@ -11,9 +11,13 @@
   = @research_question.private
 %p
   %b Models:
-  .list-group
-    - @research_question.models.each do |m|
-      =link_to m.name, model_path(m), class: 'list-group-item'
+  .row
+    .col-md-6
+      .list-group
+        - @research_question.models.each do |m|
+          =link_to m.name, model_path(m), class: 'list-group-item'
+    .col-md-6
+      = render 'shared/graph_representation', object: @research_question
 
 
 = link_to edit_research_question_path(@research_question), class: 'btn btn-default' do

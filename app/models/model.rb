@@ -1,14 +1,19 @@
 class Model < ActiveRecord::Base
+  include IntName
+  include Plottable
+
   default_scope { order('name DESC') }
+
   has_and_belongs_to_many :research_questions, uniq: true
   has_many :possible_models, dependent: :destroy
   has_many :analyses, through: :possible_models
-  has_and_belongs_to_many :assumptions,
-                          uniq: true
+  has_and_belongs_to_many :assumptions, uniq: true
   belongs_to :user
 
   validates :name, presence: true, uniqueness: true
   validates :research_questions, presence: true
+
+
 
   def evaluate(analysis)
     assumptions.where.not(type: QueryAssumption).each do |a|
@@ -35,7 +40,16 @@ class Model < ActiveRecord::Base
     queries.flatten.uniq
   end
 
-  def int_name
-    name.parameterize.underscore
+
+  def graph_representation
+    rules = []
+    rules << research_questions.map { |rq| "#{rq.int_name} -> #{self.int_name}" }
+    assumptions.each do |a|
+      rules << a.graph_representation(self)
+    end
+    rules
   end
+
+
+
 end

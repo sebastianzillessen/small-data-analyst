@@ -33,6 +33,10 @@ class TestAssumption < Assumption
     false
   end
 
+  def graph_representation(parent)
+    ["#{parent.int_name} -> #{self.int_name}"]
+  end
+
   private
   def generate_dataset_test_assumptions_results
     Dataset.all.each do |d|

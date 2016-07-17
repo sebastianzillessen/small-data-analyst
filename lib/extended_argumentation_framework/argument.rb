@@ -1,13 +1,10 @@
 module ExtendedArgumentationFramework
   class Argument
+    include IntName
     attr_accessor :name
 
     def initialize(name)
       @name = name
-    end
-
-    def int_name
-      name.parameterize.underscore
     end
 
     def to_s
