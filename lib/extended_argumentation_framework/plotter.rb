@@ -3,12 +3,17 @@ module ExtendedArgumentationFramework
     def initialize(framework, options={})
       @framework = framework
       @options = {
-          arguments_hold: []
+          arguments_hold: [],
+          plot_acceptability: true
       }
       @options.merge!(options)
 
-      @arguments_hold = options[:arguments_hold].map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
-      @solver = Solver.new(framework)
+      if @options[:plot_acceptability]
+        @arguments_hold = options[:arguments_hold].map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+        @solver = Solver.new(framework)
+      else
+        @arguments_hold=[]
+      end
     end
 
     def to_png
@@ -30,7 +35,7 @@ module ExtendedArgumentationFramework
       @nodes_undec = []
       @framework.arguments.reject { |a| @arguments_hold.include?(a) }.each do |a|
 
-        res = @solver.acceptable_arguments(@arguments_hold, a)
+        res = @options[:plot_acceptability] ? @solver.acceptable_arguments(@arguments_hold, a) : nil
         if (res.nil?)
           @nodes_undec << a.int_name
         elsif res
