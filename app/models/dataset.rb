@@ -1,8 +1,10 @@
 require 'csv'
 class Dataset < ActiveRecord::Base
   has_many :analyses, dependent: :destroy
+  has_many :dataset_test_assumption_results, dependent: :destroy
   belongs_to :user
   serialize :columns, Array
+
   attr_accessor :data_file
 
   validates :data, presence: true
@@ -12,6 +14,8 @@ class Dataset < ActiveRecord::Base
 
   before_validation :parse_data_file
   before_validation :parse_columns, if: :data_changed?
+  after_save :update_dataset_test_assumptions_results
+  after_create :generate_dataset_test_assumptions_results
 
   def rows
     @rows ||= CSV.parse(data).drop(1)
@@ -20,6 +24,19 @@ class Dataset < ActiveRecord::Base
   end
 
   private
+
+  def generate_dataset_test_assumptions_results
+    TestAssumption.all.each do |ta|
+      self.dataset_test_assumption_results << DatasetTestAssumptionResult.create(dataset: self, test_assumption: ta)
+    end
+  end
+
+  def update_dataset_test_assumptions_results
+    if (self.changed & ['data', 'columns']).any?
+      dataset_test_assumption_results.each { |dtar| dtar.update }
+    end
+  end
+
 
   def parse_columns
     return unless data

@@ -42,5 +42,3 @@ en:
         argument_inverted: "Check this option to indicate, that the assumption is inverted. This means, that if the
           actual test on the assumption returns that the argument does not hold and this option is enabled, then the
           argument will hold and visversa."
-        critical: "All critical assumptions that are somehow related to a model must hold so that this model is a
-          possible model for a research question."

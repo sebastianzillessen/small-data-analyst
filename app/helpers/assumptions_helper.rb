@@ -1,9 +1,4 @@
 module AssumptionsHelper
-  def glyphicon_critcal(assumption, opts={})
-    if assumption.critical?
-      Haml::Engine.new(".glyphicon.glyphicon-warning-sign{data:{toggle:'tooltip',placement:'bottom'},title: 'This is a critical assumption'}", opts).render
-    end
-  end
 
   def glyphicon_type(assumption, opts={})
     clazz= ""

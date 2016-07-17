@@ -1,21 +1,21 @@
 class BlankAssumption < Assumption
   has_and_belongs_to_many :assumptions,
                           class_name: 'Assumption',
-                          join_table: :assumption_attacks,
-                          foreign_key: :attacked_id,
-                          association_foreign_key: :attacker_id,
+                          join_table: :required_assumptions,
+                          foreign_key: :parent_id,
+                          association_foreign_key: :child_id,
                           uniq: true
   validate :prevent_circular_dependencies
 
   def evaluate(analysis)
-    !assumptions.map { |a| a.evaluate(analysis) }.uniq.tap { |x| puts x }.include?(false)
+    !assumptions.map { |a| a.evaluate(analysis) }.uniq.include?(false)
   end
 
-  def evaluate_critical(analysis)
-    @evaluate_critical ||= begin
+  def evaluate(analysis)
+    @evaluate ||= begin
       result = true
-      assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        if (!a.evaluate_critical(analysis))
+      assumptions.where.not(type: QueryAssumption).each do |a|
+        if (!a.evaluate(analysis))
           result = false
         end
       end
@@ -23,17 +23,25 @@ class BlankAssumption < Assumption
     end
   end
 
-  def get_critical_queries(analysis)
+  def get_queries(analysis)
     queries = []
-    if (evaluate_critical(analysis))
-      # get sub critical queries
-      assumptions.select(&:critical).select { |a| a.class != QueryAssumption }.each do |a|
-        queries << a.get_critical_queries(analysis)
+    if (evaluate(analysis))
+      # get sub queries
+      assumptions.where.not(type: QueryAssumption).each do |a|
+        queries << a.get_queries(analysis)
       end
-      queries << assumptions.select(&:critical).select { |a| a.class == QueryAssumption }
+      queries << assumptions.where(type: QueryAssumption)
     end
-
     queries.flatten.uniq
+  end
+
+  def graph_representation(parent)
+    rules = []
+    self.assumptions.each do |a|
+      rules << "#{parent.int_name} -> #{self.int_name}"
+      rules << a.graph_representation(self)
+    end
+    rules.flatten.uniq
   end
 
   private

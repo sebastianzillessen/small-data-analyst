@@ -2,7 +2,6 @@ ruby '2.2.4'
 # ruby 1.9.3 required, as gem `rinruby` only supports ruby 1.9.3
 
 source 'https://rubygems.org'
-source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -43,6 +42,8 @@ gem 'puma'
 gem 'foreman'
 gem 'delayed_job_active_record'
 
+gem 'ruby-graphviz'
+
 #gem 'rack-timeout'
 
 
@@ -58,7 +59,10 @@ gem 'cancancan'
 gem 'data_migrate'
 
 # heroku stuff
-gem 'rails_12factor', group: :production
+group :production do
+  gem 'rails_12factor'
+  gem 'workless'
+end
 
 
 source 'https://rails-assets.org' do

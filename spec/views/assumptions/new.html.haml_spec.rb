@@ -13,7 +13,6 @@ RSpec.describe "assumptions/new", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#blank_assumption_name[name=?]", "blank_assumption[name]"
         assert_select "textarea#blank_assumption_description[name=?]", "blank_assumption[description]"
-        assert_select "input#blank_assumption_critical[name=?]", "blank_assumption[critical]"
       end
     end
   end
@@ -29,7 +28,6 @@ RSpec.describe "assumptions/new", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#query_assumption_name[name=?]", "query_assumption[name]"
         assert_select "textarea#query_assumption_description[name=?]", "query_assumption[description]"
-        assert_select "input#query_assumption_critical[name=?]", "query_assumption[critical]"
         assert_select "textarea#query_assumption_question[name=?]", "query_assumption[question]"
 
       end
@@ -46,7 +44,6 @@ RSpec.describe "assumptions/new", type: :view do
       assert_select "form[action=?][method=?]", assumption_path(@assumption), "post" do
         assert_select "input#test_assumption_name[name=?]", "test_assumption[name]"
         assert_select "textarea#test_assumption_description[name=?]", "test_assumption[description]"
-        assert_select "input#test_assumption_critical[name=?]", "test_assumption[critical]"
         assert_select "input#test_assumption_type[name=?]", "test_assumption[type]"
         assert_select "input#test_assumption_required_dataset_fields[name=?]", "test_assumption[required_dataset_fields][]"
         assert_select "textarea#test_assumption_r_code[name=?]", "test_assumption[r_code]"

@@ -1,0 +1,18 @@
+- if analysis.done?
+  - if analysis.frameworks.any?
+    - analysis.frameworks.each do |arguments, set|
+      -framework = set[:framework]
+      -excluded_models = set[:excluded_models]
+      -plotter = set[:plotter]
+      %li.list-group-item
+        .list-group-item-heading
+          %b= framework.name
+        .list-group-item-text
+          .resize-on-click.text-center
+            = image_tag(plotter.to_png, class: 'fit-parent')
+  - else
+    %li.list-group-item.list-group-item-warning
+      No Frameworks have been evaluated
+- else
+  %li.list-group-item.list-group-item-warning
+    The detailed report is only available, once the analysis is complete

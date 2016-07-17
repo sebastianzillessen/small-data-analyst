@@ -13,7 +13,8 @@ $(function () {
     }
     var options = $(this).data('before-submit');
     $.each(options, function (key, id) {
-      href += key + "=" + encodeURI($(id).val()) + "&";
+      console.log($(id).val());
+      href += key + "=" + encodeURIComponent($(id).val()) + "&";
     });
     $(this).attr('href', href);
     e.preventDefault();

@@ -3,5 +3,6 @@ FactoryGirl.define do
     result true
     query_assumption
     analysis
+    stage 1
   end
 end

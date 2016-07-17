@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627144403) do
+ActiveRecord::Schema.define(version: 20160717080340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,26 +24,21 @@ ActiveRecord::Schema.define(version: 20160627144403) do
     t.datetime "updated_at",                          null: false
     t.integer  "dataset_id"
     t.integer  "user_id"
+    t.integer  "stage",                default: 0
   end
 
   add_index "analyses", ["dataset_id"], name: "index_analyses_on_dataset_id", using: :btree
   add_index "analyses", ["research_question_id"], name: "index_analyses_on_research_question_id", using: :btree
   add_index "analyses", ["user_id"], name: "index_analyses_on_user_id", using: :btree
 
-  create_table "analyses_models", force: :cascade do |t|
-    t.integer "model_id"
-    t.integer "analysis_id"
-  end
-
   create_table "assumption_attacks", force: :cascade do |t|
-    t.integer "attacker_id"
-    t.integer "attacked_id"
+    t.integer "child_id"
+    t.integer "parent_id"
   end
 
   create_table "assumptions", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.boolean  "critical"
     t.string   "type"
     t.text     "required_dataset_fields"
     t.boolean  "fail_on_missing"
@@ -79,6 +74,7 @@ ActiveRecord::Schema.define(version: 20160627144403) do
   end
 
   add_index "dataset_test_assumption_results", ["assumption_id"], name: "index_dataset_test_assumption_results_on_assumption_id", using: :btree
+  add_index "dataset_test_assumption_results", ["dataset_id", "assumption_id"], name: "uniq_dataset_assumption", unique: true, using: :btree
   add_index "dataset_test_assumption_results", ["dataset_id"], name: "index_dataset_test_assumption_results_on_dataset_id", using: :btree
 
   create_table "datasets", force: :cascade do |t|
@@ -124,6 +120,24 @@ ActiveRecord::Schema.define(version: 20160627144403) do
     t.integer "research_question_id"
   end
 
+  create_table "plots", force: :cascade do |t|
+    t.string   "filename"
+    t.integer  "object_id"
+    t.string   "object_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "plots", ["object_type", "object_id"], name: "index_plots_on_object_type_and_object_id", using: :btree
+
+  create_table "possible_models", force: :cascade do |t|
+    t.integer  "analysis_id"
+    t.integer  "model_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "rejected",    default: false
+  end
+
   create_table "query_assumption_results", force: :cascade do |t|
     t.boolean  "result"
     t.integer  "assumption_id"
@@ -131,10 +145,28 @@ ActiveRecord::Schema.define(version: 20160627144403) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.boolean  "ignore",        default: false
+    t.integer  "stage"
   end
 
   add_index "query_assumption_results", ["analysis_id"], name: "index_query_assumption_results_on_analysis_id", using: :btree
   add_index "query_assumption_results", ["assumption_id"], name: "index_query_assumption_results_on_assumption_id", using: :btree
+
+  create_table "reasons", force: :cascade do |t|
+    t.integer  "argument_id"
+    t.string   "argument_type"
+    t.integer  "possible_model_id"
+    t.integer  "stage"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "reasons", ["argument_type", "argument_id"], name: "index_reasons_on_argument_type_and_argument_id", using: :btree
+  add_index "reasons", ["possible_model_id"], name: "index_reasons_on_possible_model_id", using: :btree
+
+  create_table "required_assumptions", force: :cascade do |t|
+    t.integer "child_id"
+    t.integer "parent_id"
+  end
 
   create_table "research_questions", force: :cascade do |t|
     t.string   "name"

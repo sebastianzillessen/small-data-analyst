@@ -1,10 +1,9 @@
 - options ||= {}
-.panel{class: assumption.critical? ? 'panel-warning' : 'panel-default'}
+.panel.panel-default
   .panel-heading
 
     = assumption.name
-    = glyphicon_critcal(assumption)
-    .label.pull-right{class: assumption.critical? ? 'label-warning' : 'label-default'}
+    .label.pull-right.label-default
       = glyphicon_type(assumption)
       = assumption.type
 

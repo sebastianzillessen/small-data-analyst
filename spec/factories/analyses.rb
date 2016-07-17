@@ -16,26 +16,26 @@ FactoryGirl.define do
   factory :kaplan_meier_model, parent: :model do
     sequence(:name) { |n| "Kaplan Meier #{n}" }
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(critical: true, name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(critical: false, name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
+      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
+      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
     end
   end
 
   factory :cox_model, parent: :model do
     sequence(:name) { |n| "Cox Proportional Hazard #{n}" }
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(critical: true, name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(critical: false, name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
-      m.assumptions << TestAssumption.find_or_create_by(critical: true, name: "a3", description: "proportional hazards", r_code: "result <- FALSE")
+      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
+      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
+      m.assumptions << TestAssumption.find_or_create_by(name: "a3", description: "proportional hazards", r_code: "result <- FALSE")
     end
   end
 
   factory :weibul_model, parent: :model do
     sequence(:name) { |n| "Weibull #{n}" }
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(critical: true, name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(critical: false, name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
-      m.assumptions << TestAssumption.find_or_create_by(critical: true, name: "a4", description: "linear relation", r_code: "result <- TRUE")
+      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
+      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
+      m.assumptions << TestAssumption.find_or_create_by(name: "a4", description: "linear relation", r_code: "result <- TRUE")
     end
   end
 

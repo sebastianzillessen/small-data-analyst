@@ -5,14 +5,13 @@
     = f.inputs 'General' do
       = f.input :name
       = f.input :description
-      = f.input :critical, hint: t('.hint.critical')
       = f.input :type, as: :hidden
 
     = f.inputs 'Assumptions and models requiring this assumption to hold' do
       .help-block
         By selecting one or more of the models and assumptions below, you can build up assumption trees.
       = f.input :required_by, as: :select, multiple: true,
-        collection: BlankAssumption.order(:critical, :type, :name).all.reject{|a| a == @assumption}.select { |a| can? :read, a }.map{|a| [a.to_s, a.id]},
+        collection: BlankAssumption.order(:type, :name).all.reject{|a| a == @assumption}.select { |a| can? :read, a }.map{|a| [a.to_s, a.id]},
         include_blank: true,
         label: 'Assumptions requiring this assumption to hold'
       = f.input :models, as: :select, multiple: true,

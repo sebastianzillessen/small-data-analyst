@@ -1,0 +1,12 @@
+- unless analysis.done?
+  .panel.panel-info
+    .panel-heading
+      Currently Possible Models
+    %ul.list-group#possible_models
+      = render 'analyses/possible_models', models: analysis.remaining_models
+- if analysis.stage > 1
+  .panel.panel-default
+    .panel-heading
+      Possible Models after AS1
+    %ul.list-group
+      = render 'analyses/possible_models', models: analysis.possible_models_after_stage(1).map(&:model)

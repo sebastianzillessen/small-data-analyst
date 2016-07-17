@@ -1,8 +1,9 @@
 module AnalysesHelper
-  def collapse(id, parent=nil)
-    parent = id+"_parent" if parent.nil?
+  def collapse(id, options={})
+    options = {expanded: true, parent: id+"_parent"}.merge(options)
+
     Haml::Engine.new(<<-TEXT
-%a.pull-right(data-toggle="collapse" data-parent="##{parent}" href="##{id}" aria-expanded="true" aria-controls="#{id}")
+%a.pull-right(data-toggle="collapse" data-parent="##{options[:parent]}" href="##{id}" aria-expanded="#{options[:expanded]}" aria-controls="#{id}" class="#{!options[:expanded] ? 'collapsed' : ''}")
   .glyphicon.glyphicon-chevron-up
     TEXT
     ).render

@@ -1,5 +1,5 @@
 = semantic_form_for question, remote: true do |f|
   = f.inputs do
-    = f.input :result, as: :radio, collection: {"Yes": true, "No": false, "Not answered": -1}, class:"side-toggle"
+    = f.input :result, as: :radio, collection: {"Yes": true, "No": false}, class:"side-toggle"
   = f.actions do
     = f.action :submit, :as => :input

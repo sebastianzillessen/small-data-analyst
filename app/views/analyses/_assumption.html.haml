@@ -1,24 +1,21 @@
 - holds = assumption.evaluate(analysis)
-- style = if holds.nil?
-  - 'text-muted'
+- color,icon = if holds.nil?
+  - ['text-muted', 'minus-sign']
 - elsif holds
-  - 'text-success'
+  - ['text-success', 'ok-sign']
 - else
-  - 'text-danger'
+  - ['text-danger', 'remove-sign']
 
-.list-group-item-heading
-
-  - if holds.nil?
-    .glyphicon.glyphicon-minus-sign(class="#{style}")
-  - elsif holds
-    .glyphicon.glyphicon-ok-sign(class="#{style}")
-  - else
-    .glyphicon.glyphicon-remove-sign(class="#{style}")
-
-  %span(class="#{style}")
+.list-group-item-heading(class="#{color}"){data:{holds: holds}}
+  .glyphicon(class="glyphicon-#{icon}")
+  %span
     = assumption.name
+    - desc = assumption.is_a?(QueryAssumption) ? assumption.question : assumption.description
+    - if desc.present?
+      %br
+      = desc
+
   .pull-right
-    =glyphicon_critcal(assumption)
     =glyphicon_type(assumption)
 - if assumption.is_a?(BlankAssumption) && assumption.assumptions.any?
   .list-group-item-text

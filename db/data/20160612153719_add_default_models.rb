@@ -17,10 +17,6 @@ class AddDefaultModels < ActiveRecord::Migration
     m2 = Model.create(name: 'Cox Proportional Hazards', research_questions: [o1])
     m3 = Model.create(name: 'Weibull', research_questions: [o1])
 
-    m1.research_questions << o1
-    m2.research_questions << o1
-    m3.research_questions << o1
-
     # Create assumptions a1, a2, a3, a4
     # TODO: Fill in proper code
     a1 = QueryAssumption.create(name: "a1", critical: true, description: "non informative censoring", question: "Has non-informative censoring been in place?")
