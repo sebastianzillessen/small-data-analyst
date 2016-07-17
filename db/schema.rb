@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717063656) do
+ActiveRecord::Schema.define(version: 20160717080340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,16 @@ ActiveRecord::Schema.define(version: 20160717063656) do
     t.integer "model_id"
     t.integer "research_question_id"
   end
+
+  create_table "plots", force: :cascade do |t|
+    t.string   "filename"
+    t.integer  "object_id"
+    t.string   "object_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "plots", ["object_type", "object_id"], name: "index_plots_on_object_type_and_object_id", using: :btree
 
   create_table "possible_models", force: :cascade do |t|
     t.integer  "analysis_id"

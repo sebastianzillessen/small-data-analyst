@@ -1,5 +1,9 @@
 class Assumption < ActiveRecord::Base
   default_scope { order('name DESC') }
+
+  include IntName
+  include InvalidatePlots
+
   #TODO: Make Assumption abstract
   #self.abstract_class = true
 
@@ -35,12 +39,12 @@ class Assumption < ActiveRecord::Base
     []
   end
 
-  def int_name
-    name.parameterize.underscore
-  end
-
   def to_s
     "#{name} (#{self.class})"
+  end
+
+  def graph_representation(parent)
+    raise "Must be overwritten but #{self.inspect},#{parent.inspect} did not do so."
   end
 
   def get_associated_models

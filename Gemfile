@@ -41,6 +41,7 @@ gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
 gem 'delayed_job_active_record'
+
 gem 'ruby-graphviz'
 
 #gem 'rack-timeout'
@@ -58,7 +59,10 @@ gem 'cancancan'
 gem 'data_migrate'
 
 # heroku stuff
-gem 'rails_12factor', group: :production
+group :production do
+  gem 'rails_12factor'
+  gem 'workless'
+end
 
 
 source 'https://rails-assets.org' do

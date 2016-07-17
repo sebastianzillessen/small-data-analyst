@@ -35,6 +35,15 @@ class BlankAssumption < Assumption
     queries.flatten.uniq
   end
 
+  def graph_representation(parent)
+    rules = []
+    self.assumptions.each do |a|
+      rules << "#{parent.int_name} -> #{self.int_name}"
+      rules << a.graph_representation(self)
+    end
+    rules.flatten.uniq
+  end
+
   private
 
   def prevent_circular_dependencies
