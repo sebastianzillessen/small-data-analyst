@@ -13,7 +13,6 @@ require 'devise'
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
 
 
-Capybara.javascript_driver = :poltergeist
 
 
 # Add additional requires below this line. Rails is not loaded until this point!

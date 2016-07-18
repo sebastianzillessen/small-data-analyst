@@ -180,8 +180,8 @@ describe "creating a new analysis" do
               end
             end
 
-            expect(page).to have_css('.list-group-item-danger .list-group-item-heading.text-success', text: "CD1_mild")
-            expect(page).to have_css('.list-group-item-danger .list-group-item-heading.text-danger', text: "a3")
+            expect(page).to have_css('.list-group-item-danger .text-success', text: "CD1_mild")
+            expect(page).to have_css('.list-group-item-danger .text-danger', text: "a3")
           end
 
           within '#detailed_argumentation_view' do
@@ -251,6 +251,7 @@ describe "creating a new analysis" do
             end
             # should have removed both
           end
+
           expect(page).not_to have_css('#open_questions')
           expect(page).to have_content("Analysis is now complete.")
           expect(page).not_to have_css('form.query_assumption_result')
@@ -283,8 +284,8 @@ describe "creating a new analysis" do
             end
             subject.declined_models.each do |m|
               within "#model_#{m.id}.list-group-item-danger" do
-                expect(page).to have_css('.list-group-item-heading.text-success', count: 1)
-                expect(page).to have_css('.list-group-item-heading.text-success', text: "CD1_mild")
+                expect(page).to have_css('.list-group-item-heading .text-success', count: 1)
+                expect(page).to have_css('.list-group-item-heading .text-success', text: "CD1_mild")
               end
             end
           end
@@ -342,7 +343,6 @@ describe "creating a new analysis" do
             # should have removed both
           end
 
-          expect(page).to have_content("Analysis is now complete.")
           expect(page).not_to have_css('#open_questions')
           expect(page).not_to have_css('form.query_assumption_result')
           within '#ignored_questions_parent' do
@@ -375,10 +375,10 @@ describe "creating a new analysis" do
             end
             subject.declined_models.each do |m|
               within "#model_#{m.id}.list-group-item-danger" do
-                expect(page).to have_css('.list-group-item-heading.text-success', count: 1)
+                expect(page).to have_css('.list-group-item-heading .text-success', count: 1)
               end
-              expect(page).to have_css('.list-group-item-danger .list-group-item-heading.text-success', text: "CD1_mild")
-              expect(page).to have_css('.list-group-item-danger .list-group-item-heading.text-success', text: "CD2_predict")
+              expect(page).to have_css('.list-group-item-danger .list-group-item-heading .text-success', text: "CD1_mild")
+              expect(page).to have_css('.list-group-item-danger .list-group-item-heading .text-success', text: "CD2_predict")
             end
           end
 
