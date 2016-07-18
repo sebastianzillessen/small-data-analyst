@@ -9,6 +9,8 @@ class PreferenceArgument < ActiveRecord::Base
 
   validates :order_string, presence: true
 
+  # TODO: mutually exclusive assumptions
+
   def order_string
     puts "loading order_string with #{self.id} #{model_orders.length}"
     self.model_orders.map { |mo| mo.models.map { |m| "model_#{m.id}" }.join(",") }.join(",,").tap { |x| puts x }

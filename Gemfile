@@ -77,6 +77,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'poltergeist'
   gem 'teaspoon-jasmine'
   gem 'pry'
   gem 'factory_girl_rails'
@@ -86,6 +87,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'capybara-screenshot'
   gem "codeclimate-test-reporter", require: nil
 end
 
