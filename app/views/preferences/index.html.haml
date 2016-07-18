@@ -1,19 +1,30 @@
 %h1 Listing preferences
 
-%table
+%table.table.table-striped
   %thead
     %tr
+      %th Name
+      %th Research Question
+      %th Stage
+      %th Global
+      %th #Model orders
+      %th Created
       %th
-      %th
-      %th
-
   %tbody
     - @preferences.each do |preference|
-      %tr
-        %td= link_to 'Show', preference
-        %td= link_to 'Edit', edit_preference_path(preference)
-        %td= link_to 'Destroy', preference, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %tr[preference]
+        %td=preference.name
+        %td=preference.research_question.name
+        %td=preference.stage
+        %td=preference.global? ? "Global": ""
+        %td=preference.preference_arguments.count
+        %td=l(preference.created_at, format: :short)
+        %td
+          = link_icon_to 'open', preference, title: "Show", class: 'btn-xs' if can? :read, preference
+          = link_icon_to 'edit', edit_preference_path(preference), title: "Edit", class: 'btn-xs' if can? :edit, preference
+          = link_icon_to 'trash',preference, method: :delete, remote: true, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, preference
 
 %br
 
-= link_to 'New Preference', new_preference_path
+= link_to 'New Preference', new_preference_path, class: 'btn btn-success pull-right' if can? :create, Preference
+

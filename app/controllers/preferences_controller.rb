@@ -60,7 +60,7 @@ class PreferencesController < ApplicationController
     @preference.destroy
     respond_to do |format|
       format.html { redirect_to preferences_url, notice: 'Preference was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 

@@ -10,14 +10,14 @@
 
   %tbody
     - @research_questions.each do |research_question|
-      %tr
+      %tr[research_question]
         %td= research_question.name
         %td= research_question.description
         %td= research_question.private
         %td
           = link_icon_to 'open', research_question, class: 'btn-xs', title: "Show" if can? :read, research_question
           = link_icon_to 'edit', edit_research_question_path(research_question), class: 'btn-xs',title: "Edit" if can? :edit, research_question
-          = link_icon_to 'trash',research_question, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, research_question
+          = link_icon_to 'trash',research_question, remote: true, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, research_question
 
 = link_icon_to 'plus', new_research_question_path, class: 'btn-success pull-right', text: 'New Research Question' if can? :create, ResearchQuestion
 

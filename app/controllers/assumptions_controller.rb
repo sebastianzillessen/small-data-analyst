@@ -60,7 +60,7 @@ class AssumptionsController < ApplicationController
     @assumption.destroy
     respond_to do |format|
       format.html { redirect_to assumptions_url, notice: 'Assumption was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 

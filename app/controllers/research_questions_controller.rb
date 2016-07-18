@@ -57,7 +57,7 @@ class ResearchQuestionsController < ApplicationController
     @research_question.destroy
     respond_to do |format|
       format.html { redirect_to research_questions_url, notice: 'Research question was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 
