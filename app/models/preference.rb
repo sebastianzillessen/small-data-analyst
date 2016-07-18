@@ -7,6 +7,8 @@ class Preference < ActiveRecord::Base
   validates :stage, presence: true
   validates :preference_arguments, presence: true
   validates :research_question, presence: true
+  # TODO: Validate that only models that are applicable on a research question can be used in the preference_arguments
+
 
   accepts_nested_attributes_for :preference_arguments,
                                 allow_destroy: true

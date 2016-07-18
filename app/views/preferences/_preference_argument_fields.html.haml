@@ -12,6 +12,7 @@
             Remaining available models that can be used to express an order
           .panel-body
             .sortable#source{data: {connect_with: "#model-order-#{random_id} .sortable#target", containment: "#model-order-#{random_id}"}}
+              -# TODO: limit models to the ones applyable regarding the seletece research question only
               - (Model.order(:name).all-f.object.model_orders.map(&:models).flatten).select { |a| can? :read, a }.each do |m|
                 .label.label-default[m]
                   = m.name
