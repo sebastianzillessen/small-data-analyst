@@ -1,3 +1,5 @@
 %li.list-group-item[question]
-  = question.query_assumption.question
-  = render "query_assumption_results/form", question: question
+  %p
+    %b Question:
+    = question.query_assumption.question
+  %p= render "query_assumption_results/form", question: question

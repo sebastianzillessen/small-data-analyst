@@ -1,10 +1,11 @@
+@import "variables";
+
+
 img {
   &.fit-parent {
     max-width: 100%;
   }
 }
-
-$transparent-grey: rgba(144, 144, 144, 0.4);
 
 .resize-on-click {
   transition: all .2s ease-in-out;

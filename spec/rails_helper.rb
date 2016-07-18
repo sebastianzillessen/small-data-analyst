@@ -10,15 +10,10 @@ require 'capybara/rails'
 require 'capybara/poltergeist'
 require 'devise'
 
-require 'support/factory_girl'
-require 'support/controller_macros'
-require 'support/request_macros'
-require 'support/feature_login'
-require 'support/chosen_select'
-require 'support/capybara_dsl'
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
+
 
 Capybara.javascript_driver = :poltergeist
-
 
 
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -82,9 +77,9 @@ RSpec.configure do |config|
   config.include Capybara::DSL, :type => :feature
 
 
-
   config.include Warden::Test::Helpers
   config.use_transactional_fixtures = false
+
   config.before :suite do
     Warden.test_mode!
   end
@@ -92,10 +87,16 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-
-  config.before(:each) {
+  config.before(:each) do
     Delayed::Worker.delay_jobs = false
-  }
+  end
+
+  config.before(:suite) do
+    # clean tmp/capybara
+    require 'fileutils'
+
+    FileUtils.rm_rf(Rails.root.join("tmp/capybara/"))
+  end
 end
 
 

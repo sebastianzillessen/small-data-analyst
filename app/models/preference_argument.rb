@@ -12,12 +12,10 @@ class PreferenceArgument < ActiveRecord::Base
   # TODO: mutually exclusive assumptions
 
   def order_string
-    puts "loading order_string with #{self.id} #{model_orders.length}"
-    self.model_orders.map { |mo| mo.models.map { |m| "model_#{m.id}" }.join(",") }.join(",,").tap { |x| puts x }
+    self.model_orders.map { |mo| mo.models.map { |m| "model_#{m.id}" }.join(",") }.join(",,")
   end
 
   def order_string=(models_as_strings)
-    puts "trigger update with #{models_as_strings}"
     mo=[]
     models_as_strings.split(/,,+/).each_with_index do |stage, index|
       models = Model.where(id: stage.split(",").map { |m| m.gsub(/model_/, "") })
@@ -32,5 +30,23 @@ class PreferenceArgument < ActiveRecord::Base
 
   def models_per_index(index)
     models_grouped[index]
+  end
+
+  def rules
+    res = [assumption.name]
+    # add attacks on all edges
+    edges_to_be_attacked = []
+    model_orders.sort_by { |mo| mo.index }.each do |mo|
+      mo.models.each do |lower_module|
+        model_orders.includes(:models).select { |higher| higher.index > mo.index }.map(&:models).flatten.each do |higher|
+          edges_to_be_attacked << "#{lower_module.int_name} -> #{higher.int_name}"
+        end
+      end
+    end
+    edges_to_be_attacked.each do |e|
+      res << "#{assumption.name} -> (#{e})"
+    end
+
+    res
   end
 end

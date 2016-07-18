@@ -8,8 +8,16 @@ class PossibleModel < ActiveRecord::Base
 
 
   def reject(stage, *reasons)
-    reasons= reasons.map { |r| r.is_a?(Assumption) ? r : Assumption.find_or_create_by(name: r.to_s) }
-    puts "Reject #{model} because of #{reasons}"
+    puts "Rejecting #{model.name} because of #{reasons}"
+    reasons= reasons.map do |r|
+      if r.is_a?(ExtendedArgumentationFramework::Argument) || r.is_a?(String)
+        Assumption.find_by(name: r.to_s)
+      elsif r.is_a?(Assumption) || r.is_a?(Preference)
+        r
+      else
+        raise RuntimeError, "Don't know how to handle #{r}"
+      end
+    end
     self.rejected = true
     reasons.each do |r|
       self.reasons << Reason.new(argument: r, stage: stage)

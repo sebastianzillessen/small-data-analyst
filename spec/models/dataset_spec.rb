@@ -52,16 +52,12 @@ RSpec.describe Dataset, type: :model do
     end
 
     it 'should call update on the dataset_result' do
-      expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).twice
+      subject.send(:generate_dataset_test_assumptions_results)
+      expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update)
       subject.data = data
       subject.save
     end
 
+  end
 
-  end
-  it 'should have cached results for all datasets in the system' do
-    test_assumption = create(:test_assumption)
-    subject = create(:dataset)
-    expect(subject.dataset_test_assumption_results.map(&:test_assumption)).to include test_assumption
-  end
 end

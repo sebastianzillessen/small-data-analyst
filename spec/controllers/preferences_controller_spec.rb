@@ -19,6 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PreferencesController, type: :controller do
+  login_clinician
 
   # This should return the minimal set of attributes required to create a valid
   # Preference. As you add validations to Preference, be sure to

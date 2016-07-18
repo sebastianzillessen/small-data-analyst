@@ -49,6 +49,9 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    bullet (5.1.1)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.10.0)
     byebug (9.0.5)
     cancancan (1.15.0)
     capybara (2.7.1)
@@ -77,6 +80,7 @@ GEM
     concurrent-ruby (1.0.2)
     data_migrate (2.1.0)
       rails (>= 4.0)
+    database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     delayed_job (4.1.2)
       activesupport (>= 3.0, < 5.1)
@@ -176,6 +180,8 @@ GEM
       slop (~> 3.4)
     puma (3.4.0)
     rack (1.6.4)
+    rack-mini-profiler (0.10.1)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.6)
@@ -292,6 +298,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    uniform_notifier (1.10.0)
     warden (1.2.6)
       rack (>= 1.0)
     web-console (2.3.0)
@@ -314,6 +321,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bullet
   byebug
   cancancan
   capybara
@@ -322,6 +330,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   coffee-rails
   data_migrate
+  database_cleaner
   delayed_job_active_record
   devise
   factory_girl_rails
@@ -339,6 +348,7 @@ DEPENDENCIES
   poltergeist
   pry
   puma
+  rack-mini-profiler
   rails (>= 4.0.0)
   rails-assets-chosen!
   rails_12factor

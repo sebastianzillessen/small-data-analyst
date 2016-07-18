@@ -4,7 +4,7 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
   let!(:dataset) { create(:dataset) }
   let!(:test_assumption) { create(:test_assumption) }
 
-  subject { DatasetTestAssumptionResult.where(dataset: dataset, test_assumption: test_assumption).first }
+  subject { DatasetTestAssumptionResult.create(dataset: dataset, test_assumption: test_assumption) }
 
   it { should respond_to(:dataset) }
   it { should respond_to(:test_assumption) }
@@ -18,6 +18,7 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
 
   describe 'test_assumption reference' do
     let(:assumption) { create(:assumption) }
+    subject { DatasetTestAssumptionResult.create(dataset: dataset, test_assumption: test_assumption) }
     it 'should be possible to add TestAssumptions' do
       subject.test_assumption = test_assumption
       expect(subject).to be_valid

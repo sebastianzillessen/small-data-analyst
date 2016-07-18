@@ -24,7 +24,7 @@ end
 
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara.default_max_wait_time = 10
+  Capybara.default_max_wait_time = 60
   driver = Capybara::Poltergeist::Driver.new(app, debug: false, window_size: [1100, 960], timeout: 60)
   driver
 end

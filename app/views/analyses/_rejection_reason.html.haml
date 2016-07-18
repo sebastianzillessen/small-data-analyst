@@ -1,0 +1,15 @@
+%ul.list-group
+  - preferences = rejection.reasons.where(argument_type: Preference).map(&:argument)
+  - preferences.each do |preference|
+    %li.list-group-item.list-group-item-default
+      .list-group-item-heading
+        .glyphicon.glyphicon-sort-by-attributes
+        %span
+          Preference:
+          = preference.name
+          (Stage: #{preference.stage}, global: #{preference.global? ? 'Yes' : 'No'})
+          - argument_holding = rejection.reasons.where(argument: preference.arguments).map(&:argument)
+          %p
+            - preference.preference_arguments.where(assumption: argument_holding).each do |pa|
+              = render 'preferences/preference_argument', pa: pa
+

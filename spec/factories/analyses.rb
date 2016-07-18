@@ -14,28 +14,28 @@ FactoryGirl.define do
   end
 
   factory :kaplan_meier_model, parent: :model do
-    sequence(:name) { |n| "Kaplan Meier #{n}" }
+    name "Kaplan Meier"
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
+      m.assumptions << (QueryAssumption.find_by(name: "a1") || QueryAssumption.create(name: "a1", question: "non informative censoring"))
+      m.assumptions << (TestAssumption.find_by(name: "a2") || TestAssumption.create(name: "a2", description: "heavy censoring", r_code: "result <- TRUE"))
     end
   end
 
   factory :cox_model, parent: :model do
-    sequence(:name) { |n| "Cox Proportional Hazard #{n}" }
+    name "Cox Proportional Hazard"
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
-      m.assumptions << TestAssumption.find_or_create_by(name: "a3", description: "proportional hazards", r_code: "result <- FALSE")
+      m.assumptions << (QueryAssumption.find_by(name: "a1") || QueryAssumption.create(name: "a1", question: "non informative censoring"))
+      m.assumptions << (TestAssumption.find_by(name: "a2") || TestAssumption.create(name: "a2", description: "heavy censoring", r_code: "result <- TRUE"))
+      m.assumptions << (TestAssumption.find_by(name: "a3") || TestAssumption.create(name: "a3", description: "proportional hazards", r_code: "result <- FALSE"))
     end
   end
 
   factory :weibul_model, parent: :model do
-    sequence(:name) { |n| "Weibull #{n}" }
+    name "Weibull"
     after :build do |m|
-      m.assumptions << QueryAssumption.find_or_create_by(name: "a1", question: "non informative censoring")
-      m.assumptions << TestAssumption.find_or_create_by(name: "a2", description: "heavy censoring", r_code: "result <- TRUE")
-      m.assumptions << TestAssumption.find_or_create_by(name: "a4", description: "linear relation", r_code: "result <- TRUE")
+      m.assumptions << (QueryAssumption.find_by(name: "a1") || QueryAssumption.create(name: "a1", question: "non informative censoring"))
+      m.assumptions << (TestAssumption.find_by(name: "a2") || TestAssumption.create(name: "a2", description: "heavy censoring", r_code: "result <- TRUE"))
+      m.assumptions << (TestAssumption.find_by(name: "a4") || TestAssumption.create(name: "a4", description: "linear relation", r_code: "result <- TRUE"))
     end
   end
 
@@ -50,9 +50,9 @@ FactoryGirl.define do
     name "Survival Analysis"
     after :build do |rq|
       # assign Kaplan Meier, Cox Proportional Hazard & Weibul
-      rq.models << create(:kaplan_meier_model)
-      rq.models << create(:cox_model)
-      rq.models << create(:weibul_model)
+      rq.models << (Model.find_by(name: "Weibull") || create(:weibul_model))
+      rq.models << (Model.find_by(name: "Kaplan Meier")|| create(:kaplan_meier_model))
+      rq.models << (Model.find_by(name: "Cox Proportional Hazard") || create(:cox_model))
     end
   end
   factory :analysis_survival, class: Analysis do
