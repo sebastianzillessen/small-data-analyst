@@ -36,9 +36,6 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
         expect(subject.test_assumption).to eq test_assumption
       end
 
-      it 'should return the result' do
-        expect(test_assumption.dataset_test_assumption_results).to include subject
-      end
 
       it 'should trigger update method on change of dataset' do
         expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).once

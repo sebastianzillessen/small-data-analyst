@@ -9,7 +9,7 @@ RSpec.describe "preferences/new", type: :view do
   before(:each) { allow(controller).to receive(:current_user).and_return(user) }
 
   it "renders new preference form" do
-    rendera
+    render
 
     assert_select "form[action=?][method=?]", preferences_path, "post" do
     end
