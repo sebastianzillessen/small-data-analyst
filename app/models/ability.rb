@@ -15,6 +15,8 @@ class Ability
       can :crud, Assumption
       can :crud, ResearchQuestion
       can :read, Dataset
+      can :crud, Preference
+      can :edit_global, Preference
     end
 
     if user.is_clinician?
@@ -29,6 +31,8 @@ class Ability
       # can update/delete all user-owned research questions
       can :cud, ResearchQuestion, :user_id => user.id
       can :crud, ResearchQuestion, :user_id => user.id
+      can :crud, Preference, :user_id => user.id
+      can :read, Preference
       can :crud, Dataset, user_id: user.id
       can :crud, QueryAssumptionResult do |qar|
         qar.analysis.user_id == user.id

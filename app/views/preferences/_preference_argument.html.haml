@@ -1,0 +1,17 @@
+%p
+  .text-success
+    .glyphicon.glyphicon-ok-sign
+    = pa.assumption
+%p.text-regular
+  Order of models:
+  - pa.model_orders.each_with_index do |mo,i|
+    - mo.models.each do |m|
+      .label.label-default
+        =m.name
+    - if (pa.model_orders.length-1 != i)
+      .label.label-primary
+        <
+
+
+
+

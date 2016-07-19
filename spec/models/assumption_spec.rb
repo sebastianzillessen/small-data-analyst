@@ -8,6 +8,7 @@ RSpec.describe Assumption, type: :model do
     it { is_expected.not_to respond_to :assumptions }
     it { is_expected.to respond_to :required_by }
     it { is_expected.to respond_to :models }
+    it { is_expected.to respond_to :preference_arguments }
   end
 
   describe 'assumptions and assumptions' do

@@ -8,10 +8,6 @@ class BlankAssumption < Assumption
   validate :prevent_circular_dependencies
 
   def evaluate(analysis)
-    !assumptions.map { |a| a.evaluate(analysis) }.uniq.include?(false)
-  end
-
-  def evaluate(analysis)
     @evaluate ||= begin
       result = true
       assumptions.where.not(type: QueryAssumption).each do |a|

@@ -1,4 +1,7 @@
 class Analysis < ActiveRecord::Base
+
+  default_scope { includes(:research_question, :dataset, :user, :possible_models).order(:created_at) }
+
   belongs_to :research_question
   belongs_to :dataset
   belongs_to :user
@@ -15,6 +18,7 @@ class Analysis < ActiveRecord::Base
   #has_and_belongs_to_many :impossible_models, -> { where("analyses_models.possible = ?", false) }, class_name: 'Model'
 
   has_many :query_assumption_results, autosave: true, dependent: :destroy
+  has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
 
   validates :research_question, :dataset, presence: true
   validates :stage, presence: true
@@ -46,7 +50,7 @@ class Analysis < ActiveRecord::Base
     if (q.result == false)
       self.possible_models.where(model: q.query_assumption.get_associated_models).each { |p| p.reject!(q.stage, q.query_assumption) }
       # update query_assumption_results and check if there is one which needs only to be answered for a not possible model anymore
-      self.query_assumption_results.where(ignore: false, result: nil).where.not(id: q.id).each do |qar|
+      self.open_query_assumptions.where.not(id: q.id).each do |qar|
         if (qar.query_assumption.get_associated_models.any? && (qar.query_assumption.get_associated_models & self.remaining_models).empty?)
           qar.update(ignore: true)
         end
@@ -54,7 +58,7 @@ class Analysis < ActiveRecord::Base
     end
     if (q.result == true)
       # kill all query_assumptions that are attacked by this assumption
-      self.query_assumption_results.where(ignore: false, result: nil, query_assumption: q.query_assumption.attacking).update_all(ignore: true)
+      self.open_query_assumptions.where(query_assumption: q.query_assumption.attacking).update_all(ignore: true)
     end
     if (done?)
       self.stage = 2
@@ -65,7 +69,7 @@ class Analysis < ActiveRecord::Base
 
 
   def done?
-    query_assumption_results.where(ignore: false, result: nil).empty?
+    open_query_assumptions.empty?
   end
 
   def add_framework(arguments, framework, models_excluded=nil)
@@ -85,7 +89,7 @@ class Analysis < ActiveRecord::Base
       As2Init.new(self)
     end
 
-    @frameworks
+    @frameworks || {}
   end
 
   private

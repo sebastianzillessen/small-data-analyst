@@ -15,8 +15,12 @@ module InvalidatePlots
     Plot.all.each do |p|
       o = p.object
       p.destroy
-      o.delay(priority: 5).plot!
+      if (o && o.respond_to?(:plot!))
+        o.plot!
+      end
     end
   end
+
+  handle_asynchronously :invalidate_plots
 
 end

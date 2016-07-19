@@ -8,5 +8,5 @@
   .panel.panel-default
     .panel-heading
       Possible Models after AS1
-    %ul.list-group
+    %ul.list-group#possible_models_as_1
       = render 'analyses/possible_models', models: analysis.possible_models_after_stage(1).map(&:model)

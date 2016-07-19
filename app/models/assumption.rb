@@ -27,6 +27,8 @@ class Assumption < ActiveRecord::Base
 
   has_and_belongs_to_many :models, uniq: true
   belongs_to :user
+  has_many :preference_arguments, dependent: :destroy
+  has_many :reasons, foreign_key: :argument_id
 
   validates :name, presence: true, uniqueness: true
 

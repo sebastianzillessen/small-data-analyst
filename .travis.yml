@@ -5,18 +5,25 @@ rvm:
 - 2.2.4
 sudo: true
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install -y r-base r-base-dev graphviz
+- sudo apt-get update
+- sudo apt-get install -y r-base r-base-dev graphviz
+- wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+- tar -xjf phantomjs-2.0.0-ubuntu-12.04.tar.bz2
+- sudo rm -rf /usr/local/phantomjs/bin/phantomjs
+- sudo mv phantomjs /usr/local/phantomjs/bin/phantomjs
+
 deploy:
   provider: heroku
   app: small-data-analyst
   api_key:
     secure: FOY+zwMtK8t5jmHisGUN7c+tUaRuiEXPFg/CF1+MjqpCtR3BwKQ4M+FV8+We1nsOZCH0nlDIHpp8BIu4jNlyMiiKDxzrXHdF5nSSCbrRLsr4+c2a3NYgq6Hl2NDkwvsEF/XO8yWyFnwxjxfi9SF1RWOeS5xwwO5RVxHP4JeBMUrBHxLw2ylPl16aeM0yq+zk+7ZfvY1yrVQk7xyqGJ/tNGVyBOq4U/LlMSrkENVV0IjNV3E1edbX9U8XgvosGcGrTeq7B9oosJT/nUUkYa2uU4/wqAZBqtbQol6v2LMUY77oaR13Qwvazz8j910R/C+G1RC+dcagJpPVGvChg0eI3ESZvrV7Ujwty8NIwQASUXBbmpYIcjjW16hEurYJwfWclSs9y5mfb3woS8Rj3uTGuXv/3aZGjJl0tD/g16MTICTv+oAj5zoWCdQkBt8XMaNq32Ex+HkZB40rlAwO63qhg0hb7YrqMU/wo29W3XhxWlND4b7W7TMAR2Zgz9duXfFh6cY7t4VWG1Y3ZeGQOYDVleTp5MmR+oxRyeLMZSGtsPmJiVX+E5LKslVoLjW/AnXunR9733DuC57gsVJ4fwJM6yjbtb7UOYjt81zWU2Tzq349ouBLRUbadSL5ct3ZhW6GHK6+7Q5dxbFked/VeZTJ+AC114G4LA2YmMxG1eVOFuM=
   run: rake db:migrate:with_data
+addons:
+  code_climate:
+    repo_token: 20ba08a6f77b651ba970dc30e9048e2b7528daec6ad0cdbd9172a6a31aab9e1e
 env:
   global:
-    secure: X0txePNgQpBB8m6x/RU1d/SB7Kn6mYGXOU4YrboZKbCQppGxlgBuiVTE+1oIxG0tVmXMAtp9lMuGVGniHVR4t5VVPIgUWHcI6lVM7AblUX0YS9dOWQ3A0fPMRVurWfqym0ZvDxNNxUCVLgAVD5MizIJ8rmkJKjQ6WIO/1xCjdJcTpdYojD25hRPwTkd3DoDBFmS5l/9kjxSmYwTRjOgDaEdz2agVwoyGDZBKCpMpkiWX2bE92pFnC6m0ne4W3BHclrXRFrgpb9ydVyxMW6YtN1l8c//f9CHCeX3KVsuyFjQU4/Ia0e4knfwmzESiznnZmEQFpzb2EQIB85Ba83Cp5KBFU4JBhrZK+Ef3xCiWSJgRV5KqrWHJes5169trQFLIcC6iXH6X6GlrDwvQ5aKNB4hen8gkngxsaSuFnJ0cBXji/4RnSClUUN/7aV23O/29seOz8aLVc/07HY0CB94xleFooBPjj21KPxUuyvVOY+11uhhlYz8wVZtdrGiOp4GzPhJG1sMK/uBfBxGzzUfQnaSklYcvBU5BTMk/w3/xv9JSW5mOE2ygFIiQkhTHetOm1RgW8cVqldct6j9ocayfBHNKWq+qNpi68HTAVqV96831H3Wr6XnoENJ0N7xRt42bUma43V8JvpK12B7yhtn8c/gfkNSWJAGd6DEt6f4a0sg=
+  - secure: X0txePNgQpBB8m6x/RU1d/SB7Kn6mYGXOU4YrboZKbCQppGxlgBuiVTE+1oIxG0tVmXMAtp9lMuGVGniHVR4t5VVPIgUWHcI6lVM7AblUX0YS9dOWQ3A0fPMRVurWfqym0ZvDxNNxUCVLgAVD5MizIJ8rmkJKjQ6WIO/1xCjdJcTpdYojD25hRPwTkd3DoDBFmS5l/9kjxSmYwTRjOgDaEdz2agVwoyGDZBKCpMpkiWX2bE92pFnC6m0ne4W3BHclrXRFrgpb9ydVyxMW6YtN1l8c//f9CHCeX3KVsuyFjQU4/Ia0e4knfwmzESiznnZmEQFpzb2EQIB85Ba83Cp5KBFU4JBhrZK+Ef3xCiWSJgRV5KqrWHJes5169trQFLIcC6iXH6X6GlrDwvQ5aKNB4hen8gkngxsaSuFnJ0cBXji/4RnSClUUN/7aV23O/29seOz8aLVc/07HY0CB94xleFooBPjj21KPxUuyvVOY+11uhhlYz8wVZtdrGiOp4GzPhJG1sMK/uBfBxGzzUfQnaSklYcvBU5BTMk/w3/xv9JSW5mOE2ygFIiQkhTHetOm1RgW8cVqldct6j9ocayfBHNKWq+qNpi68HTAVqV96831H3Wr6XnoENJ0N7xRt42bUma43V8JvpK12B7yhtn8c/gfkNSWJAGd6DEt6f4a0sg=
 before_script:
-  - "bundle exec rake db:drop db:create db:migrate"
-after_success:
-  #- "BRANCHES_TO_MERGE_REGEX='.*' BRANCH_TO_MERGE_INTO=develop GITHUB_REPO=sebastianzillessen/small-data-analyst lib/scripts/travis-automerge.sh"
+- bundle exec rake db:drop db:create db:migrate
+after_success: 

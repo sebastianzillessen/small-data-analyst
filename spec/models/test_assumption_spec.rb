@@ -33,15 +33,11 @@ RSpec.describe TestAssumption, type: :model do
 
   it 'should trigger update on dataset_test_assumption_result' do
     expect(subject).to be_valid
+    subject.send(:generate_dataset_test_assumptions_results)
     expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).once
     subject.r_code = "Something"
 
     subject.save
-  end
-
-  it 'should have cached results for all datasets in the system' do
-    dataset = create(:dataset)
-    expect(subject.dataset_test_assumption_results.map(&:dataset)).to include dataset
   end
 
 

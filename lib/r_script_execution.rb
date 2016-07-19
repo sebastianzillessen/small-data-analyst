@@ -7,7 +7,6 @@ class RScriptExecution
       # make data to list according to csv.
       r.eval("tabular_data=read.csv(textConnection(data))")
     end
-    puts "Evaluating #{code}"
     r.eval code
     result = r.pull_boolean('result')
     return result

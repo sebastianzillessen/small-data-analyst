@@ -4,7 +4,7 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
   let!(:dataset) { create(:dataset) }
   let!(:test_assumption) { create(:test_assumption) }
 
-  subject { DatasetTestAssumptionResult.where(dataset: dataset, test_assumption: test_assumption).first }
+  subject { DatasetTestAssumptionResult.create(dataset: dataset, test_assumption: test_assumption) }
 
   it { should respond_to(:dataset) }
   it { should respond_to(:test_assumption) }
@@ -18,6 +18,7 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
 
   describe 'test_assumption reference' do
     let(:assumption) { create(:assumption) }
+    subject { DatasetTestAssumptionResult.create(dataset: dataset, test_assumption: test_assumption) }
     it 'should be possible to add TestAssumptions' do
       subject.test_assumption = test_assumption
       expect(subject).to be_valid
@@ -35,9 +36,6 @@ RSpec.describe DatasetTestAssumptionResult, type: :model do
         expect(subject.test_assumption).to eq test_assumption
       end
 
-      it 'should return the result' do
-        expect(test_assumption.dataset_test_assumption_results).to include subject
-      end
 
       it 'should trigger update method on change of dataset' do
         expect_any_instance_of(DatasetTestAssumptionResult).to receive(:update).once

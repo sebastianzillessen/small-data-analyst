@@ -1,0 +1,18 @@
+%p
+  %b Name
+  = @preference.name
+%p
+  %b Stage:
+  = @preference.stage
+%p
+  %b User
+  = @preference.user.try(:email)
+%p
+  %b Research Question
+  = @preference.research_question.name
+%p
+  %b Preference_arguments
+  - @preference.preference_arguments.each do |pa|
+    = render 'preference_argument', pa: pa
+
+= link_to "Edit",edit_preference_path(@preference)

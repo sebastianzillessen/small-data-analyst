@@ -9,13 +9,13 @@
 
   %tbody
     - @datasets.each do |dataset|
-      %tr
+      %tr[dataset]
         %td=dataset.name
         %td=l(dataset.created_at)
         %td
           = link_icon_to 'open', dataset, title: "Show", class: 'btn-xs' if can? :read, dataset
           = link_icon_to 'edit', edit_dataset_path(dataset), title: "Edit", class: 'btn-xs' if can? :update, dataset
-          = link_icon_to 'trash',dataset, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, dataset
+          = link_icon_to 'trash',dataset, remote:true,method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, dataset
 
 
 = link_icon_to 'plus',new_dataset_path, class: 'btn-success pull-right', text: 'Upload new dataset' if can? :create, Dataset

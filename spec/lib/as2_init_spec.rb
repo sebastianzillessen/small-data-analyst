@@ -18,7 +18,7 @@ RSpec.describe As2Init, type: :class do
   end
 
   it 'should return all model rules as contradictions' do
-    expect(subject.send(:model_rules, 1).tap { |x| puts x }.length).to eq 9
+    expect(subject.send(:model_rules, 1).length).to eq 9
   end
 
   it 'should have 2 subclasses' do

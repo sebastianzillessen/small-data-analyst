@@ -9,12 +9,12 @@
 
   %tbody
     - @models.each do |model|
-      %tr
+      %tr[model]
         %td= link_to model.name, model
         %td= model.description
         %td
           = link_icon_to 'edit',edit_model_path(model), title: 'Edit', class: 'btn-xs' if can? :edit, model
-          = link_icon_to 'trash',model, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, model
+          = link_icon_to 'trash',model, method: :delete, remote: true, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, model
 
 
 = link_icon_to 'plus', new_model_path, class: 'btn-success pull-right', text: 'New Model' if can? :create, Model

@@ -1,5 +1,9 @@
 = semantic_form_for question, remote: true do |f|
+  - random_id = SecureRandom.hex
   = f.inputs do
-    = f.input :result, as: :radio, collection: {"Yes": true, "No": false}, class:"side-toggle"
-  = f.actions do
-    = f.action :submit, :as => :input
+    .btn-group.btn-group-xs.btn-group-justified{data: {fill_input: '#query_assumption_result_result_input'}}
+      %a.btn.btn-success(href=""){data: {fill_input_value: "true"}}
+        Yes
+      %a.btn.btn-warning(href=""){data: {fill_input_value: "false"}}
+        No
+    = f.input :result, as: :hidden

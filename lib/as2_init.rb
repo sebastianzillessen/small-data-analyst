@@ -10,7 +10,7 @@ class As2Init
   private
 
   def model_rules(stage)
-    @analysis.possible_models_after_stage(stage).map(&:model).combination(2).map do |m, n|
+    @analysis.possible_models_after_stage(stage).includes(:model).map(&:model).combination(2).map do |m, n|
       [
           m.int_name, n.int_name,
           "#{m.int_name}->#{n.int_name}",
@@ -20,7 +20,7 @@ class As2Init
   end
 
   def as2_inits
-    Preferences::AS2.subclasses.sort_by(&:stage).each do |c|
+    Preference.order(:stage).all.each do |c|
       puts "adding for #{c}"
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
@@ -41,13 +41,13 @@ class As2Init
       if found_unanswered_on_this_stage
         break
       else
-        @analysis.stage = c.stage
+        @analysis.stage = c.stage + 1
         @analysis.save
         # lets see if we can make a decision
         # get all rules for answered query_assumptions
         arguments_hold = c.arguments.select { |a| a && a.evaluate(@analysis) }
-        puts "Holding arguments are: #{arguments_hold}"
-        rules = (c.rules(arguments_hold)+model_rules(c.stage-1)).join(",")
+
+        rules = (c.rules(arguments_hold)+model_rules(c.stage)).join(",")
         framework = ExtendedArgumentationFramework::Framework.new(rules, name: "Extended Argumentation framework for stage #{c.stage}")
 
         solver = ExtendedArgumentationFramework::Solver.new(framework)
@@ -55,8 +55,7 @@ class As2Init
 
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.model.int_name)) == false)
-            puts "Removing possible model: #{p.model.name}"
-            p.reject!(@analysis.stage, *subset)
+            p.reject!(@analysis.stage, *(subset+[c]))
           end
         end
         # TODO: Store for models for which reason they are excluded.

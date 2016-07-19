@@ -4,6 +4,11 @@ RC1: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?
 RC2: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=RC2" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
 RC3: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=RC3" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
 RC4: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=RC4" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+
+{<img src="https://codeclimate.com/repos/57875297e6164b3df7000d5f/badges/a0688971beb72cdc37a6/gpa.svg" />}[https://codeclimate.com/repos/57875297e6164b3df7000d5f/feed]
+{<img src="https://codeclimate.com/repos/57875297e6164b3df7000d5f/badges/a0688971beb72cdc37a6/coverage.svg" />}[https://codeclimate.com/repos/57875297e6164b3df7000d5f/coverage]
+{<img src="https://codeclimate.com/repos/57875297e6164b3df7000d5f/badges/a0688971beb72cdc37a6/issue_count.svg" />}[https://codeclimate.com/repos/57875297e6164b3df7000d5f/feed]
+
 == README
 
 This README would normally document whatever steps are necessary to get the

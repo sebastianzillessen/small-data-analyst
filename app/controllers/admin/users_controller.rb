@@ -59,7 +59,7 @@ module Admin
       @user.destroy
       respond_to do |format|
         format.html { redirect_to admin_users_url, notice: 'User was successfully destroyed.' }
-        format.json { head :no_content }
+        format.js
       end
     end
 

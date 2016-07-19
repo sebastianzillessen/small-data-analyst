@@ -58,7 +58,7 @@ class DatasetsController < ApplicationController
     @dataset.destroy
     respond_to do |format|
       format.html { redirect_to datasets_url, notice: 'Dataset was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 

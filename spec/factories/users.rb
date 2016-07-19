@@ -12,6 +12,7 @@ FactoryGirl.define do
       role 'clinician'
     end
   end
+
   factory :admin_user, class: Admin::User do
     email { Faker::Internet.email }
     password "1234567"

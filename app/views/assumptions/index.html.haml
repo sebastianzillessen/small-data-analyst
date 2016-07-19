@@ -1,12 +1,12 @@
 %h1 Available Assumptions
 .list-group
   - @assumptions.each do |assumption|
-    .list-group-item
+    .list-group-item[assumption]
       = glyphicon_type(assumption)
       = link_to assumption_path(assumption) do
         #{assumption.name}: #{truncate(assumption.description, length:100)}
         = link_icon_to 'edit', edit_assumption_path(assumption), title: "Edit", class: 'btn-xs pull-right' if can? :edit, assumption
-        = link_icon_to 'trash',assumption_path(assumption), method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger pull-right' if can? :destroy, assumption
+        = link_icon_to 'trash',assumption_path(assumption), remote: true, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger pull-right' if can? :destroy, assumption
 
 
 = link_icon_to 'plus',

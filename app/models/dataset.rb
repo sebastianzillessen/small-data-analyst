@@ -15,7 +15,7 @@ class Dataset < ActiveRecord::Base
   before_validation :parse_data_file
   before_validation :parse_columns, if: :data_changed?
   after_save :update_dataset_test_assumptions_results
-  after_create :generate_dataset_test_assumptions_results
+  #after_create :generate_dataset_test_assumptions_results
 
   def rows
     @rows ||= CSV.parse(data).drop(1)

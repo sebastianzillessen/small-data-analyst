@@ -1,18 +1,22 @@
 - if analysis.done?
   - analysis.possible_models.each do |pm|
-    %li.list-group-item.list-group-item-success
+    %li.list-group-item.list-group-item-success[pm.model]
       .list-group-item-heading
         = pm.model.name
       .list-group-item-text
         = render 'analyses/assumptions', assumptions: pm.model.assumptions, analysis: analysis
-  - analysis.impossible_models.sort_by(&:stage_of_first_rejection).each do |pm|
-    %li.list-group-item.list-group-item-danger
+  - analysis.impossible_models.includes(:model).sort_by(&:stage_of_first_rejection).each do |pm|
+    %li.list-group-item.list-group-item-danger[pm.model]
       .list-group-item-heading
         #{pm.model.name}
         %span.pull-right
           (Rejected in: AS#{pm.stage_of_first_rejection > 1 ? '2' : '1' }, Stage: #{pm.stage_of_first_rejection})
       .list-group-item-text
-        = render 'analyses/assumptions', assumptions: pm.reasons.map(&:argument), analysis: analysis
+        - reasons = pm.reasons.map(&:argument)
+        - if reasons.length == 1 && reasons.first.is_a?(Assumption)
+          = render 'analyses/assumptions', assumptions: reasons, analysis: analysis
+        - else
+          = render 'analyses/rejection_reason', rejection: pm
 - else
   %li.list-group-item.list-group-item-warning
     The detailed report is only available, once the analysis is complete

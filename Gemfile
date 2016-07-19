@@ -57,6 +57,9 @@ gem 'rootapp-rinruby', '>= 3.1.1', :git => 'https://github.com/sebastianzillesse
 gem 'devise'
 gem 'cancancan'
 gem 'data_migrate'
+gem 'cocoon'
+gem 'jquery-ui-rails'
+
 
 # heroku stuff
 group :production do
@@ -74,6 +77,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'poltergeist'
   gem 'teaspoon-jasmine'
   gem 'pry'
   gem 'factory_girl_rails'
@@ -81,9 +85,18 @@ group :development, :test do
   gem 'shoulda-matchers'
 end
 
+group :test do
+  gem 'capybara-screenshot'
+  gem "codeclimate-test-reporter", require: nil
+  gem 'database_cleaner'
+
+end
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
+  gem 'rack-mini-profiler', require: false
+  gem 'bullet'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   #gem 'spring'

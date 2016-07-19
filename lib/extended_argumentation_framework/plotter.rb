@@ -47,10 +47,12 @@ module ExtendedArgumentationFramework
       end
 
       res = ""
+      res << "subgraph models{"
       res << "{ node[fillcolor=\"green\" style=\"filled\"] #{@nodes_in.join(" ")} }" if @nodes_in.any?
-      res << "{ node[fillcolor=\"green\" style=\"filled\" shape=\"box\"] #{@arguments_hold.map(&:int_name).join(" ")} }" if @arguments_hold.any?
       res << "{ node[fillcolor=\"red\" style=\"filled\"] #{@nodes_out.join(" ")} }" if @nodes_out.any?
       res << "{ node[fillcolor=\"grey\" style=\"filled\"] #{@nodes_undec.join(" ")} }" if @nodes_undec.any?
+      res << "}"
+      res << "{ node[fillcolor=\"green\" style=\"filled\" shape=\"box\"] #{@arguments_hold.map(&:int_name).join(" ")} }" if @arguments_hold.any?
       res
     end
 

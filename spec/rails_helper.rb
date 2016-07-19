@@ -5,12 +5,14 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'capybara-screenshot/rspec'
 require 'capybara/rails'
+require 'capybara/poltergeist'
 require 'devise'
 
-require 'support/factory_girl'
-require 'support/controller_macros'
-require 'support/request_macros'
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f }
+
+
 
 
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -41,7 +43,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  # config.use_transactional_fixtures = true
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -66,10 +68,34 @@ RSpec.configure do |config|
 
   config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
+
   config.include DeviseRequestSpecHelpers, type: :request
-  config.before(:each) {
+
+  config.include FeatureLoginHelper, type: :feature
+  config.include ChosenSelect, type: :feature
+  config.include Capybara::DSL, :type => :feature
+
+
+  config.include Warden::Test::Helpers
+  config.use_transactional_fixtures = false
+
+  config.before :suite do
+    Warden.test_mode!
+  end
+  config.after :each do
+    Warden.test_reset!
+  end
+
+  config.before(:each) do
     Delayed::Worker.delay_jobs = false
-  }
+  end
+
+  config.before(:suite) do
+    # clean tmp/capybara
+    require 'fileutils'
+
+    FileUtils.rm_rf(Rails.root.join("tmp/capybara/"))
+  end
 end
 
 

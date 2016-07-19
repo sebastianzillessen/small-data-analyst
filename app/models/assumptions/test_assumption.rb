@@ -8,7 +8,7 @@ class TestAssumption < Assumption
   has_many :dataset_test_assumption_results, foreign_key: :assumption_id, dependent: :destroy
 
   after_save :update_dataset_test_assumptions_results
-  after_create :generate_dataset_test_assumptions_results
+  #after_create :generate_dataset_test_assumptions_results
 
 
   def evaluate(analysis_or_dataset)
@@ -21,7 +21,16 @@ class TestAssumption < Assumption
               end
     cached = self.dataset_test_assumption_results.where(dataset: dataset).first.try(:result)
     return cached unless cached.nil?
-    @evaluate ||= eval_internal(dataset)
+    @evaluate ||= begin
+      res = eval_internal(dataset)
+      dtar = self.dataset_test_assumption_results.where(dataset: dataset).first
+      if (dtar)
+        dtar.update_attributes(result: res)
+      else
+        self.dataset_test_assumption_results << DatasetTestAssumptionResult.new(dataset: dataset, result: res)
+      end
+      res
+    end
   end
 
   def eval_internal(dataset)
@@ -29,7 +38,8 @@ class TestAssumption < Assumption
     return false unless check_dataset_mets_column_names(dataset) if required_dataset_fields.any?
     RScriptExecution.execute r_code, dataset.data
   rescue Exception => e
-    puts "\n \n ERROR: #{e.inspect}\n While running on: #{self.inspect}"
+    puts "Error on evaluation of:\n#{r_code}"
+    puts "ERROR: #{e.inspect}\n While running on: #{self.inspect}"
     false
   end
 
@@ -56,7 +66,6 @@ class TestAssumption < Assumption
   end
 
   def parse_required_dataset_fields
-    puts "Parse required dataset fields #{self.required_dataset_fields}"
     if self.required_dataset_fields.is_a? String || self.required_dataset_fields.is_a?(Array)
       self.required_dataset_fields = self.required_dataset_fields.join(",").split(/\s*,\s*/).uniq
     end
