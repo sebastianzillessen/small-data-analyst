@@ -3,6 +3,7 @@ FactoryGirl.define do
     in_progress true
     research_question
     dataset
+    association :user, factory: :user
   end
   trait :with_models do
     transient do
@@ -59,6 +60,5 @@ FactoryGirl.define do
     in_progress true
     association :research_question, :factory => :research_question_survival
     association :dataset, :factory => :dataset_survival
-
   end
 end

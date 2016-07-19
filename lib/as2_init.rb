@@ -20,7 +20,7 @@ class As2Init
   end
 
   def as2_inits
-    Preference.order(:stage).all.select { |p| @analysis.user.can? :read, p }.each do |c|
+    Preference.order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |c|
       puts "adding for #{c}"
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
