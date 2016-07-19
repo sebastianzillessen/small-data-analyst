@@ -6,8 +6,8 @@ describe "creating a new analysis" do
   let!(:dataset) { create(:dataset_survival) }
   let!(:research_question_survival) { create(:research_question_survival) }
 
-  let!(:cd1){create(:preference_cd1, research_question: research_question_survival)}
-  let!(:cd2){create(:preference_cd2, research_question: research_question_survival)}
+  let!(:cd1) { create(:preference_cd1, research_question: research_question_survival) }
+  let!(:cd2) { create(:preference_cd2, research_question: research_question_survival) }
 
 
   describe 'with js support', js: true do
@@ -81,8 +81,6 @@ describe "creating a new analysis" do
           expect(page).not_to have_css('#open_questions')
 
           # test for flash note
-          expect(page).to have_content "'non informative censoring' has been answered with 'No'."
-          expect(page).to have_content "Analysis is now complete."
 
           # test for answered question and icons
           within '#answered_questions_parent' do
@@ -114,6 +112,7 @@ describe "creating a new analysis" do
             expect(page).to have_content("No possible models found")
           end
 
+          find('#detailed_model_view_parent [data-toggle="collapse"]').click
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-danger", text: "Kaplan Meier")
             expect(page).to have_css(".list-group-item-danger", text: "Weibull")
@@ -122,6 +121,7 @@ describe "creating a new analysis" do
             expect(page).to have_css(".list-group-item-heading.text-danger", text: "a1", count: 2)
             expect(page).to have_css(".list-group-item-heading.text-danger", text: "a3", count: 1)
           end
+          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
 
           within '#detailed_argumentation_view' do
             expect(page).not_to have_css('img.fit-parent')
@@ -166,7 +166,7 @@ describe "creating a new analysis" do
           end
 
           expect(page).to have_content('Recommended models')
-
+          find('#detailed_model_view_parent [data-toggle="collapse"]').click
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
             expect(page).to have_css(".list-group-item-danger", text: "Weibull")
@@ -184,7 +184,7 @@ describe "creating a new analysis" do
             expect(page).to have_css('.list-group-item-danger .text-success', text: "CD1_mild")
             expect(page).to have_css('.list-group-item-danger .text-danger', text: "a3")
           end
-
+          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 1)
           end
@@ -220,9 +220,6 @@ describe "creating a new analysis" do
             expect(page).not_to have_css(form_id)
           end
 
-          # test for flash note
-          expect(page).to have_content "has been answered with 'Yes'."
-
           # test for answered question and icons
           within '#answered_questions_parent' do
             expect(page).to have_content qa.name
@@ -238,12 +235,9 @@ describe "creating a new analysis" do
           end
           expect(subject.open_query_assumptions.count).to eq 2
 
-          expect(page).to have_content("'non informative censoring' has been answered with 'Yes'.")
 
           query_assumptions_for_cd2 = subject.open_query_assumptions.map(&:query_assumption)
           expect(query_assumptions_for_cd2.select { |qa| qa.name.start_with?("CD2_") }.length).to be(2)
-
-          Capybara::Screenshot.screenshot_and_save_page
 
           within '#open_questions' do
             expect(page).to have_css("form.query_assumption_result", count: 2)
@@ -269,6 +263,8 @@ describe "creating a new analysis" do
             expect(page).to have_css('.list-group-item.model', text: "Cox Proportional Hazard")
           end
 
+          find('#detailed_model_view_parent [data-toggle="collapse"]').click
+
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
             expect(page).to have_css(".list-group-item-success", text: "Cox Proportional Hazard")
@@ -290,7 +286,7 @@ describe "creating a new analysis" do
               end
             end
           end
-
+          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 2)
           end
@@ -315,9 +311,6 @@ describe "creating a new analysis" do
             expect(page).not_to have_css(form_id)
           end
 
-          # test for flash note
-          expect(page).to have_content "has been answered with 'Yes'."
-
           # test for answered question and icons
           within '#answered_questions_parent' do
             expect(page).to have_content qa.name
@@ -332,8 +325,6 @@ describe "creating a new analysis" do
             expect(page).to have_content("Cox Proportional Hazard")
           end
           expect(subject.open_query_assumptions.count).to eq 2
-
-          expect(page).to have_content("'non informative censoring' has been answered with 'Yes'.")
 
           query_assumptions_for_cd2 = subject.open_query_assumptions.map(&:query_assumption)
           expect(query_assumptions_for_cd2.select { |qa| qa.name.start_with?("CD2_") }.length).to be(2)
@@ -359,7 +350,7 @@ describe "creating a new analysis" do
             #expect(page).to have_css('.list-group-item.model', text: "Kaplan Meier")
             expect(page).to have_css('.list-group-item.model', text: "Cox Proportional Hazard")
           end
-
+          find('#detailed_model_view_parent [data-toggle="collapse"]').click
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Cox Proportional Hazard")
 
@@ -383,6 +374,8 @@ describe "creating a new analysis" do
               expect(page).to have_css('.list-group-item-danger .list-group-item-heading .text-success', text: "CD2_predict")
             end
           end
+
+          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
 
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 2)

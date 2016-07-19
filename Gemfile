@@ -77,6 +77,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'teaspoon-jasmine'
   gem 'pry'
