@@ -82,6 +82,7 @@ RSpec.describe Preference, type: :model do
         let(:statistician) { create(:statistician) }
         before(:each) { subject.user = statistician }
         it 'should be allowed to set global' do
+          subject.stage=1
           expect(subject).to be_valid
         end
         it 'should not be allowed to set stage to 10' do

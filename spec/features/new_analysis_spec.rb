@@ -184,7 +184,7 @@ describe "creating a new analysis" do
           end
           find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
-            expect(page).to have_css('img.fit-parent', count: 1)
+            expect(page).to have_css('img.fit-parent', count: 2)
           end
 
 
