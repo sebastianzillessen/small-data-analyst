@@ -38,7 +38,8 @@ class TestAssumption < Assumption
     return false unless check_dataset_mets_column_names(dataset) if required_dataset_fields.any?
     RScriptExecution.execute r_code, dataset.data
   rescue Exception => e
-    puts "\n \n ERROR: #{e.inspect}\n While running on: #{self.inspect}"
+    puts "Error on evaluation of:\n#{r_code}"
+    puts "ERROR: #{e.inspect}\n While running on: #{self.inspect}"
     false
   end
 

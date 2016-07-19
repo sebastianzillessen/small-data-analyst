@@ -14,7 +14,7 @@ module WaitForAjax
   end
 
   def finished_all_ajax_requests?
-    page.evaluate_script('$.active').tap { |x| puts x }.zero?
+    page.evaluate_script('$.active').zero?
   end
 end
 

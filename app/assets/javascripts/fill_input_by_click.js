@@ -1,5 +1,6 @@
 $(function () {
   $('#open_questions').on("click", "[data-fill-input] a:not([disabled])", function () {
+    console.warn("Click on '#open_questions' registered.");
     var $anchor = $(this);
     var value = $anchor.data('fillInputValue');
     if (value === undefined) {
