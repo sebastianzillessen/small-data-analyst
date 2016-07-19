@@ -11,6 +11,7 @@ RSpec.describe Preference, type: :model do
   it { is_expected.to respond_to(:int_name) }
   it { is_expected.to respond_to(:preference_arguments) }
   it { is_expected.to respond_to(:global) }
+
   it 'should be able to delete' do
     expect(subject.destroy).to be_truthy
   end
@@ -23,11 +24,11 @@ RSpec.describe Preference, type: :model do
 
     let(:result) {
       {
-          "CD1_mild": ["CD1_mild",
-                       "CD1_mild -> (weibull -> cox_proportional_hazard)",
-                       "CD1_mild -> (weibull -> kaplan_meier)"],
-          "CD1_heavy": ["CD1_heavy", "CD1_heavy -> (weibull -> cox_proportional_hazard)",
-                        "CD1_heavy -> (kaplan_meier -> cox_proportional_hazard)"]
+          "cd1_mild": ["cd1_mild",
+                       "cd1_mild -> (weibull -> cox_proportional_hazard)",
+                       "cd1_mild -> (weibull -> kaplan_meier)"],
+          "cd1_heavy": ["cd1_heavy", "cd1_heavy -> (weibull -> cox_proportional_hazard)",
+                        "cd1_heavy -> (kaplan_meier -> cox_proportional_hazard)"]
       }.deep_symbolize_keys
     }
 
@@ -36,13 +37,42 @@ RSpec.describe Preference, type: :model do
     end
 
     it "should return the right rules for one assumption only" do
-      expect(subject.rules("CD1_mild")).to match_array(result.deep_symbolize_keys[:CD1_mild])
+      expect(subject.rules("cd1_mild")).to match_array(result.deep_symbolize_keys[:cd1_mild])
     end
 
     it "should return the right rules for one assumption only" do
-      expect(subject.rules("CD1_heavy")).to match_array(result.deep_symbolize_keys[:CD1_heavy])
+      expect(subject.rules("cd1_heavy")).to match_array(result.deep_symbolize_keys[:cd1_heavy])
     end
   end
 
 
+  describe 'stage 1-10 registered for statisticians only' do
+    let(:non_statistician) { create(:user) }
+    context 'a statistician' do
+      let(:statistician) { create(:statistician) }
+      before(:each) { subject.user = statistician }
+      it 'should be allowed to set stage to 1' do
+        subject.stage = 1
+        expect(subject).to be_valid
+      end
+      it 'should not be allowed to set stage to 10' do
+        subject.stage = 10
+        expect(subject).to be_valid
+      end
+    end
+
+    context 'a clinician' do
+      let(:clinician) { create(:clinician) }
+      before(:each) { subject.user = clinician }
+      it 'should not be allowed to set stage to 1' do
+        subject.stage = 1
+        expect(subject).not_to be_valid
+      end
+
+      it 'should not be allowed to set stage to 10' do
+        subject.stage = 10
+        expect(subject).to be_valid
+      end
+    end
+  end
 end

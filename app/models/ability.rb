@@ -32,7 +32,7 @@ class Ability
       can :cud, ResearchQuestion, :user_id => user.id
       can :crud, ResearchQuestion, :user_id => user.id
       can :crud, Preference, :user_id => user.id
-      can :read, Preference
+      can :read, Preference, global: true
       can :crud, Dataset, user_id: user.id
       can :crud, QueryAssumptionResult do |qar|
         qar.analysis.user_id == user.id

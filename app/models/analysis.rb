@@ -5,11 +5,10 @@ class Analysis < ActiveRecord::Base
   belongs_to :research_question
   belongs_to :dataset
   belongs_to :user
+
   has_many :all_possible_models, class_name: 'PossibleModel'
   has_many :possible_models, -> { where possible_models: {rejected: false} }, class_name: 'PossibleModel'
   has_many :impossible_models, -> { where possible_models: {rejected: true} }, class_name: 'PossibleModel'
-
-
   has_many :remaining_models, through: :possible_models, source: :model
   has_many :declined_models, through: :impossible_models, source: :model
   has_many :all_models, through: :all_possible_models, source: :model
@@ -20,8 +19,12 @@ class Analysis < ActiveRecord::Base
   has_many :query_assumption_results, autosave: true, dependent: :destroy
   has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
 
-  validates :research_question, :dataset, presence: true
-  validates :stage, presence: true
+  validates :research_question, presence: true
+  validates :dataset, presence: true
+  validates :stage, presence: true, :numericality => {:greater_than_or_equal_to => 0}
+  validates :user, presence: true
+
+
   before_validation :set_stage
   after_create :start
 

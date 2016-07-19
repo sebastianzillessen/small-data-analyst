@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :preference_without_preference_arguments, class: Preference do
     sequence(:name){|n| "MyPref #{n}"}
-    stage 1
+    stage 10
     user
     association :research_question, strategy: :build, factory: :research_question
 
@@ -13,6 +13,8 @@ FactoryGirl.define do
     end
 
     factory :preference_cd1 do
+      association :user, factory: :statistician
+      stage 1
       research_question do
         ResearchQuestion.find_by(name: "Survival Analysis") || create(:research_question_survival)
       end
@@ -48,7 +50,8 @@ FactoryGirl.define do
         ResearchQuestion.find_by(name: "Survival Analysis") || create(:research_question_survival)
       end
       name "CD2"
-      stage 2
+      stage 1
+      association :user, factory: :statistician
       preference_arguments do
         weibull = Model.find_by(name: "Weibull") || create(:weibul_model)
         kaplan_meier = Model.find_by(name: "Kaplan Meier")|| create(:kaplan_meier_model)

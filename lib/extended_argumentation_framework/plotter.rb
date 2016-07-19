@@ -10,7 +10,7 @@ module ExtendedArgumentationFramework
       @options.merge!(options)
 
       if @options[:plot_acceptability]
-        @arguments_hold = options[:arguments_hold].map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+        @arguments_hold = options[:arguments_hold].map { |a| ExtendedArgumentationFramework::Argument.new(a.int_name) }
         @solver = Solver.new(framework)
       else
         @arguments_hold=[]
@@ -35,7 +35,6 @@ module ExtendedArgumentationFramework
       @nodes_out = []
       @nodes_undec = []
       @framework.arguments.reject { |a| @arguments_hold.include?(a) }.each do |a|
-
         res = @options[:plot_acceptability] ? @solver.acceptable_arguments(@arguments_hold, a) : nil
         if (res.nil?)
           @nodes_undec << a.int_name

@@ -2,7 +2,7 @@
   = f.inputs do
     = f.input :name
     = f.input :research_question, :as => :select, :collection => ResearchQuestion.order(:name).all.select { |a| can? :read, a }
-    = f.input :stage
+    = f.input :stage, hint: "Stages lower than 10 are reserved for statisticians only."
     - if can? :edit_global, @preference
       = f.input :global, hint: "Globally generated preferences will apply for all users"
 

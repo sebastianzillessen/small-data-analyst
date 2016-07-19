@@ -40,7 +40,7 @@ describe "creating a new analysis" do
     end
 
     describe 'show analysis' do
-      subject { create(:analysis, dataset: dataset, research_question: research_question_survival) }
+      subject { create(:analysis, dataset: dataset, research_question: research_question_survival, user: create(:statistician)) }
 
       describe 'with 2 possible models at the beginning and as3 not holding' do
         before(:each) {

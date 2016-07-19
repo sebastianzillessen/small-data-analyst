@@ -51,3 +51,4 @@ build/
 .rvmrc
 /public/images/frameworks/
 /rspec.failures
+.bash_history

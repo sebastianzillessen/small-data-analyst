@@ -33,7 +33,7 @@ class PreferenceArgument < ActiveRecord::Base
   end
 
   def rules
-    res = [assumption.name]
+    res = [assumption.int_name]
     # add attacks on all edges
     edges_to_be_attacked = []
     model_orders.sort_by { |mo| mo.index }.each do |mo|
@@ -44,7 +44,7 @@ class PreferenceArgument < ActiveRecord::Base
       end
     end
     edges_to_be_attacked.each do |e|
-      res << "#{assumption.name} -> (#{e})"
+      res << "#{assumption.int_name} -> (#{e})"
     end
 
     res

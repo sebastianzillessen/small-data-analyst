@@ -13,7 +13,6 @@ class QueryAssumptionResultsController < ApplicationController
         puts "Reder alright"
         format.js
       else
-        puts "Reder error"
         format.js { render 'update_error' }
       end
     end

@@ -7,11 +7,11 @@ class PossibleModel < ActiveRecord::Base
   validates :analysis, presence: true, uniqueness: {scope: :model}
 
 
-  def reject(stage, *reasons)
+  def reject(stage, *res)
     puts "Rejecting #{model.name} because of #{reasons}"
-    reasons= reasons.map do |r|
+    reasons= res.map do |r|
       if r.is_a?(ExtendedArgumentationFramework::Argument) || r.is_a?(String)
-        Assumption.find_by(name: r.to_s)
+        Assumption.all.select { |a| a.int_name == r.to_s }
       elsif r.is_a?(Assumption) || r.is_a?(Preference)
         r
       else
@@ -19,7 +19,7 @@ class PossibleModel < ActiveRecord::Base
       end
     end
     self.rejected = true
-    reasons.each do |r|
+    reasons.flatten.each do |r|
       self.reasons << Reason.new(argument: r, stage: stage)
     end
   end

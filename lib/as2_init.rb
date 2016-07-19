@@ -20,7 +20,7 @@ class As2Init
   end
 
   def as2_inits
-    Preference.order(:stage).all.each do |c|
+    Preference.order(:stage).all.select { |p| @analysis.user.can? :read, p }.each do |c|
       puts "adding for #{c}"
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
@@ -51,7 +51,7 @@ class As2Init
         framework = ExtendedArgumentationFramework::Framework.new(rules, name: "Extended Argumentation framework for stage #{c.stage}")
 
         solver = ExtendedArgumentationFramework::Solver.new(framework)
-        subset = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.name) }
+        subset = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.int_name) }
 
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.model.int_name)) == false)

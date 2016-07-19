@@ -8,6 +8,7 @@ class Preference < ActiveRecord::Base
   validates :stage, presence: true, :numericality => {:greater_than_or_equal_to => 1}
   validates :preference_arguments, presence: true
   validates :research_question, presence: true
+  validate :stage_lower_then_10_reserved_for_statisticians
   # TODO: Validate that only models that are applicable on a research question can be used in the preference_arguments
 
 
@@ -22,7 +23,7 @@ class Preference < ActiveRecord::Base
 
   def all_rules
     res = {}
-    preference_arguments.each { |pa| res[pa.assumption.name] = pa.rules }
+    preference_arguments.each { |pa| res[pa.assumption.int_name] = pa.rules }
     res
   end
 
@@ -31,7 +32,7 @@ class Preference < ActiveRecord::Base
       if a.is_a? Assumption
         a
       else
-        arg = preference_arguments.joins(:assumption).where(assumptions: {name: a})
+        arg = preference_arguments.joins(:assumption).select { |pa| pa.assumption.int_name == a }
         if (arg.any?)
           arg.map(&:assumption)
         else
@@ -41,5 +42,13 @@ class Preference < ActiveRecord::Base
     end
     pas = preference_arguments.where(assumption_id: assumptions.flatten)
     pas.map(&:rules).flatten
+  end
+
+  private
+
+  def stage_lower_then_10_reserved_for_statisticians
+    if user && !user.is_statistician? && stage < 10
+      errors.add(:stage, "levels lower then 10 are reserved for statisticians")
+    end
   end
 end
