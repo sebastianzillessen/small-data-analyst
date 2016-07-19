@@ -23,25 +23,25 @@ module Capybara::DSL
 end
 
 RSpec.configure do |config|
-  Capybara.javascript_driver= :selenium
-
-  Capybara.register_driver :selenium do |app|
-
-    custom_profile = Selenium::WebDriver::Firefox::Profile.new
-
-    # Turn off the super annoying popup!
-    custom_profile["network.http.prompt-temp-redirect"] = false
-
-    Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => custom_profile)
-  end
+  #Capybara.javascript_driver= :selenium
+  #
+  #  Capybara.register_driver :selenium do |app|
+  #
+  #    custom_profile = Selenium::WebDriver::Firefox::Profile.new
+  #
+  #    # Turn off the super annoying popup!
+  #    custom_profile["network.http.prompt-temp-redirect"] = false
+  #
+  #    Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => custom_profile)
+  #  end
 end
 
-#RSpec.configure do |config|
-#  Capybara.javascript_driver = :poltergeist
-#
-#  Capybara.register_driver :poltergeist do |app|
-#    Capybara.default_max_wait_time = 10
-#    driver = Capybara::Poltergeist::Driver.new(app, window_size: [1100, 960], default_wait_time: 30, timeout: 690)
-#    driver
-#  end
-#end
+RSpec.configure do |config|
+  Capybara.javascript_driver = :poltergeist
+
+  Capybara.register_driver :poltergeist do |app|
+    Capybara.default_max_wait_time = 10
+    driver = Capybara::Poltergeist::Driver.new(app, window_size: [1100, 960], default_wait_time: 30, timeout: 690)
+    driver
+  end
+end
