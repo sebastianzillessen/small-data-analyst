@@ -57,6 +57,7 @@ FactoryGirl.define do
     end
   end
   factory :analysis_survival, class: Analysis do
+    user
     in_progress true
     association :research_question, :factory => :research_question_survival
     association :dataset, :factory => :dataset_survival

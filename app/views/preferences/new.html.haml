@@ -1,4 +1,6 @@
-%h1 New preference
+%h1
+  New preference
+  = @preference.research_question.present? ? "for #{@preference.research_question.name}": ""
 
 = render 'form'
 

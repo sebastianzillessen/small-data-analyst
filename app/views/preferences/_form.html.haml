@@ -1,14 +1,24 @@
 = semantic_form_for @preference do |f|
-  = f.inputs do
-    = f.input :name
-    = f.input :research_question, :as => :select, :collection => ResearchQuestion.order(:name).all.select { |a| can? :read, a }
-    = f.input :stage, hint: "Stages lower than 10 are reserved for statisticians only."
-    - if can? :edit_global, @preference
-      = f.input :global, hint: "Globally generated preferences will apply for all users"
 
-    = f.semantic_fields_for :preference_arguments do |pa|
-      = render 'preferences/preference_argument_fields', f: pa
-    .links
-      = link_to_add_association 'Add a new definition of an order', f, :preference_arguments, class: 'btn btn-primary'
+  = f.inputs(label: "Select the research question") do
+    - if @preference.research_question.nil?
+      = f.input :research_question, :as => :select,
+        :collection => ResearchQuestion.order(:name).all.select { |a| can? :read, a },
+        hint: "Once selected, you will not be able to change the research question anymore."
+    - else
+      = f.input :research_question_id, :as => :hidden
+      %p
+        %b Research Question:
+        = @preference.research_question.name
+  - if (@preference.persisted? || @preference.research_question.present?)
+    = f.inputs(label: "Details of this preference") do
+      = f.input :name
+      = f.input :stage
+      - if can? :edit_global, @preference
+        = f.input :global, hint: "Globally generated preferences will apply for all users and can only be modified and created by statisticians they must have a stage value lower than 10."
+      = f.semantic_fields_for :preference_arguments do |pa|
+        = render 'preferences/preference_argument_fields', f: pa
+      .links
+        = link_to_add_association 'Add a new definition of an order', f, :preference_arguments, class: 'btn btn-primary'
   = f.actions do
-    = f.action :submit, :as => :input
+    = f.action :submit, :as => :input, label: @preference.research_question.present? ? 'Create preference' : 'Proceed to next step'

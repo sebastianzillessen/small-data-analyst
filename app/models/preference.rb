@@ -9,6 +9,7 @@ class Preference < ActiveRecord::Base
   validates :preference_arguments, presence: true
   validates :research_question, presence: true
   validate :stage_lower_then_10_reserved_for_statisticians
+  validate :stage_lower_then_10_for_globals
   # TODO: Validate that only models that are applicable on a research question can be used in the preference_arguments
 
 
@@ -48,7 +49,13 @@ class Preference < ActiveRecord::Base
 
   def stage_lower_then_10_reserved_for_statisticians
     if user && !user.is_statistician? && stage < 10
-      errors.add(:stage, "levels lower then 10 are reserved for statisticians")
+      errors.add(:stage, "lower than 10 are reserved for statisticians.")
+    end
+  end
+
+  def stage_lower_then_10_for_globals
+    if (stage && stage >= 10 && global?)
+      errors.add(:stage, "must be lower than 10 for a global preference.")
     end
   end
 end

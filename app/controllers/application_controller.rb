@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   # check for abilities
   load_and_authorize_resource :unless => :devise_controller?
 
-
   protected
 
 

@@ -47,7 +47,6 @@ RSpec.describe Preference, type: :model do
 
 
   describe 'stage 1-10 registered for statisticians only' do
-    let(:non_statistician) { create(:user) }
     context 'a statistician' do
       let(:statistician) { create(:statistician) }
       before(:each) { subject.user = statistician }
@@ -72,6 +71,31 @@ RSpec.describe Preference, type: :model do
       it 'should not be allowed to set stage to 10' do
         subject.stage = 10
         expect(subject).to be_valid
+      end
+    end
+  end
+
+  describe '#global' do
+    context 'with global = true' do
+      before(:each) { subject.global = true }
+      context 'a statistician' do
+        let(:statistician) { create(:statistician) }
+        before(:each) { subject.user = statistician }
+        it 'should be allowed to set global' do
+          expect(subject).to be_valid
+        end
+        it 'should not be allowed to set stage to 10' do
+          subject.stage = 10
+          expect(subject).not_to be_valid
+        end
+      end
+
+      context 'a clinician' do
+        let(:clinician) { create(:clinician) }
+        before(:each) { subject.user = clinician }
+        it 'should not be allowed to set it' do
+          expect(subject).not_to be_valid
+        end
       end
     end
   end

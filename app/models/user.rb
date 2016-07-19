@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
   after_create :send_admin_mail
   validates :role, inclusion: {in: ROLES.map { |k, v| v }}, allow_nil: true, allow_blank: true
 
-
   def is_admin?
     role.try(:to_sym)== :admin
   end
@@ -36,6 +35,9 @@ class User < ActiveRecord::Base
     super && approved?
   end
 
+  def ability
+    @ability ||= Ability.new(self)
+  end
 
   def inactive_message
     if !approved?
