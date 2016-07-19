@@ -140,8 +140,6 @@ describe "creating a new analysis" do
             end
           end
           wait_for_ajax
-          # test for flash note
-          expect(page).to have_content "has been answered with 'Yes'."
 
           # test for answered question and icons
           within '#answered_questions_parent' do
