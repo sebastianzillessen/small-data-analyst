@@ -4,13 +4,16 @@ class QueryAssumptionResultsController < ApplicationController
   # PATCH/PUT /query_assumption_results/1
   # PATCH/PUT /query_assumption_results/1.json
   def update
+    puts "Update for #{@query_assumption_result} received"
     respond_to do |format|
       input = query_assumption_result_params[:result].to_s
       @parameter_ok = input == "true" || input == "false"
       if @parameter_ok && @query_assumption_result.update(query_assumption_result_params)
         @query_assumption_result=@query_assumption_result.reload
+        puts "Reder alright"
         format.js
       else
+        puts "Reder error"
         format.js { render 'update_error' }
       end
     end
