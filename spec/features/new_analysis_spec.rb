@@ -77,6 +77,7 @@ describe "creating a new analysis" do
             form_id = "##{form[:id]}"
             # check that form was removed
           end
+          wait_for_ajax
           expect(page).not_to have_css('#open_questions')
 
           # test for flash note
@@ -138,7 +139,7 @@ describe "creating a new analysis" do
               click_link "Yes"
             end
           end
-
+          wait_for_ajax
           # test for flash note
           expect(page).to have_content "has been answered with 'Yes'."
 
@@ -212,9 +213,9 @@ describe "creating a new analysis" do
             # answer question
             within form do
               click_link "Yes"
-
             end
             form_id = "##{form[:id]}"
+            wait_for_ajax
             # check that form was removed
             expect(page).not_to have_css(form_id)
           end
@@ -251,7 +252,7 @@ describe "creating a new analysis" do
             end
             # should have removed both
           end
-
+          wait_for_ajax
           expect(page).not_to have_css('#open_questions')
           expect(page).to have_content("Analysis is now complete.")
           expect(page).not_to have_css('form.query_assumption_result')
@@ -309,6 +310,7 @@ describe "creating a new analysis" do
               click_link "Yes"
             end
             form_id = "##{form[:id]}"
+            wait_for_ajax
             # check that form was removed
             expect(page).not_to have_css(form_id)
           end
@@ -342,7 +344,7 @@ describe "creating a new analysis" do
             end
             # should have removed both
           end
-
+          wait_for_ajax
           expect(page).not_to have_css('#open_questions')
           expect(page).not_to have_css('form.query_assumption_result')
           within '#ignored_questions_parent' do

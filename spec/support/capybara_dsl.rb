@@ -23,13 +23,12 @@ module Capybara::DSL
 end
 
 
-
 RSpec.configure do |config|
   Capybara.javascript_driver = :poltergeist
 
   Capybara.register_driver :poltergeist do |app|
     Capybara.default_max_wait_time = 10
-    driver = Capybara::Poltergeist::Driver.new(app, window_size: [1100, 960], timeout: 60)
+    driver = Capybara::Poltergeist::Driver.new(app, window_size: [1100, 960], default_wait_time: 30, timeout: 690)
     driver
   end
 end
