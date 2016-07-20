@@ -1,4 +1,4 @@
-= semantic_form_for question, remote: true do |f|
+= semantic_form_for question.becomes(QueryAssumptionResult), remote: true do |f|
   - random_id = SecureRandom.hex
   = f.inputs do
     .btn-group.btn-group-xs.btn-group-justified{data: {fill_input: '#query_assumption_result_result_input'}}

@@ -52,3 +52,4 @@ build/
 /public/images/frameworks/
 /rspec.failures
 .bash_history
+file_output_*

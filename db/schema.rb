@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160717141023) do
+ActiveRecord::Schema.define(version: 20160720140400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -186,6 +186,8 @@ ActiveRecord::Schema.define(version: 20160717141023) do
     t.datetime "updated_at",                    null: false
     t.boolean  "ignore",        default: false
     t.integer  "stage"
+    t.integer  "preference_id"
+    t.string   "type"
   end
 
   add_index "query_assumption_results", ["analysis_id"], name: "index_query_assumption_results_on_analysis_id", using: :btree

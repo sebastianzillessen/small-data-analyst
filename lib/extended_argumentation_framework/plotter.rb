@@ -101,7 +101,7 @@ module ExtendedArgumentationFramework
       #{dot_nodes}
       #{dot_edges_without_arrow}
       #{dot_edges}
-      } ".tap { |x| puts x }
+      } "
     end
 
 

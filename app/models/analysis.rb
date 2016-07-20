@@ -59,10 +59,6 @@ class Analysis < ActiveRecord::Base
         end
       end
     end
-    if (q.result == true)
-      # kill all query_assumptions that are attacked by this assumption
-      self.open_query_assumptions.where(query_assumption: q.query_assumption.attacking).update_all(ignore: true)
-    end
     if (done?)
       self.stage = 2
       As2Init.new(self)

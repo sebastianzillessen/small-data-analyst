@@ -15,6 +15,7 @@ FactoryGirl.define do
     factory :preference_cd1 do
       association :user, factory: :statistician
       stage 1
+      global true
       research_question do
         ResearchQuestion.find_by(name: "Survival Analysis") || create(:research_question_survival)
       end
@@ -36,10 +37,6 @@ FactoryGirl.define do
             assumption: ta_cd1_heavy,
             order_string: "#{weibull},#{kaplan_meier},,#{cox_proportional_hazards}"
         )
-        ta_cd1_mild.attacking = [ta_cd1_heavy]
-        ta_cd1_heavy.attacking = [ta_cd1_mild]
-        cd1_mild.assumption.save
-        cd1_heavy.assumption.save
         [cd1_mild, cd1_heavy]
       end
 
@@ -50,7 +47,8 @@ FactoryGirl.define do
         ResearchQuestion.find_by(name: "Survival Analysis") || create(:research_question_survival)
       end
       name "CD2"
-      stage 1
+      stage 2
+      global true
       association :user, factory: :statistician
       preference_arguments do
         weibull = Model.find_by(name: "Weibull") || create(:weibul_model)
@@ -70,10 +68,6 @@ FactoryGirl.define do
             assumption: qa_cd2_predict,
             order_string: "#{weibull},#{kaplan_meier},,#{cox_proportional_hazards}"
         )
-        qa_cd2_predict.attacking = [qa_cd2_explain]
-        qa_cd2_explain.attacking = [qa_cd2_predict]
-        cd2_predict.assumption.save
-        cd2_explain.assumption.save
         [cd2_explain, cd2_predict]
       end
 
