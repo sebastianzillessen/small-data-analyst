@@ -14,7 +14,6 @@ class RScriptExecution
     rescue
       r.pull('fileResult')
     end
-    binding.pry
     return result
   ensure
     r.quit

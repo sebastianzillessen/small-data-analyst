@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sebastianzillessen/rinruby.git
-  revision: d3767f9744252129f4822a60b836fb1360075d02
+  revision: 1c4a480140332660e3f5af73371b302e68b9628a
   specs:
-    rootapp-rinruby (3.1.1)
+    rootapp-rinruby (3.1.2)
 
 GEM
   remote: https://rubygems.org/
