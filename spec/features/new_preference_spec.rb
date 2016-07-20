@@ -15,7 +15,7 @@ describe "creating a new preference" do
     click_on "Proceed to next step"
     expect(page).to have_content research_question.name
     fill_in "Name", with: "Foo"
-    fill_in "Stage", with: 1
+    fill_in "Priority", with: 1
     check "Global"
     select_from_chosen(test_assumption.name, from: '#preference_preference_arguments_attributes_0_assumption_id')
     # TODO: Test for moving and arranging models.
