@@ -4,7 +4,7 @@ class PreferencesController < ApplicationController
   # GET /preferences
   # GET /preferences.json
   def index
-    @preferences = Preference.all
+    @preferences = Preference.order(:research_question_id, :stage).all.select { |p| can? :read, p }
   end
 
   # GET /preferences/1

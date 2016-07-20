@@ -8,7 +8,13 @@ class RScriptExecution
       r.eval("tabular_data=read.csv(textConnection(data))")
     end
     r.eval code
-    result = r.pull_boolean('result')
+
+    result = begin
+      r.pull_boolean('result')
+    rescue
+      r.pull('fileResult')
+    end
+    binding.pry
     return result
   ensure
     r.quit

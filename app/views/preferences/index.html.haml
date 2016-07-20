@@ -1,18 +1,10 @@
 %h1 Listing preferences
 
 %table.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Research Question
-      %th Stage
-      %th Global
-      %th #Model orders
-      %th Created
-      %th
+  = table_headers(Preference, [:name, :research_question, :stage, :global, :preference_arguments, :created_at], include_actions: true)
   %tbody
     - @preferences.each do |preference|
-      %tr[preference]
+      %tr[preference]{data: can?(:read, preference) ? {href: preference_path(preference)} : {}}
         %td=preference.name
         %td=preference.research_question.name
         %td=preference.stage
@@ -20,7 +12,6 @@
         %td=preference.preference_arguments.count
         %td=l(preference.created_at, format: :short)
         %td
-          = link_icon_to 'open', preference, title: "Show", class: 'btn-xs' if can? :read, preference
           = link_icon_to 'edit', edit_preference_path(preference), title: "Edit", class: 'btn-xs' if can? :edit, preference
           = link_icon_to 'trash',preference, method: :delete, remote: true, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, preference
 

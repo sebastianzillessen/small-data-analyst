@@ -1,19 +1,14 @@
-%h1 Listing datasets
+%h1 All available Datasets
 
 %table.table.table-striped
-  %thead
-    %tr
-      %th Name
-      %th Created at
-      %th Actions
-
+  = table_headers(Dataset, [:name, :user, :created_at], include_actions: true)
   %tbody
     - @datasets.each do |dataset|
-      %tr[dataset]
+      %tr[dataset]{data:{href: dataset_path(dataset)}}
         %td=dataset.name
+        = user_td(dataset)
         %td=l(dataset.created_at)
         %td
-          = link_icon_to 'open', dataset, title: "Show", class: 'btn-xs' if can? :read, dataset
           = link_icon_to 'edit', edit_dataset_path(dataset), title: "Edit", class: 'btn-xs' if can? :update, dataset
           = link_icon_to 'trash',dataset, remote:true,method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' if can? :destroy, dataset
 

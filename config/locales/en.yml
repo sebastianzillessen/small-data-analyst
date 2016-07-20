@@ -24,6 +24,8 @@ en:
     attributes:
       query_assumption:
         question: Question to ask the clinician
+      preference:
+        stage: Priority
   assumptions:
     form_query_assumption:
       hint:

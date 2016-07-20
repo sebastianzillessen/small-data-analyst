@@ -1,10 +1,17 @@
 %h1 Available Assumptions
-.list-group
+
+%table.table.table-striped
+  = table_headers(Assumption, [:name, :description, :user], include_actions: true)
+
   - @assumptions.each do |assumption|
-    .list-group-item[assumption]
-      = glyphicon_type(assumption)
-      = link_to assumption_path(assumption) do
-        #{assumption.name}: #{truncate(assumption.description, length:100)}
+    %tr[assumption]{data: can?(:read, assumption) ? {href: assumption_path(assumption)} : {}}
+      %td
+        = glyphicon_type(assumption)
+        =assumption.name
+      %td
+        =truncate(assumption.description, length:100)
+      =user_td(assumption)
+      %td
         = link_icon_to 'edit', edit_assumption_path(assumption), title: "Edit", class: 'btn-xs pull-right' if can? :edit, assumption
         = link_icon_to 'trash',assumption_path(assumption), remote: true, method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger pull-right' if can? :destroy, assumption
 

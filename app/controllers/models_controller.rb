@@ -4,7 +4,7 @@ class ModelsController < ApplicationController
   # GET /models
   # GET /models.json
   def index
-    @models = Model.all.select { |a| can? :read, a }
+    @models = Model.order(:name).all.select { |a| can? :read, a }
   end
 
   # GET /models/1

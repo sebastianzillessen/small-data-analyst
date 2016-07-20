@@ -1,20 +1,14 @@
 %h1 Listing users
 
 %table.table.table-striped
-  %thead
-    %tr
-      %th Email
-      %th Role
-      %th Created
-
+  = table_headers(User, [:email, :role, :created_at], include_actions: true)
   %tbody
     - @users.each do |user|
-      %tr[user]
+      %tr[user]{data:{href: admin_user_path(user)}}
         %td=user.email
         %td=user.role
         %td=l(user.created_at, format: :short)
         %td
-          = link_icon_to 'open', user, title: "Show", class: 'btn-xs' if can? :read, user
           = link_icon_to 'edit', edit_admin_user_path(user), title: "Edit", class: 'btn-xs' if can? :edit, user
           = link_icon_to 'trash',user, method: :delete, remote: true, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-xs btn-danger' unless current_user.id == user.id if can? :destroy, user
 

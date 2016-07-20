@@ -1,18 +1,18 @@
 %p
-  %b Name
+  %b=Preference.human_attribute_name(:name)
   = @preference.name
 %p
-  %b Stage:
+  %b=Preference.human_attribute_name(:stage)
   = @preference.stage
 %p
-  %b User
+  %b=Preference.human_attribute_name(:user)
   = @preference.user.try(:email)
 %p
-  %b Research Question
+  %b=Preference.human_attribute_name(:research_question)
   = @preference.research_question.name
 %p
-  %b Preference_arguments
+  %b=Preference.human_attribute_name(:preference_arguments)
   - @preference.preference_arguments.each do |pa|
     = render 'preference_argument', pa: pa
 
-= link_to "Edit",edit_preference_path(@preference)
+= link_to "Edit",edit_preference_path(@preference) if can? :edit, @preference

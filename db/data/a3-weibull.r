@@ -4,13 +4,17 @@
 # straight if the Weibull model is appropriate.
 library("survival")
 m=1
-ovarian.survfit<-survfit(Surv(ovarian$futime, ovarian$fustat==1)~ovarian$rx,data=ovarian)
-n=ovarian.survfit$strata[1]
-temp<-ovarian.survfit$time[m:n]
-cloglog=log(-log(ovarian.survfit$surv[m:n]))
+tabular_data.survfit<-survfit(Surv(tabular_data$futime, tabular_data$fustat==1)~tabular_data$rx,data=tabular_data)
+n=tabular_data.survfit$strata[1]
+temp<-tabular_data.survfit$time[m:n]
+cloglog=log(-log(tabular_data.survfit$surv[m:n]))
+file = paste("file_output_",as.numeric(Sys.time()),".png", sep="")
+png(file = file)
 plot(log(temp), cloglog, type ="s")
 m=n+1
-n=n+ovarian.survfit$strata[2]
-temp=ovarian.survfit$time[m:n]
-cloglog=log(-log(ovarian.survfit$surv[m:n]))
+n=n+tabular_data.survfit$strata[2]
+temp=tabular_data.survfit$time[m:n]
+cloglog=log(-log(tabular_data.survfit$surv[m:n]))
 lines(log(temp),cloglog,type="s",col=2)
+dev.off()
+fileResult <- file
