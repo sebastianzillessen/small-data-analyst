@@ -60,11 +60,10 @@ gem 'cancancan'
 gem 'data_migrate'
 gem 'cocoon'
 gem 'jquery-ui-rails'
-gem 'rails_12factor'
 
 # heroku stuff
 group :production do
-
+  gem 'rails_12factor'
   gem 'workless'
 end
 
@@ -84,6 +83,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'shoulda-matchers'
+  gem 'dotenv-rails'
 end
 
 group :test do
