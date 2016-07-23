@@ -2,7 +2,6 @@ class Assumption < ActiveRecord::Base
   default_scope { order('name DESC') }
 
   include IntName
-  include InvalidatePlots
   after_update :int_invalidate_plots
   after_create :int_invalidate_plots
 
@@ -67,6 +66,11 @@ class Assumption < ActiveRecord::Base
   end
 
   def int_invalidate_plots
-    invalidate_plots if (self.changed & ['name', 'r_code', 'question']).any?
+    if (self.changed & ['name', 'r_code', 'question']).any?
+      self.models.each do |m|
+        m.research_questions.each { |r| r.plot.try(:destroy) }
+        m.plot.try(:destroy)
+      end
+    end
   end
 end

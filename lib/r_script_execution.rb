@@ -27,7 +27,9 @@ class RScriptExecution
   def self.init(code, data)
     r = RinRuby.new
     if data
-      filename = Rails.root.join("r_data_#{SecureRandom.hex}.csv")
+      dir = Rails.root.join('tmp/csvs')
+      FileUtils.mkdir_p(dir) unless File.exists?(dir)
+      filename = dir.join("r_data_#{SecureRandom.hex}.csv")
       File.open(*filename, "w") do |f|
         f.write(data)
       end

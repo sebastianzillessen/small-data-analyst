@@ -1,6 +1,7 @@
 class Model < ActiveRecord::Base
   include IntName
   include Plottable
+  after_update :int_invalidate_plots
 
   default_scope { order('name DESC') }
 
@@ -50,5 +51,13 @@ class Model < ActiveRecord::Base
     rules
   end
 
+  private
+
+  def int_invalidate_plots
+    if (self.changed & ['name', 'assumptions', 'research_questions']).any?
+      self.research_questions.each { |r| r.plot.try(:destroy) }
+      self.plot.try(:destroy)
+    end
+  end
 
 end

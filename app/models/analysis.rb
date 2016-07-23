@@ -84,13 +84,9 @@ class Analysis < ActiveRecord::Base
       if p.valid?
         self.plots << p
       else
-        Delayed::Job.enqueue(FileDeleterJob.new(plot.filename), run_at: 5.minutes.from_now)
+        Delayed::Job.enqueue(FileDeleterJob.new(p.filename), run_at: 5.minutes.from_now)
       end
     end
-    plots
-  end
-
-  def frameworks()
     plots
   end
 

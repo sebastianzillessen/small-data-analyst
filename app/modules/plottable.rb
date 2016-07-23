@@ -3,7 +3,6 @@ module Plottable
     base.extend(ClassMethods)
     base.class_eval do
       has_one :plot, as: :object
-      include InvalidatePlots
       after_update :invalidate_plots
     end
   end

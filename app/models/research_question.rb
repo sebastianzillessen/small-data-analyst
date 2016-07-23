@@ -10,11 +10,19 @@ class ResearchQuestion < ActiveRecord::Base
 
   include IntName
   include Plottable
+  after_update :int_invalidate_plots
+  after_create :int_invalidate_plots
 
 
   def graph_representation
     models.map(&:graph_representation)
   end
 
-
+  private
+  def int_invalidate_plots
+    if (self.changed & ['name', 'models']).any?
+      Model.all.each { |r| r.plot.try(:destroy) }
+      self.plot.try(:destroy)
+    end
+  end
 end
