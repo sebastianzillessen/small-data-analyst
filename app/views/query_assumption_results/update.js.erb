@@ -3,14 +3,15 @@ $('#open_questions #<%= dom_id(@query_assumption_result)%>').slideUp().promise()
   $(this).remove();
 });
 // add questions if new have been come
-<%- @query_assumption_result.analysis.query_assumption_results.where(result: nil, ignore: false).each do |qar| %>
+<%- @analysis = @query_assumption_result.analysis.reload
+@analysis.query_assumption_results.where(result: nil, ignore: false).each do |qar| %>
 var $el = $('#open_questions #<%= dom_id(qar)%>');
 if ($el.length == 0) {
   $('#open_questions').append("<%= escape_javascript render 'analyses/question', question: qar%>").hide().slideDown();
 }
 <%- end %>
 
-<%- @query_assumption_result.analysis.query_assumption_results.where(ignore: true).each do |qar| %>
+<%- @analysis.query_assumption_results.where(ignore: true).each do |qar| %>
 var $ignoredQuestion = $('#open_questions #<%= dom_id(qar)%>');
 if ($ignoredQuestion.length > 0) {
   $ignoredQuestion.slideUp().promise().done(function () {
@@ -22,14 +23,14 @@ if ($ignoredQuestion.length > 0) {
 <%- end %>
 
 // update possible models
-$("#models_panel").html("<%= escape_javascript render 'analyses/models_panel', analysis: @query_assumption_result.analysis %>");
+$("#models_panel").html("<%= escape_javascript render 'analyses/models_panel', analysis: @analysis %>");
 // add to answered questions
 $('#answered_questions').append("<%= escape_javascript render 'analyses/answered_question', qar: @query_assumption_result %>").hide().slideDown();
 showDismissableAlert("'<%=@query_assumption_result.query_assumption.question%>' has been answered with '<%=@query_assumption_result.result ? 'Yes' :'No' %>'.", "info", {timeout: 2000});
 
-<%- if @query_assumption_result.analysis.done? %>
+<%- if @analysis.done? %>
 showDismissableAlert("Analysis is now complete. ", "success");
-$('#detailed_model_view').html("<%= escape_javascript render 'analyses/detailed_model_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
-$('#detailed_argumentation_view').html("<%= escape_javascript render 'analyses/detailed_argumentation_view', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
-$('#open_questions_parent').html("<%= escape_javascript render 'analyses/recommended_models', analysis: @query_assumption_result.analysis  %>").hide().slideDown();
+$('#detailed_model_view').html("<%= escape_javascript render 'analyses/detailed_model_view', analysis: @analysis  %>").hide().slideDown();
+$('#detailed_argumentation_view').html("<%= escape_javascript render 'analyses/detailed_argumentation_view', analysis: @analysis  %>").hide().slideDown();
+$('#open_questions_parent').html("<%= escape_javascript render 'analyses/recommended_models', analysis: @analysis  %>").hide().slideDown();
 <%- end %>

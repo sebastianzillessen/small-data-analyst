@@ -53,7 +53,9 @@ Formtastic::FormBuilder.default_text_area_height = 5
 # Specifies if labels/hints for input fields automatically be looked up using I18n.
 # Default value: true. Overridden for specific fields by setting value to true,
 # i.e. :label => true, or :hint => true (or opposite depending on initialized value)
-# Formtastic::FormBuilder.i18n_lookups_by_default = false
+Formtastic::FormBuilder.i18n_lookups_by_default = true
+Formtastic::FormBuilder.escape_html_entities_in_hints_and_labels = false
+
 
 # Specifies if I18n lookups of the default I18n Localizer should be cached to improve performance.
 # Defaults to true.

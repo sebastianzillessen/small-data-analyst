@@ -2,6 +2,7 @@ require 'csv'
 class Dataset < ActiveRecord::Base
   has_many :analyses, dependent: :destroy
   has_many :dataset_test_assumption_results, dependent: :destroy
+  has_many :query_test_assumption_plots, dependent: :destroy
   belongs_to :user
   serialize :columns, Array
 
@@ -34,6 +35,7 @@ class Dataset < ActiveRecord::Base
   def update_dataset_test_assumptions_results
     if (self.changed & ['data', 'columns']).any?
       dataset_test_assumption_results.each { |dtar| dtar.update }
+      query_test_assumption_plots.each { |qtap| qtap.update }
     end
   end
 

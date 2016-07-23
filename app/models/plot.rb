@@ -6,14 +6,19 @@ class Plot < ActiveRecord::Base
   belongs_to :object, polymorphic: true
   before_destroy :delete_file
 
-  private
 
-  def path
-    "#{BASE_URL}/#{filename}"
+
+  def asset_path
+    filename.gsub("#{BASE_URL}/", "")
   end
 
+
+  private
+
+
+
   def file_name_valid?
-    filename && File.exist?(path)
+    filename && File.exist?(filename)
   end
 
   def file_exists
@@ -24,7 +29,7 @@ class Plot < ActiveRecord::Base
 
   def delete_file
     if (file_name_valid?)
-      File.delete(path)
+      File.delete(filename)
     end
   end
 end

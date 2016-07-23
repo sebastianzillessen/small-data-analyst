@@ -19,6 +19,9 @@ class Analysis < ActiveRecord::Base
   has_many :query_assumption_results, autosave: true, dependent: :destroy
   has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
 
+  has_many :query_assumption_results, autosave: true, dependent: :destroy
+  has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
+
   validates :research_question, presence: true
   validates :dataset, presence: true
   validates :stage, presence: true, :numericality => {:greater_than_or_equal_to => 0}
@@ -38,7 +41,7 @@ class Analysis < ActiveRecord::Base
 
   def start
     research_question.models.each do |m|
-      pm = PossibleModel.create(model: m, analysis: self)
+      self.all_possible_models << PossibleModel.create(model: m, analysis: self)
       if (m.evaluate(self))
         m.get_queries(self).each do |q|
           q = QueryAssumptionResult.new(analysis: self, query_assumption: q, result: nil, stage: self.stage)
@@ -58,10 +61,6 @@ class Analysis < ActiveRecord::Base
           qar.update(ignore: true)
         end
       end
-    end
-    if (q.result == true)
-      # kill all query_assumptions that are attacked by this assumption
-      self.open_query_assumptions.where(query_assumption: q.query_assumption.attacking).update_all(ignore: true)
     end
     if (done?)
       self.stage = 2

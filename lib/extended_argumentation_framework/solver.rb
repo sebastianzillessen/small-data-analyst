@@ -120,8 +120,6 @@ module ExtendedArgumentationFramework
         used_arguments.include? edge.source
       end
 
-      puts "remaining attacks: #{attacks.map(&:to_s)}"
-      puts "remaining at-o-at: #{attacks_on_attacks.map(&:to_s)}"
       return nil unless attacks_on_attacks.empty?
       dung_framework = framework_from_attacks(attacks+[x])
       df = DungSolver.new(dung_framework)

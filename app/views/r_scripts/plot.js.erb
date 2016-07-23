@@ -1,0 +1,5 @@
+<%- if @plot && !@error %>
+$('#plot_content').html("<%= escape_javascript(image_tag(@plot.asset_path, class: 'fit-parent')) %>");
+<%- else %>
+$('#plot_content').html("<p class='text-danger'><b>The following error occured:</b><br><%= escape_javascript(@error) %></p>");
+<%- end %>

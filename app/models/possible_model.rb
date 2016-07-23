@@ -8,7 +8,7 @@ class PossibleModel < ActiveRecord::Base
 
 
   def reject(stage, *res)
-    puts "Rejecting #{model.name} because of #{reasons}"
+    puts "Rejecting #{model.name} because of #{res.map{|r| r.inspect}.join("\n")}"
     reasons= res.map do |r|
       if r.is_a?(ExtendedArgumentationFramework::Argument) || r.is_a?(String)
         Assumption.all.select { |a| a.int_name == r.to_s }

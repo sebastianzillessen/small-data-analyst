@@ -20,15 +20,20 @@ class As2Init
   end
 
   def as2_inits
-    Preference.order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |c|
-      puts "adding for #{c}"
+    Preference.order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |preference|
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
       if (@analysis.possible_models.count > 1)
-        c.arguments.each do |q|
+        preference.arguments.each do |q|
           next unless (q.is_a? QueryAssumption)
-          qar = QueryAssumptionResult.new(analysis: @analysis, query_assumption: q, result: nil, stage: @analysis.stage)
-          if (@analysis.query_assumption_results.where(result: nil, ignore: false).any?)
+
+          qar = PreferenceQueryAssumptionResult.new(
+              analysis: @analysis,
+              query_assumption: q,
+              result: nil,
+              stage: @analysis.stage,
+              preference: preference)
+          if (@analysis.open_query_assumptions.any?)
             found_unanswered_on_this_stage = true
           end
           if (qar.valid?)
@@ -41,21 +46,21 @@ class As2Init
       if found_unanswered_on_this_stage
         break
       else
-        @analysis.stage = c.stage + 1
+        @analysis.stage = preference.stage + 1
         @analysis.save
         # lets see if we can make a decision
         # get all rules for answered query_assumptions
-        arguments_hold = c.arguments.select { |a| a && a.evaluate(@analysis) }
+        arguments_hold = preference.arguments.select { |a| a && a.evaluate(@analysis) }
 
-        rules = (c.rules(arguments_hold)+model_rules(c.stage)).join(",")
-        framework = ExtendedArgumentationFramework::Framework.new(rules, name: "Extended Argumentation framework for stage #{c.stage}")
+        rules = (preference.rules(arguments_hold)+model_rules(preference.stage)).join(",")
+        framework = ExtendedArgumentationFramework::Framework.new(rules, name: "Extended Argumentation framework for stage #{preference.stage}")
 
         solver = ExtendedArgumentationFramework::Solver.new(framework)
         subset = arguments_hold.map { |a| ExtendedArgumentationFramework::Argument.new(a.int_name) }
 
         @analysis.possible_models.each do |p|
           if (solver.acceptable_arguments(subset, ExtendedArgumentationFramework::Argument.new(p.model.int_name)) == false)
-            p.reject!(@analysis.stage, *(subset+[c]))
+            p.reject!(@analysis.stage, *(subset+[preference]))
           end
         end
         # TODO: Store for models for which reason they are excluded.

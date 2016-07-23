@@ -49,8 +49,6 @@ module Preferences
         a.r_code = "#{CODE}\nresult <- (censoring.prop >= 0.7)"
         a.required_dataset_fields = ['fustat']
       end
-      cd1_mild.attacking = [cd1_heavy]
-      cd1_heavy.attacking = [cd1_mild]
       cd1_mild.save
       cd1_heavy.save
 

@@ -1,7 +1,7 @@
 %p
   The system provides different types of assumptions. Please select the type you want to create from the options below:
 .btn-group.btn-group-justified
-  - [TestAssumption, BlankAssumption, QueryAssumption].each do |child|
+  - [TestAssumption, BlankAssumption, QueryAssumption, QueryTestAssumption].each do |child|
     = link_icon_to 'plus', new_assumption_path(assumption: {type: child}), text: child
 
 %br

@@ -184,7 +184,7 @@ describe "creating a new analysis" do
           end
           find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
-            expect(page).to have_css('img.fit-parent', count: 2)
+            expect(page).to have_css('img.fit-parent', count: 1)
           end
 
 
@@ -239,7 +239,7 @@ describe "creating a new analysis" do
 
           within '#open_questions' do
             expect(page).to have_css("form.query_assumption_result", count: 2)
-            within "#query_assumption_result_#{subject.open_query_assumptions.select { |qa| qa.query_assumption.name == "CD2_explain" }.first.id}" do
+            within "#preference_query_assumption_result_#{subject.open_query_assumptions.select { |qa| qa.query_assumption.name == "CD2_explain" }.first.id}" do
               click_link "Yes"
             end
             # should have removed both
@@ -328,7 +328,7 @@ describe "creating a new analysis" do
           expect(query_assumptions_for_cd2.select { |qa| qa.name.start_with?("CD2_") }.length).to be(2)
           within '#open_questions' do
             expect(page).to have_css("form.query_assumption_result", count: 2)
-            within "#query_assumption_result_#{subject.open_query_assumptions.select { |qa| qa.query_assumption.name == "CD2_predict" }.first.id}" do
+            within "#preference_query_assumption_result_#{subject.open_query_assumptions.select { |qa| qa.query_assumption.name == "CD2_predict" }.first.id}" do
               click_link "Yes"
             end
             # should have removed both
@@ -349,6 +349,8 @@ describe "creating a new analysis" do
             expect(page).to have_css('.list-group-item.model', text: "Cox Proportional Hazard")
           end
           find('#detailed_model_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_model_view_parent [data-toggle="collapse"]').click
+          expect(page).to have_css('#detailed_model_view', visible: true)
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Cox Proportional Hazard")
 
@@ -356,6 +358,7 @@ describe "creating a new analysis" do
             expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS2")
             expect(page).to have_css(".list-group-item-danger", text: "Kaplan Meier")
 
+            expect(subject.remaining_models.length).to be 1
             subject.remaining_models.each do |m|
               within "#model_#{m.id}" do
                 expect(page).to have_css('.list-group-item-heading.text-success', count: m.assumptions.count)
@@ -364,6 +367,7 @@ describe "creating a new analysis" do
                 expect(page).to have_css('.list-group-item-heading.text-success', text: "a3")
               end
             end
+            expect(subject.declined_models.length).to be 2
             subject.declined_models.each do |m|
               within "#model_#{m.id}.list-group-item-danger" do
                 expect(page).to have_css('.list-group-item-heading .text-success', count: 1)

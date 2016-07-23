@@ -19,11 +19,6 @@ class Assumption < ActiveRecord::Base
                           association_foreign_key: :child_id,
                           uniq: true
 
-  has_and_belongs_to_many :attacking, class_name: 'Assumption',
-                          join_table: :assumption_attacks,
-                          foreign_key: :child_id,
-                          association_foreign_key: :parent_id,
-                          uniq: true
 
   has_and_belongs_to_many :models, uniq: true
   belongs_to :user
@@ -46,7 +41,7 @@ class Assumption < ActiveRecord::Base
   end
 
   def graph_representation(parent)
-    raise "Must be overwritten but #{self.inspect},#{parent.inspect} did not do so."
+    ["#{parent.int_name} -> #{self.int_name}"]
   end
 
   def get_associated_models

@@ -37,9 +37,6 @@ module Preferences
         cd.description= "Preferences for CD2"
       end
 
-      cd2_p.attacking = [cd2_e]
-      cd2_e.attacking = [cd2_p]
-
       cd2_p.save
       cd2_e.save
 

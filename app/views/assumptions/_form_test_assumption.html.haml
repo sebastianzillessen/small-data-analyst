@@ -1,6 +1,6 @@
 = f.inputs 'Test assumption specific attributes' do
-  = f.input :required_dataset_fields, as: :string, hint: t('.hint.required_dataset_fields'), input_html:{multiple: true}
-  = f.input :r_code, hint: t('.hint.r_code').html_safe
+  = f.input :required_dataset_fields, as: :string, input_html:{multiple: true}
+  = f.input :r_code
   %fieldset.inputs
     .input.optional.form-group
       %span.form-label
@@ -11,7 +11,9 @@
     .help-block
       To verify the entered R-Code please use the option below to execute your code. You can as well select an dataset to test your code against.
 
+  = f.input :type, as: :hidden
   %fieldset.form-actions
     = link_icon_to 'play', rscript_validate_path(), remote: true, method: :post,
-      data:{ before_submit: {r_script: '#test_assumption_r_code', dataset_id: '#test_dataset_id'}}, text: 'Verify Script',
+      data:{ before_submit: {r_script: "##{f.object.class.name.underscore}_r_code",
+      dataset_id: '#test_dataset_id', assumption_type: "##{f.object.class.name.underscore}_type"}}, text: 'Verify Script',
       class: 'btn-success btn-xs pull-right'
