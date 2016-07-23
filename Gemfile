@@ -41,6 +41,7 @@ gem 'haml-rails'
 gem 'puma'
 gem 'foreman'
 gem 'delayed_job_active_record'
+gem 'aws-sdk'
 
 gem 'ruby-graphviz'
 
