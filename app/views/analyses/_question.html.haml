@@ -2,4 +2,7 @@
   %p
     %b Question:
     = question.query_assumption.question
+  - if question.query_assumption.is_a? QueryTestAssumption
+    %p
+      = image_tag(question.query_assumption.graph(question.analysis.dataset).asset_path, class: 'fit-parent')
   %p= render "query_assumption_results/form", question: question

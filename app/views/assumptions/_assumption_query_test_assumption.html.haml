@@ -1,0 +1,16 @@
+%h5 R-Code to be executed
+%code
+  =r_code(assumption.r_code)
+
+%h5 Requires the following dataset columns:
+%code=assumption.required_dataset_fields
+
+%h5 Plots
+- @datasets = Dataset.all.select{|d| can? :read, d}
+= select_tag('test_dataset_id', options_for_select(@datasets.collect{ |d| [d.name, d.id] }), include_blank: true, class: 'form-control')
+= link_icon_to 'play', query_test_assumption_plot_path(assumption_id: assumption.id), remote: true, method: :post,
+      data:{ before_submit: {dataset_id: '#test_dataset_id'}}, text: 'Show Plot',
+      class: 'btn-success btn-ms pull-right'
+#plot_content
+  %p
+    Please select a dataset above to show the corresponding plot.

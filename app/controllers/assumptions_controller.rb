@@ -80,6 +80,8 @@ class AssumptionsController < ApplicationController
             params.require(:blank_assumption).permit(attribute_for_all, :argument_inverted, array_for_all, assumption_ids: [])
           elsif (params[:test_assumption])
             params.require(:test_assumption).permit(attribute_for_all, :r_code, :argument_inverted, array_for_all, required_dataset_fields: [])
+          elsif (params[:query_test_assumption])
+            params.require(:query_test_assumption).permit(attribute_for_all, :r_code, :argument_inverted, :question, :argument_inverted, array_for_all, required_dataset_fields: [])
           else
             {}
           end

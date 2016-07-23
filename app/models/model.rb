@@ -16,7 +16,7 @@ class Model < ActiveRecord::Base
 
 
   def evaluate(analysis)
-    assumptions.where.not(type: QueryAssumption).each do |a|
+    assumptions.where("type NOT IN (?)", [QueryAssumption, QueryTestAssumption]).each do |a|
       unless (a.evaluate(analysis))
         analysis.possible_models.where(model: self).first.try(:reject!, analysis.stage, a)
         return false
@@ -30,11 +30,11 @@ class Model < ActiveRecord::Base
     if (evaluate(analysis))
       # get sub queries
       # TODO: Replace selects with DB access
-      assumptions.where.not(type: QueryAssumption).each do |a|
+      assumptions.where("type NOT IN (?)", [QueryAssumption, QueryTestAssumption]).each do |a|
         queries << a.get_queries(analysis)
       end
 
-      queries << assumptions.select { |a| a.class == QueryAssumption }
+      queries << assumptions.where("type IN (?)", [QueryAssumption, QueryTestAssumption])
     end
 
     queries.flatten.uniq

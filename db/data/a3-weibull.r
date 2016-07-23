@@ -9,8 +9,8 @@ tabular_data.survfit<-survfit(Surv(tabular_data$futime, tabular_data$fustat==1)~
 n=tabular_data.survfit$strata[1]
 temp<-tabular_data.survfit$time[m:n]
 cloglog=log(-log(tabular_data.survfit$surv[m:n]))
-file = paste("file_output_",as.numeric(Sys.time()),".png", sep="")
-png(file = file)
+
+png(file = fileName)
 plot(log(temp), cloglog, type ="o")
 m=n+1
 n=n+tabular_data.survfit$strata[2]
@@ -18,4 +18,5 @@ temp=tabular_data.survfit$time[m:n]
 cloglog=log(-log(tabular_data.survfit$surv[m:n]))
 lines(log(temp),cloglog,type="o",col=2)
 dev.off()
-fileResult <- file
+# no result, as we include the filepath into the
+result <- TRUE

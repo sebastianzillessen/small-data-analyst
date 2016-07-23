@@ -18,6 +18,25 @@ FactoryGirl.define do
     factory :blank_assumption, class: BlankAssumption do
 
     end
+    factory :query_test_assumption, class: QueryTestAssumption, parent: :query_assumption do
+      r_code 'library("survival")
+m=1
+tabular_data.survfit<-survfit(Surv(tabular_data$futime, tabular_data$fustat==1)~tabular_data$rx,data=tabular_data)
+n=tabular_data.survfit$strata[1]
+temp<-tabular_data.survfit$time[m:n]
+cloglog=log(-log(tabular_data.survfit$surv[m:n]))
+
+png(file = fileName)
+plot(log(temp), cloglog, type ="o")
+m=n+1
+n=n+tabular_data.survfit$strata[2]
+temp=tabular_data.survfit$time[m:n]
+cloglog=log(-log(tabular_data.survfit$surv[m:n]))
+lines(log(temp),cloglog,type="o",col=2)
+dev.off()
+# no result, as we include the filepath into the
+result <- TRUE'
+    end
 
     factory :test_assumption, class: TestAssumption, parent: :assumption do
       description { Faker::Lorem.sentences(4) }
@@ -50,8 +69,6 @@ FactoryGirl.define do
       end
     end
   end
-
-
 
 
 end

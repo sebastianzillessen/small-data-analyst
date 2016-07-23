@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
   resources :assumptions
   # fixing STI problems with assumption paths
-  ['test_assumption', 'query_assumption', 'blank_assumption'].each do |k|
+  ['test_assumption', 'query_test_assumption', 'query_assumption', 'blank_assumption'].each do |k|
     get 'assumptions', to: 'assumptions#index', as: k+"s"
     get 'assumptions/:id', to: 'assumptions#show', as: k
   end
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   end
 
   post 'r_scripts/validate', as: 'rscript_validate'
+  post 'r_scripts/plot', as: 'query_test_assumption_plot'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

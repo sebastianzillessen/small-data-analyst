@@ -41,7 +41,7 @@ class Assumption < ActiveRecord::Base
   end
 
   def graph_representation(parent)
-    raise "Must be overwritten but #{self.inspect},#{parent.inspect} did not do so."
+    ["#{parent.int_name} -> #{self.int_name}"]
   end
 
   def get_associated_models

@@ -9,7 +9,7 @@
             Open Query Assumptions
             = collapse('open_questions')
           %ul.list-group#open_questions.collapse.in
-            - @analysis.query_assumption_results.where(result: nil, ignore: false).each do |question|
+            - @analysis.open_query_assumptions.each do |question|
               = render 'question', question: question
             %li.list-group-item.auto-show-empty.text-warning
               No remaining open query assumptions.

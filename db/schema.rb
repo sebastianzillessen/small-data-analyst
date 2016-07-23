@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720140400) do
+ActiveRecord::Schema.define(version: 20160722194856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,6 +192,14 @@ ActiveRecord::Schema.define(version: 20160720140400) do
 
   add_index "query_assumption_results", ["analysis_id"], name: "index_query_assumption_results_on_analysis_id", using: :btree
   add_index "query_assumption_results", ["assumption_id"], name: "index_query_assumption_results_on_assumption_id", using: :btree
+
+  create_table "query_test_assumption_plots", force: :cascade do |t|
+    t.integer  "query_test_assumption_id"
+    t.integer  "plot_id"
+    t.integer  "dataset_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "reasons", force: :cascade do |t|
     t.integer  "argument_id"

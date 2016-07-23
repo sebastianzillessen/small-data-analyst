@@ -4,13 +4,23 @@
 
 - if @dataset
   %h4 The selected dataset was: #{@dataset.name}
-  = render 'datasets/render_dataset', dataset: @dataset, limit: 10
-%h4
-  Variable
-  %code result
-  got assigned with:
-%code
-  =@result
+  = render 'datasets/render_dataset', dataset: @dataset, limit: @plot ? 5: 10
+
+- if @plot
+  %h4
+    Plot
+  %p
+    The generated plot is:
+  %p
+    = image_tag(@plot.asset_path, class: 'fit-parent')
+- else
+  %h4
+    Variable
+    %code result
+    got assigned with:
+  %code
+    =@result
+
 - if @error
   %h4
     The R-Interpreter returned the following errors:
