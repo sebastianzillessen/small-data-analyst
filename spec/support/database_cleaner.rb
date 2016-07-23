@@ -1,6 +1,5 @@
 RSpec.configure do |config|
 
-  puts "Running database cleaner"
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
