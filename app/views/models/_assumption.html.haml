@@ -3,7 +3,8 @@
   .pull-right
     =glyphicon_type(assumption)
 %p.list-group-item-text
-  %p=link_to assumption.description, assumption.becomes(Assumption)
+  %p
+    =link_to assumption.description, assumption.becomes(Assumption)
   - if assumption.is_a?(BlankAssumption) && assumption.assumptions.any?
     = render 'models/assumptions', assumptions: assumption.assumptions
 

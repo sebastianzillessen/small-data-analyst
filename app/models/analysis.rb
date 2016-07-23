@@ -81,12 +81,12 @@ class Analysis < ActiveRecord::Base
           filename: "#{Plot::BASE_URL}/#{plotter.to_png}",
           name: framework.name
       )
-      self.plots << p if p.valid?
+      if p.valid?
+        self.plots << p
+      else
+        Delayed::Job.enqueue(FileDeleterJob.new(p.filename), run_at: 5.minutes.from_now)
+      end
     end
-    plots
-  end
-
-  def frameworks()
     plots
   end
 

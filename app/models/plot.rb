@@ -15,6 +15,10 @@ class Plot < ActiveRecord::Base
     filename.gsub("#{BASE_URL}/", "")
   end
 
+  def file_exists?
+    file_exists
+  end
+
 
   private
 
@@ -26,7 +30,9 @@ class Plot < ActiveRecord::Base
   def file_exists
     unless file_name_valid?
       errors.add(:filename, 'must exist')
+      return false
     end
+    return true
   end
 
   def delete_file

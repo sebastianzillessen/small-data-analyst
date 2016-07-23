@@ -54,3 +54,4 @@ build/
 .bash_history
 file_output_*
 public/images/r_plot_*.png
+r_data_*.csv

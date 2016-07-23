@@ -2,7 +2,8 @@ class Assumption < ActiveRecord::Base
   default_scope { order('name DESC') }
 
   include IntName
-  include InvalidatePlots
+  after_update :int_invalidate_plots
+  after_create :int_invalidate_plots
 
   #TODO: Make Assumption abstract
   #self.abstract_class = true
@@ -23,7 +24,7 @@ class Assumption < ActiveRecord::Base
   has_and_belongs_to_many :models, uniq: true
   belongs_to :user
   has_many :preference_arguments, dependent: :destroy
-  has_many :reasons, foreign_key: :argument_id
+  has_many :reasons, foreign_key: :argument_id, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
 
@@ -62,5 +63,14 @@ class Assumption < ActiveRecord::Base
       end
     end
     children
+  end
+
+  def int_invalidate_plots
+    if (self.changed & ['name', 'r_code', 'question']).any?
+      self.models.each do |m|
+        m.research_questions.each { |r| r.plot.try(:destroy) }
+        m.plot.try(:destroy)
+      end
+    end
   end
 end
