@@ -1,8 +1,8 @@
-%li.list-group-item[question]
+%li.list-group-item[query_assumption]
   %p
     %b Question:
-    = question.query_assumption.question
-  - if question.query_assumption.is_a? QueryTestAssumption
+    = query_assumption.query_assumption.question
+  - if query_assumption.query_assumption.is_a? QueryTestAssumption
     %p
-      = image_tag(question.query_assumption.graph(question.analysis.dataset).asset_path, class: 'fit-parent')
-  %p= render "query_assumption_results/form", question: question
+      = image_tag(query_assumption.query_assumption.graph(query_assumption.analysis.dataset).asset_path, class: 'fit-parent')
+  %p= render "query_assumption_results/form", question: query_assumption

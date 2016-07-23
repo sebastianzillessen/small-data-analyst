@@ -2,8 +2,9 @@ class As2Init
 
 
   def initialize(analysis)
+    return nil unless (analysis.in_progress?)
     @analysis = analysis
-    build_fw
+    as2_inits
   end
 
 
@@ -20,6 +21,7 @@ class As2Init
   end
 
   def as2_inits
+    all_done = false
     Preference.order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |preference|
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
@@ -44,6 +46,7 @@ class As2Init
       end
 
       if found_unanswered_on_this_stage
+        all_done = false
         break
       else
         @analysis.stage = preference.stage + 1
@@ -63,18 +66,17 @@ class As2Init
             p.reject!(@analysis.stage, *(subset+[preference]))
           end
         end
-        # TODO: Store for models for which reason they are excluded.
         @analysis.add_framework(arguments_hold, framework)
-        if @analysis.possible_models.count <= 1
-          all_done = true
-        end
+
+        all_done = true
       end
+    end
+    if (all_done)
+      @analysis.in_progress = false
+      @analysis.save
     end
   end
 
-  def build_fw
-    as2_inits
-  end
 
 
 end

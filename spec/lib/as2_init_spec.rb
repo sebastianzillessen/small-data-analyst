@@ -21,8 +21,5 @@ RSpec.describe As2Init, type: :class do
     expect(subject.send(:model_rules, 1).length).to eq 9
   end
 
-  it 'should have 2 subclasses' do
-    expect(Preferences::AS2.subclasses.length).to eq 2
-  end
 
 end

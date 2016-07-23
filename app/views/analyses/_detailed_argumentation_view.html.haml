@@ -1,15 +1,12 @@
 - if analysis.done?
-  - if analysis.frameworks.any?
-    - analysis.frameworks.each do |arguments, set|
-      -framework = set[:framework]
-      -excluded_models = set[:excluded_models]
-      -plotter = set[:plotter]
+  - if analysis.plots.any?
+    - analysis.plots.order(:name).each do |plot|
       %li.list-group-item
         .list-group-item-heading
-          %b= framework.name
+          %b= plot.name
         .list-group-item-text
           .resize-on-click.text-center
-            = image_tag(plotter.to_png, class: 'fit-parent')
+            = image_tag(plot.asset_path, class: 'fit-parent')
   - else
     %li.list-group-item.list-group-item-warning
       No Frameworks have been evaluated

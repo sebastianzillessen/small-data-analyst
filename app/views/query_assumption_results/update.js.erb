@@ -7,7 +7,7 @@ $('#open_questions #<%= dom_id(@query_assumption_result)%>').slideUp().promise()
 @analysis.query_assumption_results.where(result: nil, ignore: false).each do |qar| %>
 var $el = $('#open_questions #<%= dom_id(qar)%>');
 if ($el.length == 0) {
-  $('#open_questions').append("<%= escape_javascript render 'analyses/question', question: qar%>").hide().slideDown();
+  $('#open_questions').append("<%= escape_javascript render 'analyses/question', query_assumption: qar%>").hide().slideDown();
 }
 <%- end %>
 
