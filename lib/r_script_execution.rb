@@ -10,7 +10,8 @@ class RScriptExecution
 
 
   def self.retrieveFile(code, data=nil)
-    code = "fileName<-'#{Tempfile.new(['plot', '.png'])}'\n#{code}"
+    t = Tempfile.new(["plot", ".png"], "#{Rails.root.to_s}/tmp/")
+    code = "fileName<-'#{t.path}'\n#{code}"
     r = init(code, data)
     fileName = r.pull('fileName')
     puts fileName
