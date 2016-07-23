@@ -27,10 +27,14 @@ class RScriptExecution
   def self.init(code, data)
     r = RinRuby.new
     if data
-      r.assign "data", data
-      # make data to list according to csv.
-      r.eval("tabular_data=read.csv(textConnection(data))")
+      filename = Rails.root.join("r_data_#{SecureRandom.hex}.csv")
+      File.open(*filename, "w") do |f|
+        f.write(data)
+      end
+      r.eval("tabular_data=read.csv(file='#{filename}')")
+      File.delete(filename)
     end
+
     codes = code.split(/[\n\r]/).reject(&:empty?).map(&:strip)
     codes.each_with_index do |c, i|
       begin

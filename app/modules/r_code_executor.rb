@@ -4,7 +4,7 @@ module RCodeExecutor
     base.class_eval do
       validates :r_code, presence: true
       serialize :required_dataset_fields, Array
-      before_validation :parse_required_dataset_fields, if: :required_dataset_fields_changed?
+      before_validation :parse_required_dataset_fields
       validate :r_code_syntax, if: :r_code_changed?
     end
   end
@@ -29,8 +29,8 @@ module RCodeExecutor
 
   private
   def parse_required_dataset_fields
-    if self.required_dataset_fields.is_a? String || self.required_dataset_fields.is_a?(Array)
-      self.required_dataset_fields = self.required_dataset_fields.join(",").split(/\s*,\s*/).uniq
+    if self.required_dataset_fields.is_a?(String) || self.required_dataset_fields.is_a?(Array)
+      self.required_dataset_fields = self.required_dataset_fields.join(",").split(/\s*[,\s]\s*/).uniq.map(&:strip)
     end
   end
 

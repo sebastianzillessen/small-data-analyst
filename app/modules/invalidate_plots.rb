@@ -1,9 +1,6 @@
 module InvalidatePlots
   def self.included(base)
     base.extend(ClassMethods)
-    base.class_eval do
-      after_update :invalidate_plots
-    end
   end
 
   module ClassMethods
@@ -12,6 +9,7 @@ module InvalidatePlots
 
   # define your instance methods here
   def invalidate_plots
+    puts "INVALIDATA PLOTS #{self.inspect}"
     Plot.all.each do |p|
       o = p.object
       p.destroy

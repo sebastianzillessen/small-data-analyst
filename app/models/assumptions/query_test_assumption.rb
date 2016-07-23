@@ -14,20 +14,27 @@ class QueryTestAssumption < QueryAssumption
   def graph(dataset_or_analysis)
     dataset = ensure_dataset(dataset_or_analysis)
     cached = self.query_test_assumption_plots.where(dataset: dataset).first
-    return cached.plot unless cached.nil? || cached.plot.nil? || !cached.valid? || !cached.plot.valid?
-    if (cached)
-      cached.destroy
+    return cached.plot unless cached.nil? || cached.plot.nil? || !cached.valid? || !cached.plot.valid? || !cached.plot.file_exists?
+
+    cached.destroy if (cached)
+
+    cached = QueryTestAssumptionPlot.new(dataset: dataset, query_test_assumption: self)
+    filename = eval_internal(dataset)
+    cached.plot = Plot.new(filename: filename, object: cached)
+
+    unless (cached.plot.valid? || !cached.plot.file_exists?)
+      raise RuntimeError, "The plot could not be generated: #{cached.plot.errors.full_messages.join(". ")}"
     end
 
-    filename = eval_internal(dataset)
-    plot = Plot.new(filename: filename, object: self)
-    dtar = self.query_test_assumption_plots.where(dataset: dataset).first
-    if (dtar)
-      dtar.update_attributes(plot: plot)
+    if cached.valid? && cached.save!
+      cached.plot.save!
+      self.query_test_assumption_plots << cached
+      self.save!
     else
-      self.query_test_assumption_plots << QueryTestAssumptionPlot.new(dataset: dataset, plot: plot)
+      Delayed::Job.enqueue(FileDeleterJob.new(plot.filename), run_at: 5.minutes.from_now)
     end
-    plot
+
+    cached.plot
   end
 
   def eval_internal(dataset)
