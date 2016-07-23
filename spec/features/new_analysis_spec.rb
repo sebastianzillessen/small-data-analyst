@@ -112,7 +112,7 @@ describe "creating a new analysis" do
             expect(page).to have_content("No possible models found")
           end
 
-          find('#detailed_model_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_model_view_parent [data-toggle="collapse"]').click
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-danger", text: "Kaplan Meier")
             expect(page).to have_css(".list-group-item-danger", text: "Weibull")
@@ -121,7 +121,7 @@ describe "creating a new analysis" do
             expect(page).to have_css(".list-group-item-heading.text-danger", text: "a1", count: 2)
             expect(page).to have_css(".list-group-item-heading.text-danger", text: "a3", count: 1)
           end
-          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
 
           within '#detailed_argumentation_view' do
             expect(page).not_to have_css('img.fit-parent')
@@ -164,7 +164,7 @@ describe "creating a new analysis" do
           end
 
           expect(page).to have_content('Recommended models')
-          find('#detailed_model_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_model_view_parent [data-toggle="collapse"]').click
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
             expect(page).to have_css(".list-group-item-danger", text: "Weibull")
@@ -182,7 +182,7 @@ describe "creating a new analysis" do
             expect(page).to have_css('.list-group-item-danger .text-success', text: "CD1_mild")
             expect(page).to have_css('.list-group-item-danger .text-danger', text: "a3")
           end
-          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 1)
           end
@@ -261,7 +261,7 @@ describe "creating a new analysis" do
             expect(page).to have_css('.list-group-item.model', text: "Cox Proportional Hazard")
           end
 
-          find('#detailed_model_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_model_view_parent [data-toggle="collapse"]').click
 
           within '#detailed_model_view' do
             expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
@@ -269,7 +269,8 @@ describe "creating a new analysis" do
 
             expect(page).to have_css(".list-group-item-danger", text: "Weibull")
             expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS2")
-
+          end
+          within '#detailed_model_view' do
             subject.remaining_models.each do |m|
               within "#model_#{m.id}" do
                 expect(page).to have_css('.list-group-item-heading.text-success', count: m.assumptions.count)
@@ -284,7 +285,7 @@ describe "creating a new analysis" do
               end
             end
           end
-          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 2)
           end
@@ -348,7 +349,6 @@ describe "creating a new analysis" do
             #expect(page).to have_css('.list-group-item.model', text: "Kaplan Meier")
             expect(page).to have_css('.list-group-item.model', text: "Cox Proportional Hazard")
           end
-          find('#detailed_model_view_parent [data-toggle="collapse"]').click
           #find('#detailed_model_view_parent [data-toggle="collapse"]').click
           expect(page).to have_css('#detailed_model_view', visible: true)
           within '#detailed_model_view' do
@@ -377,7 +377,7 @@ describe "creating a new analysis" do
             end
           end
 
-          find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
+          #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
 
           within '#detailed_argumentation_view' do
             expect(page).to have_css('img.fit-parent', count: 2)
