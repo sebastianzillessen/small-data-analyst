@@ -1,11 +1,21 @@
-.nested-fields.panel.panel-default
+.nested-fields.panel.panel-primary
   .panel-heading
-    Definition of an order over models if an assumption holds
+    Expression of an order over models if an assumption holds
+    = link_to_remove_association f, class: 'btn btn-xs btn-warning pull-right' do
+      .glyphicon.glyphicon-minus-sign
+      Remove this
   .panel-body
     = f.inputs do
       = f.input :assumption
       - random_id = SecureRandom.hex
       = f.input :order_string, input_html:{data:{selector: random_id}, class: 'hidden'}, label: "Definition of the order of the available models"
+      %p
+        .inline-hints.text-primary
+          Please express the order over the available models for this research question by dragging and dropping the below models in the correct order.
+        .inline-hints.text-primary
+          You can add as many
+          .label.label-primary <
+          as you want in your order specification.
       %div(id="model-order-#{random_id}")
         .panel.panel-default
           .panel-heading
@@ -19,6 +29,7 @@
           .panel-heading
             Specified order for models if the above selected assumption holds
             %a.btn.btn-success.pull-right.btn-xs{data:{sortable_add: "<div class='label label-primary remove-on-right'>&lt;</div>",sortable_add_target: "#model-order-#{random_id} #target"}}
+              .glyphicon.glyphicon-plus-sign
               Add another
               .label.label-primary
                 <
@@ -35,8 +46,4 @@
           by right clicking on it.
           %br
           You can drag and drop models to order them or move them between the list by right clicking.
-
-        .text-right
-          = link_to_remove_association "Remove this definition of an order", f, class: 'btn btn-warning'
-
   %br

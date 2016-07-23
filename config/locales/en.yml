@@ -23,7 +23,6 @@ en:
   formtastic:
     hints:
       assumption: &assumption
-
       test_assumption: &test_assumption
         <<: *assumption
         required_dataset_fields: "Please provide a list of dataset fields, that are required for this Test
@@ -43,6 +42,8 @@ en:
         r_code: "This is the actual code that will be executed to generate the plot for the user. Please use R-Syntax.
                                   The dataset will be available in the variable <code>tabular_data</code> as tabular data and in
                                   <code>data</code> as csv encoded format. To specify if the generation of the plot was successfully you <b>must</b> set the variable <code>result</code> in your script to a boolean value (TRUE/FALSE). Please use the input <code>fileName</code> in your script to store the plot as PNG to."
+      dataset:
+        data_file: Supported are only CSV files. If you don't upload a new file here, we will not change the data of the dataset.
   activerecord:
     attributes:
       query_assumption:

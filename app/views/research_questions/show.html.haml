@@ -19,7 +19,5 @@
     .col-md-6
       = render 'shared/graph_representation', object: @research_question
 
-
-= link_to edit_research_question_path(@research_question), class: 'btn btn-default' do
-  .glyphicon.glyphicon-edit
-  Edit
+- if can? :edit, @research_question
+  = link_icon_to 'edit', edit_research_question_path(@research_question), text: 'Edit research question'

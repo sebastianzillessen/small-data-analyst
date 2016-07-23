@@ -11,7 +11,7 @@
     = assumption.description
     = render "assumption_#{assumption.class.name.underscore}", assumption: assumption
   .panel-footer
-    = link_to edit_assumption_path(assumption), class: 'btn btn-default btn-xs', data:{toggle:'tooltip',placement:'bottom'},title: "Edit" do
-      .glyphicon.glyphicon-edit
-    = button_to assumption_path(assumption), class: 'btn btn-danger btn-xs', method: :delete, data:{confirm: 'Are you sure?' ,toggle:'tooltip',placement:'bottom'},title: "Delete" do
-      .glyphicon.glyphicon-trash
+    - if can? :edit, assumption
+      = link_icon_to 'edit', edit_assumption_path(assumption), text: 'Edit assumption'
+    - if can? :destroy, assumption
+      = link_icon_to 'trash', assumption, remote:true, text: 'Delete assumption',method: :delete, data:{confirm: 'Are you sure?'},title: "Delete", class: 'btn-danger'

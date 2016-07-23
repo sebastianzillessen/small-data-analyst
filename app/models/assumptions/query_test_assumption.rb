@@ -14,7 +14,10 @@ class QueryTestAssumption < QueryAssumption
   def graph(dataset_or_analysis)
     dataset = ensure_dataset(dataset_or_analysis)
     cached = self.query_test_assumption_plots.where(dataset: dataset).first
-    return cached.plot unless cached.nil? || cached.plot.nil?
+    return cached.plot unless cached.nil? || cached.plot.nil? || !cached.valid? || !cached.plot.valid?
+    if (cached)
+      cached.destroy
+    end
 
     filename = eval_internal(dataset)
     plot = Plot.new(filename: filename, object: self)

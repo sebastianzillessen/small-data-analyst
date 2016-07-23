@@ -15,4 +15,5 @@
   - @preference.preference_arguments.each do |pa|
     = render 'preference_argument', pa: pa
 
-= link_to "Edit",edit_preference_path(@preference) if can? :edit, @preference
+- if can? :edit, @preference
+  = link_icon_to 'edit', edit_preference_path(@preference), text: 'Edit preference'

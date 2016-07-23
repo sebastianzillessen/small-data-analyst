@@ -1,7 +1,7 @@
 class PossibleModel < ActiveRecord::Base
   belongs_to :model
-  belongs_to :analysis
-  has_many :reasons
+  belongs_to :analysis, dependent: :destroy
+  has_many :reasons, dependent: :destroy
 
   validates :model, presence: true, uniqueness: {scope: :analysis}
   validates :analysis, presence: true, uniqueness: {scope: :model}
