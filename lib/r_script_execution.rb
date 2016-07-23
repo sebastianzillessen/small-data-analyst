@@ -9,21 +9,22 @@ class RScriptExecution
   end
 
 
-  def self.retrieveFile(code, data=nil, file)
-    code = "fileName <- '#{file}' \n #{code}"
-    if execute(code, data)
-      if (File.exist?(file))
-        file
-      else
-        raise RuntimeError, "The R-Script ran successfully, but it did not provide an output file at the defined place 'fileName'."
-      end
+  def self.retrieveFile(code, data=nil)
+    code = "fileName<-'#{Tempfile.new(['plot', '.png'])}'\n#{code}"
+    r = init(code, data)
+    fileName = r.pull('fileName')
+    puts fileName
+    if (File.exist?(fileName))
+      return fileName
     else
-      raise RuntimeError, "The R-Script did not set the variable 'result' to True."
-
+      raise RuntimeError, "The R-Script ran successfully, but it did not provide an output file at the defined place 'fileName'."
     end
+  ensure
+    r.try(:quit)
   end
 
   private
+
   def self.init(code, data)
     r = RinRuby.new
     if data
@@ -38,6 +39,7 @@ class RScriptExecution
     end
 
     codes = code.split(/[\n\r]/).reject(&:empty?).map(&:strip)
+
     codes.each_with_index do |c, i|
       begin
         r.eval c
@@ -45,8 +47,10 @@ class RScriptExecution
         raise RuntimeError, "R could not evaluate the line #{i}:#{c} in your script"
       end
     end
+
     r
   ensure
     r
   end
+
 end

@@ -40,8 +40,8 @@ class QueryTestAssumption < QueryAssumption
   def eval_internal(dataset)
     # TODO: Provide better output for user why the assumption does not hold
     return false unless check_dataset_mets_column_names(dataset) if required_dataset_fields.any?
-    filename = File.join(Plot::BASE_URL, "r_plot_#{SecureRandom.hex(10)}.png")
-    if RScriptExecution.retrieveFile(r_code, dataset.data, filename)
+    filename = RScriptExecution.retrieveFile(r_code, dataset.data)
+    if filename
       filename
     else
       raise RuntimeException, "The RScript did not set the 'result' variable to true when generating a picture."

@@ -24,11 +24,11 @@ class RScriptsController < ApplicationController
         if @assumption_type == TestAssumption
           @result = RScriptExecution.execute(@script, @dataset.try(:data))
         elsif @assumption_type == QueryTestAssumption
-          filename = File.join(Plot::BASE_URL, "r_plot_#{SecureRandom.hex(10)}.png")
-          @result = RScriptExecution.retrieveFile(@script, @dataset.try(:data), filename)
-          if @result
-            @plot = Plot.new(filename: filename)
-            Delayed::Job.enqueue(FileDeleterJob.new(filename), run_at: 5.minutes.from_now)
+          @filename = RScriptExecution.retrieveFile(@script, @dataset.try(:data))
+          puts "Filename: #{@filename}"
+          if @filename
+            @plot = Plot.new(filename: @filename)
+            @plot.send(:upload_file)
           end
         else
           raise RuntimeException, "The transferred assumption type did not match."
