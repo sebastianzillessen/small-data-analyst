@@ -3,8 +3,8 @@ class Preference < ActiveRecord::Base
   belongs_to :research_question
   has_many :preference_arguments, dependent: :destroy
   has_many :assumptions, through: :preference_arguments
-  has_many :reasons, foreign_key: :argument_id
-  has_many :preference_query_assumption_results
+  has_many :reasons, foreign_key: :argument_id, dependent: :destroy
+  has_many :preference_query_assumption_results, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
   validates :stage, presence: true, :numericality => {:greater_than_or_equal_to => 1}
@@ -50,7 +50,7 @@ class Preference < ActiveRecord::Base
   private
 
   def stage_lower_then_10_reserved_for_statisticians
-    if user  && stage && !user.is_statistician? && stage < 10
+    if user && stage && !user.is_statistician? && stage < 10
       errors.add(:stage, "lower than 10 are reserved for statisticians.")
     end
   end

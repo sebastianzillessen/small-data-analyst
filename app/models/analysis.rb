@@ -19,9 +19,7 @@ class Analysis < ActiveRecord::Base
   has_many :query_assumption_results, autosave: true, dependent: :destroy
   has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
 
-  has_many :query_assumption_results, autosave: true, dependent: :destroy
-  has_many :open_query_assumptions, -> { where query_assumption_results: {ignore: false, result: nil} }, class_name: 'QueryAssumptionResult'
-
+  has_many :plots, as: :object
   validates :research_question, presence: true
   validates :dataset, presence: true
   validates :stage, presence: true, :numericality => {:greater_than_or_equal_to => 0}
@@ -44,8 +42,8 @@ class Analysis < ActiveRecord::Base
       self.all_possible_models << PossibleModel.create(model: m, analysis: self)
       if (m.evaluate(self))
         m.get_queries(self).each do |q|
-          q = QueryAssumptionResult.new(analysis: self, query_assumption: q, result: nil, stage: self.stage)
-          self.query_assumption_results << q if (q.valid?)
+          res = QueryAssumptionResult.new(analysis: self, query_assumption: q, result: nil, stage: self.stage)
+          self.query_assumption_results << res if (res.valid?)
         end
       end
     end
@@ -75,23 +73,21 @@ class Analysis < ActiveRecord::Base
   end
 
   def add_framework(arguments, framework, models_excluded=nil)
-    @frameworks ||= {}
     if (framework.arguments.any? && framework.edges.any?)
-      @frameworks[arguments] = {
-          framework: framework,
-          excluded_models: models_excluded,
-          plotter: ExtendedArgumentationFramework::Plotter.new(framework, arguments_hold: arguments)
-      }
+
+      plotter = ExtendedArgumentationFramework::Plotter.new(framework, arguments_hold: arguments)
+      p = Plot.new(
+          object: self,
+          filename: "#{Plot::BASE_URL}/#{plotter.to_png}",
+          name: framework.name
+      )
+      self.plots << p if p.valid?
     end
-    @frameworks
+    plots
   end
 
   def frameworks()
-    unless @frameworks
-      As2Init.new(self)
-    end
-
-    @frameworks || {}
+    plots
   end
 
   private

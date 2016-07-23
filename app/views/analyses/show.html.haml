@@ -9,8 +9,8 @@
             Open Query Assumptions
             = collapse('open_questions')
           %ul.list-group#open_questions.collapse.in
-            - @analysis.open_query_assumptions.each do |question|
-              = render 'question', question: question
+            - @analysis.open_query_assumptions.each do |qa|
+              = render 'question', query_assumption: qa
             %li.list-group-item.auto-show-empty.text-warning
               No remaining open query assumptions.
       - else

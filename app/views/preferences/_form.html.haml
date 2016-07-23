@@ -19,6 +19,8 @@
       = f.semantic_fields_for :preference_arguments do |pa|
         = render 'preferences/preference_argument_fields', f: pa
       .links
-        = link_to_add_association 'Add a new definition of an order', f, :preference_arguments, class: 'btn btn-primary'
+        = link_to_add_association f, :preference_arguments, class: 'btn btn-success btn-xs pull-right' do
+          .glyphicon.glyphicon-plus-sign
+          Add a new expression of a model order
   = f.actions do
     = f.action :submit, :as => :input, label: @preference.research_question.present? ? 'Create preference' : 'Proceed to next step'

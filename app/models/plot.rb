@@ -1,11 +1,14 @@
 class Plot < ActiveRecord::Base
   BASE_URL = "public/images"
+
+  belongs_to :object, polymorphic: true
+
   validates :filename, presence: true, uniqueness: true
   validates :object, presence: true
   validate :file_exists
-  belongs_to :object, polymorphic: true
-  before_destroy :delete_file
+  validates :name, uniqueness: {scope: :object, allow_nil: true}
 
+  before_destroy :delete_file
 
 
   def asset_path
@@ -14,7 +17,6 @@ class Plot < ActiveRecord::Base
 
 
   private
-
 
 
   def file_name_valid?

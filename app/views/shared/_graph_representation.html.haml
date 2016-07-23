@@ -6,4 +6,4 @@
       %i Please note:
       The graph below is not an attack graph, but an support graph. Arrows indicate, that the target must hold for the parent to be suitable.
     .resize-on-click.text-center
-      = image_tag object.plot!.try(:filename), class: 'fit-parent'
+      = image_tag object.plot!.try(:asset_path), class: 'fit-parent'

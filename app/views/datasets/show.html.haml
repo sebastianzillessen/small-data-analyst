@@ -1,6 +1,7 @@
 %h2 Dataset: #{@dataset.name}
 
 
-= render 'datasets/render_dataset', dataset: @dataset
+= render 'datasets/render_dataset', dataset: @dataset, limit: 25
 
-= link_to 'Edit', edit_dataset_path(@dataset)
+- if can? :edit, @dataset
+  = link_icon_to 'edit', edit_dataset_path(@dataset), text: 'Edit Dataset'

@@ -18,5 +18,5 @@
       = render 'assumptions', assumptions: @model.assumptions
     .col-md-6
       = render 'shared/graph_representation', object: @model
-
-= link_icon_to 'edit', edit_model_path(@model), text: 'Edit model'
+- if can? :edit, @model
+  = link_icon_to 'edit', edit_model_path(@model), text: 'Edit model'

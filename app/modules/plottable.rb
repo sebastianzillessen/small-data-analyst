@@ -14,9 +14,7 @@ module Plottable
   # define your instance methods here
   def plot!
     return plot if plot && plot.valid?
-    puts "Plot: #{plot.try(:valid?)}:#{plot}"
     plot.destroy if (plot)
-    puts "Plot: #{plot.try(:valid?)}:#{plot}"
     f = ExtendedArgumentationFramework::Framework.new(graph_representation, auto_generate_nodes: true)
     file = ExtendedArgumentationFramework::Plotter.new(f, plot_acceptability: false, edges_style: 'dir=back style=dashed').to_png
     p=Plot.create(filename: "#{Plot::BASE_URL}/#{file}", object: self)
