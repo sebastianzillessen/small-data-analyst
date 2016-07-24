@@ -1,5 +1,5 @@
-MAS: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=master" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
-DEV: {<img src="https://travis-ci.com/sebastianzillessen/small-data-analyst.svg?token=bjsLKgxXq8hvpiqTHyiz&branch=develop" alt="Build Status" />}[https://travis-ci.com/sebastianzillessen/small-data-analyst]
+Master: {<img src="https://travis-ci.org/sebastianzillessen/small-data-analyst.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/sebastianzillessen/small-data-analyst]
+Develop: {<img src="https://travis-ci.org/sebastianzillessen/small-data-analyst.svg?branch=develop" alt="Build Status" />}[https://travis-ci.org/sebastianzillessen/small-data-analyst]
 
 {<img src="https://codeclimate.com/repos/57875297e6164b3df7000d5f/badges/a0688971beb72cdc37a6/gpa.svg" />}[https://codeclimate.com/repos/57875297e6164b3df7000d5f/feed]
 {<img src="https://codeclimate.com/repos/57875297e6164b3df7000d5f/badges/a0688971beb72cdc37a6/coverage.svg" />}[https://codeclimate.com/repos/57875297e6164b3df7000d5f/coverage]
