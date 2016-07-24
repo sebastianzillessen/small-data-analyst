@@ -10,7 +10,6 @@ RSpec.configure do |config|
   # run retry only on features
   config.around :each, :js do |ex|
     retries = ENV['RETRY_JS_COUNT'] || 3
-    puts "Running JS test with #{retries} retries"
     ex.run_with_retry retry: retries
   end
 end
