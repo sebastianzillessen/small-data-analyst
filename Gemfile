@@ -84,13 +84,14 @@ group :development, :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'dotenv-rails'
+
 end
 
 group :test do
   gem 'capybara-screenshot'
   gem "codeclimate-test-reporter", require: nil
   gem 'database_cleaner'
-
+  gem 'rspec-retry'
 end
 
 group :development do
