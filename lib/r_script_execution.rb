@@ -14,7 +14,6 @@ class RScriptExecution
     code = "fileName<-'#{t.path}'\n#{code}"
     r = init(code, data)
     fileName = r.pull('fileName')
-    puts fileName
     if (File.exist?(fileName))
       return fileName
     else
