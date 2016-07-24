@@ -5,7 +5,7 @@ class Plot < ActiveRecord::Base
 
   validates :filename, presence: true, uniqueness: true
   validates :object, presence: true
-  validate :file_exists
+  #validate :file_exists
   validates :name, uniqueness: {scope: :object, allow_nil: true}
 
   before_destroy :delete_file
