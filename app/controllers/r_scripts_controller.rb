@@ -25,7 +25,6 @@ class RScriptsController < ApplicationController
           @result = RScriptExecution.execute(@script, @dataset.try(:data))
         elsif @assumption_type == QueryTestAssumption
           @filename = RScriptExecution.retrieveFile(@script, @dataset.try(:data))
-          puts "Filename: #{@filename}"
           if @filename
             @plot = Plot.new(filename: @filename)
             @plot.send(:upload_file)

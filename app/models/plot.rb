@@ -20,7 +20,7 @@ class Plot < ActiveRecord::Base
   end
 
   def s3_url
-    @public_url ||= s3_object.public_url.tap { |x| puts "Public url is: #{x}" }
+    @public_url ||= s3_object.public_url
   end
 
   private
@@ -30,7 +30,7 @@ class Plot < ActiveRecord::Base
   end
 
   def upload_file
-    s3_object.upload_file(filename, acl: 'public-read').tap { |x| puts "Upload of #{filename} done : #{x}" }
+    s3_object.upload_file(filename, acl: 'public-read')
     Delayed::Job.enqueue(FileDeleterJob.new(filename), run_at: 1.minutes.from_now)
   end
 
