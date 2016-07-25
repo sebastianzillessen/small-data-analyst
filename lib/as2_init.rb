@@ -22,7 +22,7 @@ class As2Init
 
   def as2_inits
     all_done = false
-    Preference.order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |preference|
+    Preference.where(research_question: @analysis.research_question).order(:stage).all.select { |p| @analysis.user.ability.can? :read, p }.each do |preference|
       # if we find unanswered queryAssumptions we gonna stop adding them
       found_unanswered_on_this_stage = false
       if (@analysis.possible_models.count > 1)
@@ -56,6 +56,7 @@ class As2Init
         arguments_hold = preference.arguments.select { |a| a && a.evaluate(@analysis) }
 
         rules = (preference.rules(arguments_hold)+model_rules(preference.stage)).join(",")
+        puts "Generated rules for #{preference.name} are: #{rules}"
         framework = ExtendedArgumentationFramework::Framework.new(rules, name: "Extended Argumentation framework for stage #{preference.stage}")
 
         solver = ExtendedArgumentationFramework::Solver.new(framework)
