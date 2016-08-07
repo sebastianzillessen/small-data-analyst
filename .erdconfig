@@ -1,0 +1,11 @@
+attributes: false
+direct: false
+inheritance: true
+notation: simple
+polymorphism: true
+exclude:
+  - Admin::User
+  - User
+  - ActiveRecord::SchemaMigration
+  - DataMigrate::DataSchemaMigration
+  - Delayed::Backend::ActiveRecord::Job
