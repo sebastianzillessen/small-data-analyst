@@ -1,4 +1,22 @@
 .row
+  .col-md-12
+    .panel.panel-primary
+      .panel-heading
+        General information
+      %table.table.table-striped
+        %tr
+          %th Dataset:
+          %td= @analysis.dataset.name
+        %tr
+          %th Research Question:
+          %td= @analysis.research_question.name
+        %tr
+          %th Creation:
+          %td= l(@analysis.created_at, format: :short)
+        %tr
+          %th Created by:
+          %td= @analysis.user.try(:email)
+.row
   .col-md-6#models_panel
     = render 'models_panel', analysis: @analysis
   .col-md-6
