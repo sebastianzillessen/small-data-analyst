@@ -1,0 +1,2856 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>RSpec results</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Expires" content="-1" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-size: 80%;
+  }
+  </style>
+  <script type="text/javascript">
+    // <![CDATA[
+
+function addClass(element_id, classname) {
+  document.getElementById(element_id).className += (" " + classname);
+}
+
+function removeClass(element_id, classname) {
+  var elem = document.getElementById(element_id);
+  var classlist = elem.className.replace(classname,'');
+  elem.className = classlist;
+}
+
+function moveProgressBar(percentDone) {
+  document.getElementById("rspec-header").style.width = percentDone +"%";
+}
+
+function makeRed(element_id) {
+  removeClass(element_id, 'passed');
+  removeClass(element_id, 'not_implemented');
+  addClass(element_id,'failed');
+}
+
+function makeYellow(element_id) {
+  var elem = document.getElementById(element_id);
+  if (elem.className.indexOf("failed") == -1) {  // class doesn't includes failed
+    if (elem.className.indexOf("not_implemented") == -1) { // class doesn't include not_implemented
+      removeClass(element_id, 'passed');
+      addClass(element_id,'not_implemented');
+    }
+  }
+}
+
+function apply_filters() {
+  var passed_filter = document.getElementById('passed_checkbox').checked;
+  var failed_filter = document.getElementById('failed_checkbox').checked;
+  var pending_filter = document.getElementById('pending_checkbox').checked;
+
+  assign_display_style("example passed", passed_filter);
+  assign_display_style("example failed", failed_filter);
+  assign_display_style("example not_implemented", pending_filter);
+
+  assign_display_style_for_group("example_group passed", passed_filter);
+  assign_display_style_for_group("example_group not_implemented", pending_filter, pending_filter || passed_filter);
+  assign_display_style_for_group("example_group failed", failed_filter, failed_filter || pending_filter || passed_filter);
+}
+
+function get_display_style(display_flag) {
+  var style_mode = 'none';
+  if (display_flag == true) {
+    style_mode = 'block';
+  }
+  return style_mode;
+}
+
+function assign_display_style(classname, display_flag) {
+  var style_mode = get_display_style(display_flag);
+  var elems = document.getElementsByClassName(classname)
+  for (var i=0; i<elems.length;i++) {
+    elems[i].style.display = style_mode;
+  }
+}
+
+function assign_display_style_for_group(classname, display_flag, subgroup_flag) {
+  var display_style_mode = get_display_style(display_flag);
+  var subgroup_style_mode = get_display_style(subgroup_flag);
+  var elems = document.getElementsByClassName(classname)
+  for (var i=0; i<elems.length;i++) {
+    var style_mode = display_style_mode;
+    if ((display_flag != subgroup_flag) && (elems[i].getElementsByTagName('dt')[0].innerHTML.indexOf(", ") != -1)) {
+      elems[i].style.display = subgroup_style_mode;
+    } else {
+      elems[i].style.display = display_style_mode;
+    }
+  }
+}
+
+    // ]]>
+  </script>
+  <style type="text/css">
+#rspec-header {
+  background: #65C400; color: #fff; height: 4em;
+}
+
+.rspec-report h1 {
+  margin: 0px 10px 0px 10px;
+  padding: 10px;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  font-size: 1.8em;
+  position: absolute;
+}
+
+#label {
+  float:left;
+}
+
+#display-filters {
+  float:left;
+  padding: 28px 0 0 40%;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+}
+
+#summary {
+  float:right;
+  padding: 5px 10px;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  text-align: right;
+}
+
+#summary p {
+  margin: 0 0 0 2px;
+}
+
+#summary #totals {
+  font-size: 1.2em;
+}
+
+.example_group {
+  margin: 0 10px 5px;
+  background: #fff;
+}
+
+dl {
+  margin: 0; padding: 0 0 5px;
+  font: normal 11px "Lucida Grande", Helvetica, sans-serif;
+}
+
+dt {
+  padding: 3px;
+  background: #65C400;
+  color: #fff;
+  font-weight: bold;
+}
+
+dd {
+  margin: 5px 0 5px 5px;
+  padding: 3px 3px 3px 18px;
+}
+
+dd .duration {
+  padding-left: 5px;
+  text-align: right;
+  right: 0px;
+  float:right;
+}
+
+dd.example.passed {
+  border-left: 5px solid #65C400;
+  border-bottom: 1px solid #65C400;
+  background: #DBFFB4; color: #3D7700;
+}
+
+dd.example.not_implemented {
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98; color: #131313;
+}
+
+dd.example.pending_fixed {
+  border-left: 5px solid #0000C2;
+  border-bottom: 1px solid #0000C2;
+  color: #0000C2; background: #D3FBFF;
+}
+
+dd.example.failed {
+  border-left: 5px solid #C20000;
+  border-bottom: 1px solid #C20000;
+  color: #C20000; background: #FFFBD3;
+}
+
+
+dt.not_implemented {
+  color: #000000; background: #FAF834;
+}
+
+dt.pending_fixed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+dt.failed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+
+#rspec-header.not_implemented {
+  color: #000000; background: #FAF834;
+}
+
+#rspec-header.pending_fixed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+#rspec-header.failed {
+  color: #FFFFFF; background: #C40D0D;
+}
+
+
+.backtrace {
+  color: #000;
+  font-size: 12px;
+}
+
+a {
+  color: #BE5C00;
+}
+
+/* Ruby code, style similar to vibrant ink */
+.ruby {
+  font-size: 12px;
+  font-family: monospace;
+  color: white;
+  background-color: black;
+  padding: 0.1em 0 0.2em 0;
+}
+
+.ruby .keyword { color: #FF6600; }
+.ruby .constant { color: #339999; }
+.ruby .attribute { color: white; }
+.ruby .global { color: white; }
+.ruby .module { color: white; }
+.ruby .class { color: white; }
+.ruby .string { color: #66FF00; }
+.ruby .ident { color: white; }
+.ruby .method { color: #FFCC00; }
+.ruby .number { color: white; }
+.ruby .char { color: white; }
+.ruby .comment { color: #9933CC; }
+.ruby .symbol { color: white; }
+.ruby .regex { color: #44B4CC; }
+.ruby .punct { color: white; }
+.ruby .escape { color: white; }
+.ruby .interp { color: white; }
+.ruby .expr { color: white; }
+
+.ruby .offending { background-color: gray; }
+.ruby .linenum {
+  width: 75px;
+  padding: 0.1em 1em 0.2em 0;
+  color: #000000;
+  background-color: #FFFBD3;
+}
+
+  </style>
+</head>
+<body>
+<div class="rspec-report">
+
+<div id="rspec-header">
+  <div id="label">
+    <h1>RSpec Code Examples</h1>
+  </div>
+
+  <div id="display-filters">
+    <input id="passed_checkbox"  name="passed_checkbox"  type="checkbox" checked="checked" onchange="apply_filters()" value="1" /> <label for="passed_checkbox">Passed</label>
+    <input id="failed_checkbox"  name="failed_checkbox"  type="checkbox" checked="checked" onchange="apply_filters()" value="2" /> <label for="failed_checkbox">Failed</label>
+    <input id="pending_checkbox" name="pending_checkbox" type="checkbox" checked="checked" onchange="apply_filters()" value="3" /> <label for="pending_checkbox">Pending</label>
+  </div>
+
+  <div id="summary">
+    <p id="totals">&#160;</p>
+    <p id="duration">&#160;</p>
+  </div>
+</div>
+
+
+<div class="results">
+<div id="div_group_1" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_1" class="passed">AnalysesController</dt>
+  </dl>
+</div>
+<div id="div_group_2" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_2" class="passed">GET #index</dt>
+    <script type="text/javascript">moveProgressBar('0.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns all analyses as @analyses</span><span class='duration'>1.08512s</span></dd>
+  </dl>
+</div>
+<div id="div_group_3" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_3" class="passed">GET #show</dt>
+    <script type="text/javascript">moveProgressBar('0.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the requested analysis as @analysis</span><span class='duration'>0.07148s</span></dd>
+  </dl>
+</div>
+<div id="div_group_4" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_4" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('0.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new analysis as @analysis</span><span class='duration'>0.03784s</span></dd>
+  </dl>
+</div>
+<div id="div_group_5" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_5" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_6" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_6" class="passed">with valid params</dt>
+    <script type="text/javascript">moveProgressBar('0.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">creates a new Analysis</span><span class='duration'>0.07508s</span></dd>
+    <script type="text/javascript">moveProgressBar('1.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a newly created analysis as @analysis</span><span class='duration'>0.06919s</span></dd>
+    <script type="text/javascript">moveProgressBar('1.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">redirects to the created analysis</span><span class='duration'>0.07037s</span></dd>
+  </dl>
+</div>
+<div id="div_group_7" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_7" class="passed">with invalid params</dt>
+    <script type="text/javascript">moveProgressBar('1.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a newly created but unsaved analysis as @analysis</span><span class='duration'>0.07579s</span></dd>
+    <script type="text/javascript">moveProgressBar('1.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">re-renders the &#39;new&#39; template</span><span class='duration'>0.07347s</span></dd>
+  </dl>
+</div>
+<div id="div_group_8" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_8" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">moveProgressBar('1.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">destroys the requested analysis</span><span class='duration'>0.08347s</span></dd>
+    <script type="text/javascript">moveProgressBar('2.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">redirects to the analyses list</span><span class='duration'>0.07803s</span></dd>
+  </dl>
+</div>
+<div id="div_group_9" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_9" class="passed">AssumptionsController</dt>
+  </dl>
+</div>
+<div id="div_group_10" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_10" class="passed">GET #index</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_10');</script>
+    <script type="text/javascript">makeYellow('example_group_10');</script>
+    <script type="text/javascript">moveProgressBar('2.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns all assumptions as @assumptions (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_11" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_11" class="passed">GET #show</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_11');</script>
+    <script type="text/javascript">makeYellow('example_group_11');</script>
+    <script type="text/javascript">moveProgressBar('2.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested assumption as @assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_12" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_12" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('2.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new assumption as @assumption</span><span class='duration'>0.03842s</span></dd>
+  </dl>
+</div>
+<div id="div_group_13" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_13" class="passed">GET #edit</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_13');</script>
+    <script type="text/javascript">makeYellow('example_group_13');</script>
+    <script type="text/javascript">moveProgressBar('2.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested assumption as @assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_14" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_14" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_15" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_15" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_15');</script>
+    <script type="text/javascript">makeYellow('example_group_15');</script>
+    <script type="text/javascript">moveProgressBar('3.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">creates a new Assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_15');</script>
+    <script type="text/javascript">makeYellow('example_group_15');</script>
+    <script type="text/javascript">moveProgressBar('3.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created assumption as @assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_15');</script>
+    <script type="text/javascript">makeYellow('example_group_15');</script>
+    <script type="text/javascript">moveProgressBar('3.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the created assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_16" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_16" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_16');</script>
+    <script type="text/javascript">makeYellow('example_group_16');</script>
+    <script type="text/javascript">moveProgressBar('3.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved assumption as @assumption (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_16');</script>
+    <script type="text/javascript">makeYellow('example_group_16');</script>
+    <script type="text/javascript">moveProgressBar('4.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_17" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_17" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_18" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_18" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_18');</script>
+    <script type="text/javascript">makeYellow('example_group_18');</script>
+    <script type="text/javascript">moveProgressBar('4.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_18');</script>
+    <script type="text/javascript">makeYellow('example_group_18');</script>
+    <script type="text/javascript">moveProgressBar('4.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested assumption as @assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_18');</script>
+    <script type="text/javascript">makeYellow('example_group_18');</script>
+    <script type="text/javascript">moveProgressBar('4.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_19" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_19" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_19');</script>
+    <script type="text/javascript">makeYellow('example_group_19');</script>
+    <script type="text/javascript">moveProgressBar('4.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the assumption as @assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_19');</script>
+    <script type="text/javascript">makeYellow('example_group_19');</script>
+    <script type="text/javascript">moveProgressBar('5.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_20" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_20" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_20');</script>
+    <script type="text/javascript">makeYellow('example_group_20');</script>
+    <script type="text/javascript">moveProgressBar('5.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">destroys the requested assumption (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_20');</script>
+    <script type="text/javascript">makeYellow('example_group_20');</script>
+    <script type="text/javascript">moveProgressBar('5.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the assumptions list (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_21" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_21" class="passed">DatasetsController</dt>
+  </dl>
+</div>
+<div id="div_group_22" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_22" class="passed">GET #index</dt>
+    <script type="text/javascript">moveProgressBar('5.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns all datasets as @datasets</span><span class='duration'>0.06200s</span></dd>
+  </dl>
+</div>
+<div id="div_group_23" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_23" class="passed">GET #show</dt>
+    <script type="text/javascript">moveProgressBar('5.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the requested dataset as @dataset</span><span class='duration'>0.04252s</span></dd>
+  </dl>
+</div>
+<div id="div_group_24" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_24" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('6.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new dataset as @dataset</span><span class='duration'>0.04181s</span></dd>
+  </dl>
+</div>
+<div id="div_group_25" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_25" class="passed">GET #edit</dt>
+    <script type="text/javascript">moveProgressBar('6.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the requested dataset as @dataset</span><span class='duration'>0.04071s</span></dd>
+  </dl>
+</div>
+<div id="div_group_26" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_26" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_27" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_27" class="passed">with valid params</dt>
+    <script type="text/javascript">moveProgressBar('6.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">creates a new Dataset</span><span class='duration'>0.04748s</span></dd>
+    <script type="text/javascript">moveProgressBar('6.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a newly created dataset as @dataset</span><span class='duration'>0.04793s</span></dd>
+    <script type="text/javascript">moveProgressBar('6.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">redirects to the created dataset</span><span class='duration'>0.05491s</span></dd>
+  </dl>
+</div>
+<div id="div_group_28" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_28" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_28');</script>
+    <script type="text/javascript">makeYellow('example_group_28');</script>
+    <script type="text/javascript">moveProgressBar('7.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved dataset as @dataset (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_28');</script>
+    <script type="text/javascript">makeYellow('example_group_28');</script>
+    <script type="text/javascript">moveProgressBar('7.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_29" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_29" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_30" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_30" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_30');</script>
+    <script type="text/javascript">makeYellow('example_group_30');</script>
+    <script type="text/javascript">moveProgressBar('7.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested dataset (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">moveProgressBar('7.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the requested dataset as @dataset</span><span class='duration'>0.04428s</span></dd>
+    <script type="text/javascript">moveProgressBar('8.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">redirects to the dataset</span><span class='duration'>0.04181s</span></dd>
+  </dl>
+</div>
+<div id="div_group_31" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_31" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_31');</script>
+    <script type="text/javascript">makeYellow('example_group_31');</script>
+    <script type="text/javascript">moveProgressBar('8.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the dataset as @dataset (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_31');</script>
+    <script type="text/javascript">makeYellow('example_group_31');</script>
+    <script type="text/javascript">moveProgressBar('8.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_32" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_32" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">moveProgressBar('8.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">destroys the requested dataset</span><span class='duration'>0.04357s</span></dd>
+    <script type="text/javascript">moveProgressBar('8.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">redirects to the datasets list</span><span class='duration'>0.03989s</span></dd>
+  </dl>
+</div>
+<div id="div_group_33" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_33" class="passed">HomeController</dt>
+  </dl>
+</div>
+<div id="div_group_34" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_34" class="passed">GET #index</dt>
+    <script type="text/javascript">moveProgressBar('9.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">returns http success</span><span class='duration'>0.02766s</span></dd>
+  </dl>
+</div>
+<div id="div_group_35" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_35" class="passed">ModelsController</dt>
+  </dl>
+</div>
+<div id="div_group_36" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_36" class="passed">GET #index</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_36');</script>
+    <script type="text/javascript">makeYellow('example_group_36');</script>
+    <script type="text/javascript">moveProgressBar('9.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns all models as @models (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_37" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_37" class="passed">GET #show</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_37');</script>
+    <script type="text/javascript">makeYellow('example_group_37');</script>
+    <script type="text/javascript">moveProgressBar('9.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested model as @model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_38" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_38" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('9.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new model as @model</span><span class='duration'>0.03370s</span></dd>
+  </dl>
+</div>
+<div id="div_group_39" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_39" class="passed">GET #edit</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_39');</script>
+    <script type="text/javascript">makeYellow('example_group_39');</script>
+    <script type="text/javascript">moveProgressBar('9.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested model as @model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_40" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_40" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_41" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_41" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_41');</script>
+    <script type="text/javascript">makeYellow('example_group_41');</script>
+    <script type="text/javascript">moveProgressBar('10.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">creates a new Model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_41');</script>
+    <script type="text/javascript">makeYellow('example_group_41');</script>
+    <script type="text/javascript">moveProgressBar('10.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created model as @model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_41');</script>
+    <script type="text/javascript">makeYellow('example_group_41');</script>
+    <script type="text/javascript">moveProgressBar('10.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the created model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_42" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_42" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_42');</script>
+    <script type="text/javascript">makeYellow('example_group_42');</script>
+    <script type="text/javascript">moveProgressBar('10.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved model as @model (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_42');</script>
+    <script type="text/javascript">makeYellow('example_group_42');</script>
+    <script type="text/javascript">moveProgressBar('10.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_43" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_43" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_44" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_44" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_44');</script>
+    <script type="text/javascript">makeYellow('example_group_44');</script>
+    <script type="text/javascript">moveProgressBar('11.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_44');</script>
+    <script type="text/javascript">makeYellow('example_group_44');</script>
+    <script type="text/javascript">moveProgressBar('11.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested model as @model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_44');</script>
+    <script type="text/javascript">makeYellow('example_group_44');</script>
+    <script type="text/javascript">moveProgressBar('11.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_45" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_45" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_45');</script>
+    <script type="text/javascript">makeYellow('example_group_45');</script>
+    <script type="text/javascript">moveProgressBar('11.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the model as @model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_45');</script>
+    <script type="text/javascript">makeYellow('example_group_45');</script>
+    <script type="text/javascript">moveProgressBar('12.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_46" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_46" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_46');</script>
+    <script type="text/javascript">makeYellow('example_group_46');</script>
+    <script type="text/javascript">moveProgressBar('12.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">destroys the requested model (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_46');</script>
+    <script type="text/javascript">makeYellow('example_group_46');</script>
+    <script type="text/javascript">moveProgressBar('12.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the models list (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_47" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_47" class="passed">PreferencesController</dt>
+  </dl>
+</div>
+<div id="div_group_48" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_48" class="passed">GET #index</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_48');</script>
+    <script type="text/javascript">makeYellow('example_group_48');</script>
+    <script type="text/javascript">moveProgressBar('12.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns all preferences as @preferences (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_49" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_49" class="passed">GET #show</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_49');</script>
+    <script type="text/javascript">makeYellow('example_group_49');</script>
+    <script type="text/javascript">moveProgressBar('12.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested preference as @preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_50" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_50" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('13.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new preference as @preference</span><span class='duration'>0.05680s</span></dd>
+  </dl>
+</div>
+<div id="div_group_51" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_51" class="passed">GET #edit</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_51');</script>
+    <script type="text/javascript">makeYellow('example_group_51');</script>
+    <script type="text/javascript">moveProgressBar('13.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested preference as @preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_52" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_52" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_53" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_53" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_53');</script>
+    <script type="text/javascript">makeYellow('example_group_53');</script>
+    <script type="text/javascript">moveProgressBar('13.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">creates a new Preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_53');</script>
+    <script type="text/javascript">makeYellow('example_group_53');</script>
+    <script type="text/javascript">moveProgressBar('13.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created preference as @preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_53');</script>
+    <script type="text/javascript">makeYellow('example_group_53');</script>
+    <script type="text/javascript">moveProgressBar('13.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the created preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_54" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_54" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_54');</script>
+    <script type="text/javascript">makeYellow('example_group_54');</script>
+    <script type="text/javascript">moveProgressBar('14.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved preference as @preference (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_54');</script>
+    <script type="text/javascript">makeYellow('example_group_54');</script>
+    <script type="text/javascript">moveProgressBar('14.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_55" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_55" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_56" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_56" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_56');</script>
+    <script type="text/javascript">makeYellow('example_group_56');</script>
+    <script type="text/javascript">moveProgressBar('14.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_56');</script>
+    <script type="text/javascript">makeYellow('example_group_56');</script>
+    <script type="text/javascript">moveProgressBar('14.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested preference as @preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_56');</script>
+    <script type="text/javascript">makeYellow('example_group_56');</script>
+    <script type="text/javascript">moveProgressBar('14.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_57" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_57" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_57');</script>
+    <script type="text/javascript">makeYellow('example_group_57');</script>
+    <script type="text/javascript">moveProgressBar('15.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the preference as @preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_57');</script>
+    <script type="text/javascript">makeYellow('example_group_57');</script>
+    <script type="text/javascript">moveProgressBar('15.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_58" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_58" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_58');</script>
+    <script type="text/javascript">makeYellow('example_group_58');</script>
+    <script type="text/javascript">moveProgressBar('15.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">destroys the requested preference (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_58');</script>
+    <script type="text/javascript">makeYellow('example_group_58');</script>
+    <script type="text/javascript">moveProgressBar('15.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the preferences list (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_59" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_59" class="passed">QueryAssumptionResultsController</dt>
+  </dl>
+</div>
+<div id="div_group_60" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_60" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_61" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_61" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_61');</script>
+    <script type="text/javascript">makeYellow('example_group_61');</script>
+    <script type="text/javascript">moveProgressBar('16.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested query_assumption_result (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">moveProgressBar('16.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the requested query_assumption_result as @query_assumption_result</span><span class='duration'>0.07269s</span></dd>
+  </dl>
+</div>
+<div id="div_group_62" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_62" class="passed">with invalid params</dt>
+    <script type="text/javascript">moveProgressBar('16.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns the query_assumption_result as @query_assumption_result</span><span class='duration'>0.04267s</span></dd>
+    <script type="text/javascript">moveProgressBar('16.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">re-renders the &#39;edit&#39; template</span><span class='duration'>0.03619s</span></dd>
+  </dl>
+</div>
+<div id="div_group_63" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_63" class="passed">ResearchQuestionsController</dt>
+  </dl>
+</div>
+<div id="div_group_64" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_64" class="passed">GET #index</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_64');</script>
+    <script type="text/javascript">makeYellow('example_group_64');</script>
+    <script type="text/javascript">moveProgressBar('16.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns all research_questions as @research_questions (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_65" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_65" class="passed">GET #show</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_65');</script>
+    <script type="text/javascript">makeYellow('example_group_65');</script>
+    <script type="text/javascript">moveProgressBar('17.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested research_question as @research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_66" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_66" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('17.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new research_question as @research_question</span><span class='duration'>0.03289s</span></dd>
+  </dl>
+</div>
+<div id="div_group_67" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_67" class="passed">GET #edit</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_67');</script>
+    <script type="text/javascript">makeYellow('example_group_67');</script>
+    <script type="text/javascript">moveProgressBar('17.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested research_question as @research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_68" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_68" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_69" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_69" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_69');</script>
+    <script type="text/javascript">makeYellow('example_group_69');</script>
+    <script type="text/javascript">moveProgressBar('17.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">creates a new ResearchQuestion (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_69');</script>
+    <script type="text/javascript">makeYellow('example_group_69');</script>
+    <script type="text/javascript">moveProgressBar('17.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created research_question as @research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_69');</script>
+    <script type="text/javascript">makeYellow('example_group_69');</script>
+    <script type="text/javascript">moveProgressBar('18.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the created research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_70" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_70" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_70');</script>
+    <script type="text/javascript">makeYellow('example_group_70');</script>
+    <script type="text/javascript">moveProgressBar('18.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved research_question as @research_question (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_70');</script>
+    <script type="text/javascript">makeYellow('example_group_70');</script>
+    <script type="text/javascript">moveProgressBar('18.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_71" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_71" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_72" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_72" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_72');</script>
+    <script type="text/javascript">makeYellow('example_group_72');</script>
+    <script type="text/javascript">moveProgressBar('18.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_72');</script>
+    <script type="text/javascript">makeYellow('example_group_72');</script>
+    <script type="text/javascript">moveProgressBar('18.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested research_question as @research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_72');</script>
+    <script type="text/javascript">makeYellow('example_group_72');</script>
+    <script type="text/javascript">moveProgressBar('19.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_73" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_73" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_73');</script>
+    <script type="text/javascript">makeYellow('example_group_73');</script>
+    <script type="text/javascript">moveProgressBar('19.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the research_question as @research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_73');</script>
+    <script type="text/javascript">makeYellow('example_group_73');</script>
+    <script type="text/javascript">moveProgressBar('19.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_74" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_74" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_74');</script>
+    <script type="text/javascript">makeYellow('example_group_74');</script>
+    <script type="text/javascript">moveProgressBar('19.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">destroys the requested research_question (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_74');</script>
+    <script type="text/javascript">makeYellow('example_group_74');</script>
+    <script type="text/javascript">moveProgressBar('20.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the research_questions list (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_75" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_75" class="passed">Admin::UsersController</dt>
+  </dl>
+</div>
+<div id="div_group_76" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_76" class="passed">GET #index</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_76');</script>
+    <script type="text/javascript">makeYellow('example_group_76');</script>
+    <script type="text/javascript">moveProgressBar('20.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns all users as @users (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_77" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_77" class="passed">GET #show</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_77');</script>
+    <script type="text/javascript">makeYellow('example_group_77');</script>
+    <script type="text/javascript">moveProgressBar('20.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested user as @user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_78" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_78" class="passed">GET #new</dt>
+    <script type="text/javascript">moveProgressBar('20.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">assigns a new user as @user</span><span class='duration'>0.06597s</span></dd>
+  </dl>
+</div>
+<div id="div_group_79" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_79" class="passed">GET #edit</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_79');</script>
+    <script type="text/javascript">makeYellow('example_group_79');</script>
+    <script type="text/javascript">moveProgressBar('20.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested user as @user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_80" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_80" class="passed">POST #create</dt>
+  </dl>
+</div>
+<div id="div_group_81" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_81" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_81');</script>
+    <script type="text/javascript">makeYellow('example_group_81');</script>
+    <script type="text/javascript">moveProgressBar('21.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">creates a new User (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_81');</script>
+    <script type="text/javascript">makeYellow('example_group_81');</script>
+    <script type="text/javascript">moveProgressBar('21.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created user as @user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_81');</script>
+    <script type="text/javascript">makeYellow('example_group_81');</script>
+    <script type="text/javascript">moveProgressBar('21.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the created user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_82" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_82" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_82');</script>
+    <script type="text/javascript">makeYellow('example_group_82');</script>
+    <script type="text/javascript">moveProgressBar('21.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns a newly created but unsaved user as @user (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_82');</script>
+    <script type="text/javascript">makeYellow('example_group_82');</script>
+    <script type="text/javascript">moveProgressBar('21.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;new&#39; template (PENDING: Add a hash of attributes invalid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_83" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_83" class="passed">PUT #update</dt>
+  </dl>
+</div>
+<div id="div_group_84" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_84" class="passed">with valid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_84');</script>
+    <script type="text/javascript">makeYellow('example_group_84');</script>
+    <script type="text/javascript">moveProgressBar('22.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">updates the requested user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_84');</script>
+    <script type="text/javascript">makeYellow('example_group_84');</script>
+    <script type="text/javascript">moveProgressBar('22.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the requested user as @user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_84');</script>
+    <script type="text/javascript">makeYellow('example_group_84');</script>
+    <script type="text/javascript">moveProgressBar('22.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_85" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_85" class="passed">with invalid params</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_85');</script>
+    <script type="text/javascript">makeYellow('example_group_85');</script>
+    <script type="text/javascript">moveProgressBar('22.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">assigns the user as @user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_85');</script>
+    <script type="text/javascript">makeYellow('example_group_85');</script>
+    <script type="text/javascript">moveProgressBar('22.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">re-renders the &#39;edit&#39; template (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_86" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_86" class="passed">DELETE #destroy</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_86');</script>
+    <script type="text/javascript">makeYellow('example_group_86');</script>
+    <script type="text/javascript">moveProgressBar('23.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">destroys the requested user (PENDING: Add a hash of attributes valid for your model)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_86');</script>
+    <script type="text/javascript">makeYellow('example_group_86');</script>
+    <script type="text/javascript">moveProgressBar('23.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">redirects to the users list (PENDING: Add a hash of attributes valid for your model)</span></dd>
+  </dl>
+</div>
+<div id="div_group_87" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_87" class="passed">creating a new analysis</dt>
+    <script type="text/javascript">moveProgressBar('23.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be logged in</span><span class='duration'>0.85674s</span></dd>
+  </dl>
+</div>
+<div id="div_group_88" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_88" class="passed">creating a new analysis</dt>
+  </dl>
+</div>
+<div id="div_group_89" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_89" class="passed">with js support</dt>
+  </dl>
+</div>
+<div id="div_group_90" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_90" class="passed">new analysis</dt>
+    <script type="text/javascript">moveProgressBar('23.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should find field input fields</span><span class='duration'>2.05802s</span></dd>
+    <script type="text/javascript">moveProgressBar('24.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should select attributes and create a new analysis</span><span class='duration'>2.09146s</span></dd>
+    <script type="text/javascript">moveProgressBar('24.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not allow an empty analysis to be created</span><span class='duration'>0.99257s</span></dd>
+  </dl>
+</div>
+<div id="div_group_91" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_91" class="passed">show analysis</dt>
+  </dl>
+</div>
+<div id="div_group_92" class="example_group passed">
+  <dl style="margin-left: 45px;">
+  <dt id="example_group_92" class="passed">with 2 possible models at the beginning and as3 not holding</dt>
+    <script type="text/javascript">moveProgressBar('24.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain possible models</span><span class='duration'>1.54137s</span></dd>
+    <script type="text/javascript">moveProgressBar('24.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 1 open query assumptions and 2 possible models</span><span class='duration'>1.56005s</span></dd>
+    <script type="text/javascript">moveProgressBar('24.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">&quot;No&quot; on first query</span><span class='duration'>2.62292s</span></dd>
+    <script type="text/javascript">moveProgressBar('25.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">Yes on first query and only one remainign (so no second answer)</span><span class='duration'>3.48003s</span></dd>
+  </dl>
+</div>
+<div id="div_group_93" class="example_group passed">
+  <dl style="margin-left: 45px;">
+  <dt id="example_group_93" class="passed">with all 3 models beeing possible at the beginning</dt>
+    <script type="text/javascript">moveProgressBar('25.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">Yes on first query, then CD2_explain on AS2</span><span class='duration'>3.94441s</span></dd>
+    <script type="text/javascript">moveProgressBar('25.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">Yes on first query, then CD2_predict on AS2</span><span class='duration'>3.81235s</span></dd>
+  </dl>
+</div>
+<div id="div_group_94" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_94" class="passed">creating a new analysis</dt>
+  </dl>
+</div>
+<div id="div_group_95" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_95" class="passed">show analysis with a test query plot</dt>
+    <script type="text/javascript">moveProgressBar('25.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should show 1 possible model</span><span class='duration'>3.44773s</span></dd>
+    <script type="text/javascript">moveProgressBar('25.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 1 open query assumptions and 1 possible models</span><span class='duration'>2.19804s</span></dd>
+    <script type="text/javascript">moveProgressBar('26.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">&quot;No&quot; on first query</span><span class='duration'>3.70289s</span></dd>
+    <script type="text/javascript">moveProgressBar('26.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">&quot;YES&quot; on first query</span><span class='duration'>4.22769s</span></dd>
+  </dl>
+</div>
+<div id="div_group_96" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_96" class="passed">creating a new preference</dt>
+    <script type="text/javascript">moveProgressBar('26.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should show reseach question selection firt</span><span class='duration'>0.81558s</span></dd>
+  </dl>
+</div>
+<div id="div_group_97" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_97" class="passed">creating a new research question</dt>
+    <script type="text/javascript">moveProgressBar('26.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should require a name</span><span class='duration'>0.24349s</span></dd>
+    <script type="text/javascript">moveProgressBar('26.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should require a name</span><span class='duration'>0.40474s</span></dd>
+  </dl>
+</div>
+<div id="div_group_98" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_98" class="passed">phantomJs</dt>
+    <script type="text/javascript">moveProgressBar('27.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be of version 2.0.0 or higher</span><span class='duration'>0.05510s</span></dd>
+  </dl>
+</div>
+<div id="div_group_99" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_99" class="passed">AnalysesHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_99');</script>
+    <script type="text/javascript">makeYellow('example_group_99');</script>
+    <script type="text/javascript">moveProgressBar('27.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/analyses_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_100" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_100" class="passed">AssumptionsHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_100');</script>
+    <script type="text/javascript">makeYellow('example_group_100');</script>
+    <script type="text/javascript">moveProgressBar('27.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/assumptions_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_101" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_101" class="passed">DatasetsHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_101');</script>
+    <script type="text/javascript">makeYellow('example_group_101');</script>
+    <script type="text/javascript">moveProgressBar('27.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/datasets_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_102" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_102" class="passed">HomeHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_102');</script>
+    <script type="text/javascript">makeYellow('example_group_102');</script>
+    <script type="text/javascript">moveProgressBar('28.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/home_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_103" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_103" class="passed">ModelsHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_103');</script>
+    <script type="text/javascript">makeYellow('example_group_103');</script>
+    <script type="text/javascript">moveProgressBar('28.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/models_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_104" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_104" class="passed">PreferencesHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_104');</script>
+    <script type="text/javascript">makeYellow('example_group_104');</script>
+    <script type="text/javascript">moveProgressBar('28.4');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/preferences_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_105" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_105" class="passed">QueryAssumptionResultsHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_105');</script>
+    <script type="text/javascript">makeYellow('example_group_105');</script>
+    <script type="text/javascript">moveProgressBar('28.6');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/query_assumption_results_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_106" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_106" class="passed">RScriptValidatorHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_106');</script>
+    <script type="text/javascript">makeYellow('example_group_106');</script>
+    <script type="text/javascript">moveProgressBar('28.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/r_script_validator_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_107" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_107" class="passed">ResearchQuestionsHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_107');</script>
+    <script type="text/javascript">makeYellow('example_group_107');</script>
+    <script type="text/javascript">moveProgressBar('29.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/research_questions_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_108" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_108" class="passed">UsersHelper</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_108');</script>
+    <script type="text/javascript">makeYellow('example_group_108');</script>
+    <script type="text/javascript">moveProgressBar('29.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/helpers/users_helper_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_109" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_109" class="passed">As2Init</dt>
+    <script type="text/javascript">moveProgressBar('29.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 3 possible models</span><span class='duration'>0.12664s</span></dd>
+    <script type="text/javascript">moveProgressBar('29.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 3 possible models</span><span class='duration'>0.12521s</span></dd>
+    <script type="text/javascript">moveProgressBar('29.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return all model rules as contradictions</span><span class='duration'>0.12198s</span></dd>
+  </dl>
+</div>
+<div id="div_group_110" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_110" class="passed">ExtendedArgumentationFramework::DungSolver</dt>
+    <script type="text/javascript">moveProgressBar('30.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return two preferred extension</span><span class='duration'>0.00563s</span></dd>
+    <script type="text/javascript">moveProgressBar('30.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain the preferred extension a1,a3</span><span class='duration'>0.00698s</span></dd>
+    <script type="text/javascript">moveProgressBar('30.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain the preferred extension a1,a4</span><span class='duration'>0.00480s</span></dd>
+  </dl>
+</div>
+<div id="div_group_111" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_111" class="passed">ExtendedArgumentationFramework::Edge</dt>
+  </dl>
+</div>
+<div id="div_group_112" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_112" class="passed">#succeeds_wrt</dt>
+    <script type="text/javascript">moveProgressBar('30.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the subject</span><span class='duration'>0.00155s</span></dd>
+    <script type="text/javascript">moveProgressBar('30.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be accepted w.r.t {a3}</span><span class='duration'>0.00131s</span></dd>
+    <script type="text/javascript">moveProgressBar('31.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be accepted w.r.t {}</span><span class='duration'>0.00111s</span></dd>
+  </dl>
+</div>
+<div id="div_group_113" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_113" class="passed">ExtendedArgumentationFramework::Framework</dt>
+  </dl>
+</div>
+<div id="div_group_114" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_114" class="passed">#arguments</dt>
+    <script type="text/javascript">moveProgressBar('31.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #arguments</span><span class='duration'>0.00249s</span></dd>
+    <script type="text/javascript">moveProgressBar('31.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain exactly #&lt;ExtendedArgumentationFramework::Argument:0x007ff2e1542a78 @name=&quot;a_1&quot;&gt;, #&lt;ExtendedArgumentationFramework::Argument:0x007ff2e1542a28 @name=&quot;a_2&quot;&gt;, and #&lt;ExtendedArgumentationFramework::Argument:0x007ff2e15429d8 @name=&quot;a_3&quot;&gt;</span><span class='duration'>0.00127s</span></dd>
+  </dl>
+</div>
+<div id="div_group_115" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_115" class="passed">#attacks</dt>
+    <script type="text/javascript">moveProgressBar('31.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #attacks</span><span class='duration'>0.00120s</span></dd>
+    <script type="text/javascript">moveProgressBar('32.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain exactly #&lt;ExtendedArgumentationFramework::Edge:0x007ff2cc7b8bf0 @source=#&lt;ExtendedArgumentationFramework::Argument:0x007ff2cc7b8ce0 @name=&quot;a_1&quot;&gt;, @target=#&lt;ExtendedArgumentationFramework::Argument:0x007ff2cc7b8c90 @name=&quot;a_2&quot;&gt;&gt;</span><span class='duration'>0.00109s</span></dd>
+  </dl>
+</div>
+<div id="div_group_116" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_116" class="passed">#attacks_on_attacks</dt>
+    <script type="text/javascript">moveProgressBar('32.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #attacks_on_attacks</span><span class='duration'>0.00134s</span></dd>
+    <script type="text/javascript">moveProgressBar('32.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should contain exactly #&lt;ExtendedArgumentationFramework::Edge:0x007ff2cc7db100 @source=#&lt;ExtendedArgumentationFramework::Argument:0x007ff2cc7db1c8 @name=&quot;a_3&quot;&gt;, @target=#&lt;ExtendedArgumentationFramework::Edge:0x007ff2cc7db128 @source=#&lt;ExtendedArgumentationFramework::Argument:0x007ff2cc7db268 @name=&quot;a_1&quot;&gt;, @target=#&lt;ExtendedArgumentationFramework::Argument:0x007ff2cc7db218 @name=&quot;a_2&quot;&gt;&gt;&gt;</span><span class='duration'>0.00124s</span></dd>
+    <script type="text/javascript">moveProgressBar('32.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should only return the attacks_on_attacks of a given source</span><span class='duration'>0.00119s</span></dd>
+  </dl>
+</div>
+<div id="div_group_117" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_117" class="passed">#edges</dt>
+    <script type="text/javascript">moveProgressBar('32.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return attacks and attacks_on_attacks </span><span class='duration'>0.00137s</span></dd>
+  </dl>
+</div>
+<div id="div_group_118" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_118" class="passed">#parse</dt>
+    <script type="text/javascript">moveProgressBar('33.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 3 arguments</span><span class='duration'>0.00198s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should match 3 arguments</span><span class='duration'>0.00140s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 2 attack</span><span class='duration'>0.00129s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have one attack on attacks</span><span class='duration'>0.00127s</span></dd>
+    <script type="text/javascript">moveProgressBar('33.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have one attack on attacks</span><span class='duration'>0.00133s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should throw an error if no counterattack available</span><span class='duration'>0.00300s</span></dd>
+  </dl>
+</div>
+<div id="div_group_119" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_119" class="passed">framework</dt>
+    <script type="text/javascript">moveProgressBar('34.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 9 arguments</span><span class='duration'>0.00206s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 7 edges</span><span class='duration'>0.00169s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have 5 attacks on attacks</span><span class='duration'>0.00198s</span></dd>
+    <script type="text/javascript">moveProgressBar('34.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return one preferred extension</span><span class='duration'>0.00138s</span></dd>
+  </dl>
+</div>
+<div id="div_group_120" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_120" class="passed">ExtendedArgumentationFramework::Labelling</dt>
+  </dl>
+</div>
+<div id="div_group_121" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_121" class="passed">#set</dt>
+  </dl>
+</div>
+<div id="div_group_122" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_122" class="passed">for arguments</dt>
+    <script type="text/javascript">moveProgressBar('35.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be inlabeled</span><span class='duration'>0.00154s</span></dd>
+    <script type="text/javascript">moveProgressBar('35.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should change label to out</span><span class='duration'>0.00122s</span></dd>
+    <script type="text/javascript">moveProgressBar('35.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should change label to undec</span><span class='duration'>0.00101s</span></dd>
+  </dl>
+</div>
+<div id="div_group_123" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_123" class="passed">with all In labelling</dt>
+    <script type="text/javascript">moveProgressBar('35.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should be legally labelled in</span><span class='duration'>0.00111s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be illegally labelled in</span><span class='duration'>0.00099s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should be illegally labelled in</span><span class='duration'>0.00104s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally labelled in</span><span class='duration'>0.00104s</span></dd>
+    <script type="text/javascript">moveProgressBar('36.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be admissible</span><span class='duration'>0.00132s</span></dd>
+  </dl>
+</div>
+<div id="div_group_124" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_124" class="passed">with correct labelling</dt>
+    <script type="text/javascript">moveProgressBar('36.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should be legally labelled in</span><span class='duration'>0.00121s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be legally labelled out</span><span class='duration'>0.00108s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be legally labelled undec</span><span class='duration'>0.00139s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should be legally labelled out</span><span class='duration'>0.00155s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally labelled in</span><span class='duration'>0.00135s</span></dd>
+    <script type="text/javascript">moveProgressBar('37.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be admissible</span><span class='duration'>0.00136s</span></dd>
+    <script type="text/javascript">moveProgressBar('38.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally labelled undec</span><span class='duration'>0.00117s</span></dd>
+  </dl>
+</div>
+<div id="div_group_125" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_125" class="passed">#clone</dt>
+    <script type="text/javascript">moveProgressBar('38.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal</span><span class='duration'>0.00118s</span></dd>
+    <script type="text/javascript">moveProgressBar('38.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not change properties</span><span class='duration'>0.00125s</span></dd>
+  </dl>
+</div>
+<div id="div_group_126" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_126" class="passed">more complex framework</dt>
+  </dl>
+</div>
+<div id="div_group_127" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_127" class="passed">#clone</dt>
+    <script type="text/javascript">moveProgressBar('38.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal</span><span class='duration'>0.00132s</span></dd>
+  </dl>
+</div>
+<div id="div_group_128" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_128" class="passed">with all In labelling</dt>
+    <script type="text/javascript">moveProgressBar('38.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should be legally labelled in</span><span class='duration'>0.00129s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be illegally labelled in</span><span class='duration'>0.00133s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should be in in</span><span class='duration'>0.00130s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally in</span><span class='duration'>0.00161s</span></dd>
+    <script type="text/javascript">moveProgressBar('39.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should be illegally labelled in</span><span class='duration'>0.00138s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should label attack on attack in</span><span class='duration'>0.00124s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not label attack on attack out</span><span class='duration'>0.00132s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not label attack on attack undec</span><span class='duration'>0.00132s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not label attack in</span><span class='duration'>0.00148s</span></dd>
+    <script type="text/javascript">moveProgressBar('40.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not label attack undec</span><span class='duration'>0.00136s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should label attack out</span><span class='duration'>0.00109s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be admissible</span><span class='duration'>0.00119s</span></dd>
+  </dl>
+</div>
+<div id="div_group_129" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_129" class="passed">with correct labelling</dt>
+    <script type="text/javascript">moveProgressBar('41.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should be legally labelled in</span><span class='duration'>0.00119s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be legally labelled out</span><span class='duration'>0.00117s</span></dd>
+    <script type="text/javascript">moveProgressBar('41.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">a should not be legally labelled undec</span><span class='duration'>0.00132s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should be legally labelled in</span><span class='duration'>0.00141s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally labelled out</span><span class='duration'>0.00124s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be admissible</span><span class='duration'>0.00138s</span></dd>
+    <script type="text/javascript">moveProgressBar('42.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">b should not be legally labelled undec</span><span class='duration'>0.00133s</span></dd>
+  </dl>
+</div>
+<div id="div_group_130" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_130" class="passed">ExtendedArgumentationFramework::Solver</dt>
+  </dl>
+</div>
+<div id="div_group_131" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_131" class="passed">with acceptability check</dt>
+    <script type="text/javascript">moveProgressBar('42.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal 6</span><span class='duration'>0.00165s</span></dd>
+    <script type="text/javascript">moveProgressBar('43.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal 5</span><span class='duration'>0.00150s</span></dd>
+    <script type="text/javascript">moveProgressBar('43.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal 11</span><span class='duration'>0.00153s</span></dd>
+    <script type="text/javascript">moveProgressBar('43.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">z1to5 should be an array of arguments</span><span class='duration'>0.00225s</span></dd>
+    <script type="text/javascript">moveProgressBar('43.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be acceptable wrt. [z1,..z5]</span><span class='duration'>0.00572s</span></dd>
+    <script type="text/javascript">moveProgressBar('44.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be acceptable wrt. [z1]</span><span class='duration'>0.00208s</span></dd>
+  </dl>
+</div>
+<div id="div_group_132" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_132" class="passed">with 3 models each attacking each other</dt>
+  </dl>
+</div>
+<div id="div_group_133" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_133" class="passed">with CD1_heavy in place</dt>
+    <script type="text/javascript">moveProgressBar('44.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return true for m2 </span><span class='duration'>0.00290s</span></dd>
+    <script type="text/javascript">moveProgressBar('44.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return false for m1 and m3 </span><span class='duration'>0.00398s</span></dd>
+    <script type="text/javascript">moveProgressBar('44.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return false for m1</span><span class='duration'>0.00313s</span></dd>
+    <script type="text/javascript">moveProgressBar('44.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return false for m3 </span><span class='duration'>0.00331s</span></dd>
+  </dl>
+</div>
+<div id="div_group_134" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_134" class="passed">with CD1_mild in place</dt>
+    <script type="text/javascript">moveProgressBar('45.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return not decidable for acceptable for any m_1 and m2</span><span class='duration'>0.00687s</span></dd>
+    <script type="text/javascript">moveProgressBar('45.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return not accceptable for m3</span><span class='duration'>0.00468s</span></dd>
+  </dl>
+</div>
+<div id="div_group_135" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_135" class="passed">with CD2_predict in place</dt>
+    <script type="text/javascript">moveProgressBar('45.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return true for m2 </span><span class='duration'>0.00350s</span></dd>
+    <script type="text/javascript">moveProgressBar('45.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return false for m1 and m3</span><span class='duration'>0.00576s</span></dd>
+  </dl>
+</div>
+<div id="div_group_136" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_136" class="passed">with CD2_explain in place</dt>
+    <script type="text/javascript">moveProgressBar('45.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return true for m2 </span><span class='duration'>0.00380s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return false for m1 and m3</span><span class='duration'>0.00393s</span></dd>
+  </dl>
+</div>
+<div id="div_group_137" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_137" class="passed">chaining CD1_mild and CD2_predict</dt>
+    <script type="text/javascript">moveProgressBar('46.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m2 as only possible model</span><span class='duration'>0.00651s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m2 as only possible model on second level</span><span class='duration'>0.00631s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should declare m3 as not possible model</span><span class='duration'>0.00512s</span></dd>
+    <script type="text/javascript">moveProgressBar('46.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should declare m1 as not possible model</span><span class='duration'>0.00718s</span></dd>
+  </dl>
+</div>
+<div id="div_group_138" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_138" class="passed">chaining CD2_predict and test</dt>
+    <script type="text/javascript">moveProgressBar('47.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m2 as only possible model on first level</span><span class='duration'>0.00332s</span></dd>
+    <script type="text/javascript">moveProgressBar('47.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m2 as only possible model </span><span class='duration'>0.00325s</span></dd>
+  </dl>
+</div>
+<div id="div_group_139" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_139" class="passed">chaining CD1_mild only </dt>
+    <script type="text/javascript">moveProgressBar('47.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m1 as undecided model</span><span class='duration'>0.00552s</span></dd>
+    <script type="text/javascript">moveProgressBar('47.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m2 as undec model</span><span class='duration'>0.00530s</span></dd>
+    <script type="text/javascript">moveProgressBar('48.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m3 as non possible model</span><span class='duration'>0.00508s</span></dd>
+  </dl>
+</div>
+<div id="div_group_140" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_140" class="passed">chaining CD1_mild and TEST</dt>
+    <script type="text/javascript">moveProgressBar('48.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return m1 as only possible model</span><span class='duration'>0.00665s</span></dd>
+    <script type="text/javascript">moveProgressBar('48.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should declare m3 as not possible model</span><span class='duration'>0.00492s</span></dd>
+    <script type="text/javascript">moveProgressBar('48.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should declare m2 as not possible model</span><span class='duration'>0.01111s</span></dd>
+  </dl>
+</div>
+<div id="div_group_141" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_141" class="passed">AdminMailer</dt>
+  </dl>
+</div>
+<div id="div_group_142" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_142" class="passed">new_user_waiting_for_approval</dt>
+    <script type="text/javascript">moveProgressBar('48.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the headers</span><span class='duration'>0.39589s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the body</span><span class='duration'>0.04279s</span></dd>
+  </dl>
+</div>
+<div id="div_group_143" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_143" class="passed">Analysis</dt>
+    <script type="text/javascript">moveProgressBar('49.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #private</span><span class='duration'>0.02869s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #in_progress</span><span class='duration'>0.02907s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be truthy</span><span class='duration'>0.00114s</span></dd>
+    <script type="text/javascript">moveProgressBar('49.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #dataset</span><span class='duration'>0.02837s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #research_question</span><span class='duration'>0.03364s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #possible_models</span><span class='duration'>0.02702s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #query_assumption_results</span><span class='duration'>0.02957s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should validate that :research_question cannot be empty/falsy</span><span class='duration'>0.03226s</span></dd>
+    <script type="text/javascript">moveProgressBar('50.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should validate that :dataset cannot be empty/falsy</span><span class='duration'>0.03110s</span></dd>
+  </dl>
+</div>
+<div id="div_group_144" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_144" class="passed">#start</dt>
+    <script type="text/javascript">moveProgressBar('51.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should eq 3</span><span class='duration'>0.94505s</span></dd>
+    <script type="text/javascript">moveProgressBar('51.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #start</span><span class='duration'>0.94193s</span></dd>
+    <script type="text/javascript">moveProgressBar('51.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should trigger start</span><span class='duration'>0.09102s</span></dd>
+    <script type="text/javascript">moveProgressBar('51.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should create new QueryAssumptionResults</span><span class='duration'>0.90711s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should create only one QueryAssumptionResults</span><span class='duration'>0.88672s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should create a QueryAssumptionResults for a1</span><span class='duration'>0.86394s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should assign 2 possible models for now</span><span class='duration'>0.88847s</span></dd>
+  </dl>
+</div>
+<div id="div_group_145" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_145" class="passed">Assumption</dt>
+  </dl>
+</div>
+<div id="div_group_146" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_146" class="passed">assumptions in general</dt>
+    <script type="text/javascript">moveProgressBar('52.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should validate that :name cannot be empty/falsy</span><span class='duration'>0.00486s</span></dd>
+    <script type="text/javascript">moveProgressBar('52.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not respond to #assumptions</span><span class='duration'>0.00160s</span></dd>
+    <script type="text/javascript">moveProgressBar('53.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #required_by</span><span class='duration'>0.00111s</span></dd>
+    <script type="text/javascript">moveProgressBar('53.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #models</span><span class='duration'>0.00108s</span></dd>
+    <script type="text/javascript">moveProgressBar('53.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #preference_arguments</span><span class='duration'>0.00133s</span></dd>
+  </dl>
+</div>
+<div id="div_group_147" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_147" class="passed">assumptions and assumptions</dt>
+    <script type="text/javascript">moveProgressBar('53.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be empty</span><span class='duration'>0.01103s</span></dd>
+  </dl>
+</div>
+<div id="div_group_148" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_148" class="passed">small argumentation framework</dt>
+    <script type="text/javascript">moveProgressBar('53.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">argument with no critical attacker should be critical true</span><span class='duration'>0.07326s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">argument with a critical false assumption attacker should be critical false</span><span class='duration'>0.29376s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">argument with a query critical false assumption attacker should be true as they should be ignored</span><span class='duration'>0.05443s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the query_assumption</span><span class='duration'>0.06029s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the query_assumption of a sub critical blank assumption</span><span class='duration'>0.07808s</span></dd>
+    <script type="text/javascript">moveProgressBar('54.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not return the query_assumption of a sub non-critical blank assumption</span><span class='duration'>0.06547s</span></dd>
+    <script type="text/javascript">moveProgressBar('55.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not return the query_assumption of a sub critical blank assumption that has a critical evaluating to false assumption</span><span class='duration'>0.07691s</span></dd>
+    <script type="text/javascript">moveProgressBar('55.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">argument with a critical assumption attacker should be critical true</span><span class='duration'>0.29595s</span></dd>
+  </dl>
+</div>
+<div id="div_group_149" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_149" class="passed">single argument should be critical true</dt>
+    <script type="text/javascript">moveProgressBar('55.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #evaluate</span><span class='duration'>0.00893s</span></dd>
+    <script type="text/javascript">moveProgressBar('55.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be truthy</span><span class='duration'>0.04555s</span></dd>
+  </dl>
+</div>
+<div id="div_group_150" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_150" class="passed">#get_all_parents</dt>
+    <script type="text/javascript">moveProgressBar('56.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return empty for single assumption</span><span class='duration'>0.00985s</span></dd>
+    <script type="text/javascript">moveProgressBar('56.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return only parent</span><span class='duration'>0.02483s</span></dd>
+    <script type="text/javascript">moveProgressBar('56.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return itself if there is a circle</span><span class='duration'>0.02618s</span></dd>
+    <script type="text/javascript">moveProgressBar('56.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be invalid with a circle</span><span class='duration'>0.03166s</span></dd>
+    <script type="text/javascript">moveProgressBar('56.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid without a circle</span><span class='duration'>0.02111s</span></dd>
+  </dl>
+</div>
+<div id="div_group_151" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_151" class="passed">BlankAssumption</dt>
+  </dl>
+</div>
+<div id="div_group_152" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_152" class="passed">general BlankAssumptions</dt>
+    <script type="text/javascript">moveProgressBar('57.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #assumptions</span><span class='duration'>0.00203s</span></dd>
+    <script type="text/javascript">moveProgressBar('57.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #assumptions</span><span class='duration'>0.00169s</span></dd>
+  </dl>
+</div>
+<div id="div_group_153" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_153" class="passed">assumptions and assumptions</dt>
+    <script type="text/javascript">moveProgressBar('57.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be empty</span><span class='duration'>0.01071s</span></dd>
+    <script type="text/javascript">moveProgressBar('57.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be empty</span><span class='duration'>0.01138s</span></dd>
+  </dl>
+</div>
+<div id="div_group_154" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_154" class="passed">attributes access</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('57.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #name (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('58.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #description (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('58.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #required_dataset_fields (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('58.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #fail_on_missing (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('58.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #r_code (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('58.9');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #question (PENDING: How to hide attributes in STI)</span></dd>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_154');</script>
+    <script type="text/javascript">makeYellow('example_group_154');</script>
+    <script type="text/javascript">moveProgressBar('59.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should not respond to #argument_inverted (PENDING: How to hide attributes in STI)</span></dd>
+  </dl>
+</div>
+<div id="div_group_155" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_155" class="passed">QueryAssumption</dt>
+  </dl>
+</div>
+<div id="div_group_156" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_156" class="passed">general QueryAssumption</dt>
+    <script type="text/javascript">moveProgressBar('59.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not respond to #assumptions</span><span class='duration'>0.00240s</span></dd>
+    <script type="text/javascript">moveProgressBar('59.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #required_by</span><span class='duration'>0.00144s</span></dd>
+  </dl>
+</div>
+<div id="div_group_157" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_157" class="passed">assumptions and assumptions</dt>
+    <script type="text/javascript">moveProgressBar('59.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be empty</span><span class='duration'>0.00861s</span></dd>
+  </dl>
+</div>
+<div id="div_group_158" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_158" class="passed">TestAssumption</dt>
+  </dl>
+</div>
+<div id="div_group_159" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_159" class="passed">general TestAssumption</dt>
+    <script type="text/javascript">moveProgressBar('60.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #required_by</span><span class='duration'>0.00181s</span></dd>
+    <script type="text/javascript">moveProgressBar('60.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not respond to #assumptions</span><span class='duration'>0.00148s</span></dd>
+  </dl>
+</div>
+<div id="div_group_160" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_160" class="passed">assumptions and assumptions</dt>
+    <script type="text/javascript">moveProgressBar('60.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be empty</span><span class='duration'>0.01106s</span></dd>
+  </dl>
+</div>
+<div id="div_group_161" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_161" class="passed">Dataset</dt>
+    <script type="text/javascript">moveProgressBar('60.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #user</span><span class='duration'>0.01476s</span></dd>
+    <script type="text/javascript">moveProgressBar('60.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #columns</span><span class='duration'>0.01479s</span></dd>
+    <script type="text/javascript">moveProgressBar('61.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #data_file</span><span class='duration'>0.01353s</span></dd>
+    <script type="text/javascript">moveProgressBar('61.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #data</span><span class='duration'>0.01671s</span></dd>
+  </dl>
+</div>
+<div id="div_group_162" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_162" class="passed">parsing a file</dt>
+    <script type="text/javascript">moveProgressBar('61.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should parse the columns</span><span class='duration'>0.01817s</span></dd>
+    <script type="text/javascript">moveProgressBar('61.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid</span><span class='duration'>0.01599s</span></dd>
+    <script type="text/javascript">moveProgressBar('61.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have the right columns</span><span class='duration'>0.01779s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should have the right rows</span><span class='duration'>0.01701s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should call update_dataset_test_assumption_results</span><span class='duration'>0.02102s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should call update on the dataset_result</span><span class='duration'>0.26545s</span></dd>
+  </dl>
+</div>
+<div id="div_group_163" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_163" class="passed">DatasetTestAssumptionResult</dt>
+    <script type="text/javascript">moveProgressBar('62.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #dataset</span><span class='duration'>0.24194s</span></dd>
+    <script type="text/javascript">moveProgressBar('62.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #test_assumption</span><span class='duration'>0.23877s</span></dd>
+  </dl>
+</div>
+<div id="div_group_164" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_164" class="passed">validation</dt>
+    <script type="text/javascript">moveProgressBar('63.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should allow nil for result</span><span class='duration'>0.23724s</span></dd>
+  </dl>
+</div>
+<div id="div_group_165" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_165" class="passed">test_assumption reference</dt>
+    <script type="text/javascript">moveProgressBar('63.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be possible to add TestAssumptions</span><span class='duration'>0.23762s</span></dd>
+    <script type="text/javascript">moveProgressBar('63.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be possible to add Assumptions</span><span class='duration'>0.24006s</span></dd>
+  </dl>
+</div>
+<div id="div_group_166" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_166" class="passed">with test assumption</dt>
+    <script type="text/javascript">moveProgressBar('63.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the test assumption</span><span class='duration'>0.22762s</span></dd>
+    <script type="text/javascript">moveProgressBar('64.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should trigger update method on change of dataset</span><span class='duration'>0.02543s</span></dd>
+  </dl>
+</div>
+<div id="div_group_167" class="example_group passed">
+  <dl style="margin-left: 45px;">
+  <dt id="example_group_167" class="passed">#update</dt>
+    <script type="text/javascript">moveProgressBar('64.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should trigger evaluate on test_assumpiton</span><span class='duration'>0.23476s</span></dd>
+  </dl>
+</div>
+<div id="div_group_168" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_168" class="passed">ModelOrder</dt>
+    <script type="text/javascript">moveProgressBar('64.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid</span><span class='duration'>0.11784s</span></dd>
+    <script type="text/javascript">moveProgressBar('64.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #preference_argument</span><span class='duration'>0.12675s</span></dd>
+    <script type="text/javascript">moveProgressBar('64.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #models</span><span class='duration'>0.10804s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #index</span><span class='duration'>0.11700s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be able to delete</span><span class='duration'>0.10626s</span></dd>
+  </dl>
+</div>
+<div id="div_group_169" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_169" class="passed">Model</dt>
+    <script type="text/javascript">moveProgressBar('65.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to [:name, :description]</span><span class='duration'>0.01441s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #analyses</span><span class='duration'>0.01158s</span></dd>
+    <script type="text/javascript">moveProgressBar('65.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #research_questions</span><span class='duration'>0.01067s</span></dd>
+    <script type="text/javascript">moveProgressBar('66.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #assumptions</span><span class='duration'>0.01108s</span></dd>
+  </dl>
+</div>
+<div id="div_group_170" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_170" class="passed">Plot</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_170');</script>
+    <script type="text/javascript">makeYellow('example_group_170');</script>
+    <script type="text/javascript">moveProgressBar('66.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should validate filename (PENDING: Todo: implement tests for plots)</span></dd>
+  </dl>
+</div>
+<div id="div_group_171" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_171" class="passed">PossibleModel</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_171');</script>
+    <script type="text/javascript">makeYellow('example_group_171');</script>
+    <script type="text/javascript">moveProgressBar('66.5');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/models/possible_model_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_172" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_172" class="passed">PreferenceArgument</dt>
+    <script type="text/javascript">moveProgressBar('66.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid</span><span class='duration'>0.08816s</span></dd>
+    <script type="text/javascript">moveProgressBar('66.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #model_orders</span><span class='duration'>0.08411s</span></dd>
+    <script type="text/javascript">moveProgressBar('67.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #models</span><span class='duration'>0.08202s</span></dd>
+    <script type="text/javascript">moveProgressBar('67.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #models_grouped</span><span class='duration'>0.08028s</span></dd>
+    <script type="text/javascript">moveProgressBar('67.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #assumption</span><span class='duration'>0.08558s</span></dd>
+    <script type="text/javascript">moveProgressBar('67.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #preference</span><span class='duration'>0.08106s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be able to delete</span><span class='duration'>0.09062s</span></dd>
+  </dl>
+</div>
+<div id="div_group_173" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_173" class="passed">Preference</dt>
+    <script type="text/javascript">moveProgressBar('68.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid</span><span class='duration'>0.16010s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #research_question</span><span class='duration'>0.15259s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #stage</span><span class='duration'>0.15787s</span></dd>
+    <script type="text/javascript">moveProgressBar('68.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #user</span><span class='duration'>0.15476s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #name</span><span class='duration'>0.15306s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #int_name</span><span class='duration'>0.15558s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #preference_arguments</span><span class='duration'>0.15450s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #global</span><span class='duration'>0.18174s</span></dd>
+    <script type="text/javascript">moveProgressBar('69.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be able to delete</span><span class='duration'>0.17552s</span></dd>
+  </dl>
+</div>
+<div id="div_group_174" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_174" class="passed">with cd1</dt>
+    <script type="text/javascript">moveProgressBar('70.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should equal 2</span><span class='duration'>0.21677s</span></dd>
+    <script type="text/javascript">moveProgressBar('70.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the right rules</span><span class='duration'>0.26009s</span></dd>
+    <script type="text/javascript">moveProgressBar('70.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the right rules for one assumption only</span><span class='duration'>0.28643s</span></dd>
+    <script type="text/javascript">moveProgressBar('70.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should return the right rules for one assumption only</span><span class='duration'>0.23003s</span></dd>
+  </dl>
+</div>
+<div id="div_group_175" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_175" class="passed">stage 1-10 registered for statisticians only</dt>
+  </dl>
+</div>
+<div id="div_group_176" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_176" class="passed">a statistician</dt>
+    <script type="text/javascript">moveProgressBar('70.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be allowed to set stage to 1</span><span class='duration'>0.21527s</span></dd>
+    <script type="text/javascript">moveProgressBar('71.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be allowed to set stage to 10</span><span class='duration'>0.19191s</span></dd>
+  </dl>
+</div>
+<div id="div_group_177" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_177" class="passed">a clinician</dt>
+    <script type="text/javascript">moveProgressBar('71.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be allowed to set stage to 1</span><span class='duration'>0.18649s</span></dd>
+    <script type="text/javascript">moveProgressBar('71.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be allowed to set stage to 10</span><span class='duration'>0.18229s</span></dd>
+  </dl>
+</div>
+<div id="div_group_178" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_178" class="passed">#global</dt>
+  </dl>
+</div>
+<div id="div_group_179" class="example_group passed">
+  <dl style="margin-left: 30px;">
+  <dt id="example_group_179" class="passed">with global = true</dt>
+  </dl>
+</div>
+<div id="div_group_180" class="example_group passed">
+  <dl style="margin-left: 45px;">
+  <dt id="example_group_180" class="passed">a statistician</dt>
+    <script type="text/javascript">moveProgressBar('71.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be allowed to set global</span><span class='duration'>0.18441s</span></dd>
+    <script type="text/javascript">moveProgressBar('72.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be allowed to set stage to 10</span><span class='duration'>0.17166s</span></dd>
+  </dl>
+</div>
+<div id="div_group_181" class="example_group passed">
+  <dl style="margin-left: 45px;">
+  <dt id="example_group_181" class="passed">a clinician</dt>
+    <script type="text/javascript">moveProgressBar('72.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be allowed to set it</span><span class='duration'>0.17192s</span></dd>
+  </dl>
+</div>
+<div id="div_group_182" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_182" class="passed">QueryAssumptionResult</dt>
+    <script type="text/javascript">moveProgressBar('72.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #dataset</span><span class='duration'>0.04229s</span></dd>
+    <script type="text/javascript">moveProgressBar('72.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #query_assumption</span><span class='duration'>0.03992s</span></dd>
+    <script type="text/javascript">moveProgressBar('72.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #analysis</span><span class='duration'>0.04006s</span></dd>
+  </dl>
+</div>
+<div id="div_group_183" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_183" class="passed">validation</dt>
+    <script type="text/javascript">moveProgressBar('73.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should allow nil for result</span><span class='duration'>0.04080s</span></dd>
+  </dl>
+</div>
+<div id="div_group_184" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_184" class="passed">query_assumption reference</dt>
+    <script type="text/javascript">moveProgressBar('73.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be possible to add QueryAssumptions</span><span class='duration'>0.04674s</span></dd>
+    <script type="text/javascript">moveProgressBar('73.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not be possible to add Assumptions</span><span class='duration'>0.04685s</span></dd>
+  </dl>
+</div>
+<div id="div_group_185" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_185" class="passed">only one per analysis and assumption</dt>
+    <script type="text/javascript">moveProgressBar('73.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be invalid to have a second query_assumption</span><span class='duration'>0.08583s</span></dd>
+  </dl>
+</div>
+<div id="div_group_186" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_186" class="passed">QueryTestAssumptionPlot</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_186');</script>
+    <script type="text/javascript">makeYellow('example_group_186');</script>
+    <script type="text/javascript">moveProgressBar('73.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/models/query_test_assumption_plot_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_187" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_187" class="passed">Reason</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_187');</script>
+    <script type="text/javascript">makeYellow('example_group_187');</script>
+    <script type="text/javascript">moveProgressBar('74.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/models/reason_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_188" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_188" class="passed">ResearchQuestion</dt>
+    <script type="text/javascript">moveProgressBar('74.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #analyses</span><span class='duration'>0.00187s</span></dd>
+    <script type="text/javascript">moveProgressBar('74.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #name</span><span class='duration'>0.00140s</span></dd>
+    <script type="text/javascript">moveProgressBar('74.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #description</span><span class='duration'>0.00130s</span></dd>
+    <script type="text/javascript">moveProgressBar('74.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">should respond to #preferences</span><span class='duration'>0.00136s</span></dd>
+    <script type="text/javascript">moveProgressBar('75.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should validate that :name is case-sensitively unique</span><span class='duration'>0.01596s</span></dd>
+    <script type="text/javascript">moveProgressBar('75.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be able to delete</span><span class='duration'>0.00505s</span></dd>
+  </dl>
+</div>
+<div id="div_group_189" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_189" class="passed">TestAssumption</dt>
+    <script type="text/javascript">moveProgressBar('75.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be valid</span><span class='duration'>0.01529s</span></dd>
+    <script type="text/javascript">moveProgressBar('75.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">should trigger update on dataset_test_assumption_result</span><span class='duration'>0.26493s</span></dd>
+  </dl>
+</div>
+<div id="div_group_190" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_190" class="passed">check if the columns in the dataset are present</dt>
+    <script type="text/javascript">moveProgressBar('76.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">should succeed</span><span class='duration'>0.01820s</span></dd>
+    <script type="text/javascript">moveProgressBar('76.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not succeed if the columns are not present</span><span class='duration'>0.01719s</span></dd>
+    <script type="text/javascript">moveProgressBar('76.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">should not succeed if there are columns in both but the assumption requires one more</span><span class='duration'>0.01463s</span></dd>
+    <script type="text/javascript">moveProgressBar('76.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should succeed if there are columns in both</span><span class='duration'>0.01556s</span></dd>
+  </dl>
+</div>
+<div id="div_group_191" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_191" class="passed">check required dataset fields</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_191');</script>
+    <script type="text/javascript">makeYellow('example_group_191');</script>
+    <script type="text/javascript">moveProgressBar('76.8');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">should assign empty array (PENDING: write specs)</span></dd>
+  </dl>
+</div>
+<div id="div_group_192" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_192" class="passed">User</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_192');</script>
+    <script type="text/javascript">makeYellow('example_group_192');</script>
+    <script type="text/javascript">moveProgressBar('77.0');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/models/user_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_193" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_193" class="passed">Users</dt>
+  </dl>
+</div>
+<div id="div_group_194" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_194" class="passed">GET /users</dt>
+    <script type="text/javascript">moveProgressBar('77.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.13195s</span></dd>
+  </dl>
+</div>
+<div id="div_group_195" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_195" class="passed">Analyses</dt>
+  </dl>
+</div>
+<div id="div_group_196" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_196" class="passed">GET /analyses</dt>
+    <script type="text/javascript">moveProgressBar('77.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.10846s</span></dd>
+  </dl>
+</div>
+<div id="div_group_197" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_197" class="passed">#new /analyses</dt>
+    <script type="text/javascript">moveProgressBar('77.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">should be success</span><span class='duration'>0.11261s</span></dd>
+    <script type="text/javascript">moveProgressBar('77.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">should render form</span><span class='duration'>0.11205s</span></dd>
+    <script type="text/javascript">moveProgressBar('78.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">should ask for a research question</span><span class='duration'>0.11165s</span></dd>
+    <script type="text/javascript">moveProgressBar('78.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">should ask for a dataset</span><span class='duration'>0.11335s</span></dd>
+  </dl>
+</div>
+<div id="div_group_198" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_198" class="passed">Assumptions</dt>
+  </dl>
+</div>
+<div id="div_group_199" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_199" class="passed">GET /assumptions</dt>
+    <script type="text/javascript">moveProgressBar('78.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.10404s</span></dd>
+  </dl>
+</div>
+<div id="div_group_200" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_200" class="passed">Datasets</dt>
+  </dl>
+</div>
+<div id="div_group_201" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_201" class="passed">GET /datasets</dt>
+    <script type="text/javascript">moveProgressBar('78.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.09339s</span></dd>
+  </dl>
+</div>
+<div id="div_group_202" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_202" class="passed">Models</dt>
+  </dl>
+</div>
+<div id="div_group_203" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_203" class="passed">GET /models</dt>
+    <script type="text/javascript">moveProgressBar('78.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.10439s</span></dd>
+  </dl>
+</div>
+<div id="div_group_204" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_204" class="passed">Preferences</dt>
+  </dl>
+</div>
+<div id="div_group_205" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_205" class="passed">GET /preferences</dt>
+    <script type="text/javascript">moveProgressBar('79.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.09247s</span></dd>
+  </dl>
+</div>
+<div id="div_group_206" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_206" class="passed">QueryAssumptionResults</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_206');</script>
+    <script type="text/javascript">makeYellow('example_group_206');</script>
+    <script type="text/javascript">moveProgressBar('79.3');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">Write specs (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_207" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_207" class="passed">ResearchQuestions</dt>
+  </dl>
+</div>
+<div id="div_group_208" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_208" class="passed">GET /research_questions</dt>
+    <script type="text/javascript">moveProgressBar('79.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">works! (now write some real specs)</span><span class='duration'>0.09388s</span></dd>
+  </dl>
+</div>
+<div id="div_group_209" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_209" class="passed">AnalysesController</dt>
+  </dl>
+</div>
+<div id="div_group_210" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_210" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('79.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00169s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00139s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00137s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00153s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00154s</span></dd>
+    <script type="text/javascript">moveProgressBar('80.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00148s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00127s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00129s</span></dd>
+  </dl>
+</div>
+<div id="div_group_211" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_211" class="passed">AssumptionsController</dt>
+  </dl>
+</div>
+<div id="div_group_212" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_212" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('81.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00165s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00194s</span></dd>
+    <script type="text/javascript">moveProgressBar('81.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00142s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00139s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00120s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00117s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00117s</span></dd>
+    <script type="text/javascript">moveProgressBar('82.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00116s</span></dd>
+  </dl>
+</div>
+<div id="div_group_213" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_213" class="passed">DatasetsController</dt>
+  </dl>
+</div>
+<div id="div_group_214" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_214" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('83.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00118s</span></dd>
+    <script type="text/javascript">moveProgressBar('83.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00183s</span></dd>
+    <script type="text/javascript">moveProgressBar('83.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00164s</span></dd>
+    <script type="text/javascript">moveProgressBar('83.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00155s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00126s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00128s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00143s</span></dd>
+    <script type="text/javascript">moveProgressBar('84.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00151s</span></dd>
+  </dl>
+</div>
+<div id="div_group_215" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_215" class="passed">ModelsController</dt>
+  </dl>
+</div>
+<div id="div_group_216" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_216" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('84.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00132s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00139s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00133s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00128s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00114s</span></dd>
+    <script type="text/javascript">moveProgressBar('85.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00121s</span></dd>
+    <script type="text/javascript">moveProgressBar('86.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00116s</span></dd>
+    <script type="text/javascript">moveProgressBar('86.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00116s</span></dd>
+  </dl>
+</div>
+<div id="div_group_217" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_217" class="passed">PreferencesController</dt>
+  </dl>
+</div>
+<div id="div_group_218" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_218" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('86.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00124s</span></dd>
+    <script type="text/javascript">moveProgressBar('86.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00115s</span></dd>
+    <script type="text/javascript">moveProgressBar('86.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00104s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00123s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00128s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00131s</span></dd>
+    <script type="text/javascript">moveProgressBar('87.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00130s</span></dd>
+    <script type="text/javascript">moveProgressBar('88.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00123s</span></dd>
+  </dl>
+</div>
+<div id="div_group_219" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_219" class="passed">QueryAssumptionResultsController</dt>
+  </dl>
+</div>
+<div id="div_group_220" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_220" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('88.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00121s</span></dd>
+    <script type="text/javascript">moveProgressBar('88.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00124s</span></dd>
+    <script type="text/javascript">moveProgressBar('88.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00116s</span></dd>
+    <script type="text/javascript">moveProgressBar('88.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00117s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00117s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00115s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00133s</span></dd>
+    <script type="text/javascript">moveProgressBar('89.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00190s</span></dd>
+  </dl>
+</div>
+<div id="div_group_221" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_221" class="passed">ResearchQuestionsController</dt>
+  </dl>
+</div>
+<div id="div_group_222" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_222" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('89.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00139s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00141s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00149s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00140s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00120s</span></dd>
+    <script type="text/javascript">moveProgressBar('90.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00125s</span></dd>
+    <script type="text/javascript">moveProgressBar('91.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00136s</span></dd>
+    <script type="text/javascript">moveProgressBar('91.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00143s</span></dd>
+  </dl>
+</div>
+<div id="div_group_223" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_223" class="passed">Admin::UsersController</dt>
+  </dl>
+</div>
+<div id="div_group_224" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_224" class="passed">routing</dt>
+    <script type="text/javascript">moveProgressBar('91.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #index</span><span class='duration'>0.00136s</span></dd>
+    <script type="text/javascript">moveProgressBar('91.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #new</span><span class='duration'>0.00161s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #show</span><span class='duration'>0.00206s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #edit</span><span class='duration'>0.00195s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #create</span><span class='duration'>0.00241s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PUT</span><span class='duration'>0.00202s</span></dd>
+    <script type="text/javascript">moveProgressBar('92.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #update via PATCH</span><span class='duration'>0.00171s</span></dd>
+    <script type="text/javascript">moveProgressBar('93.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">routes to #destroy</span><span class='duration'>0.00162s</span></dd>
+  </dl>
+</div>
+<div id="div_group_225" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_225" class="passed">admin/users/edit</dt>
+    <script type="text/javascript">moveProgressBar('93.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit user form</span><span class='duration'>0.11259s</span></dd>
+  </dl>
+</div>
+<div id="div_group_226" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_226" class="passed">admin/users/index</dt>
+    <script type="text/javascript">moveProgressBar('93.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of users</span><span class='duration'>0.07637s</span></dd>
+  </dl>
+</div>
+<div id="div_group_227" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_227" class="passed">admin/users/new</dt>
+    <script type="text/javascript">moveProgressBar('93.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders new user form</span><span class='duration'>0.02982s</span></dd>
+  </dl>
+</div>
+<div id="div_group_228" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_228" class="passed">admin/users/show</dt>
+    <script type="text/javascript">moveProgressBar('93.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.03968s</span></dd>
+  </dl>
+</div>
+<div id="div_group_229" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_229" class="passed">analyses/index</dt>
+    <script type="text/javascript">moveProgressBar('94.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of analyses</span><span class='duration'>0.11156s</span></dd>
+  </dl>
+</div>
+<div id="div_group_230" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_230" class="passed">analyses/new</dt>
+    <script type="text/javascript">moveProgressBar('94.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders new analysis form</span><span class='duration'>0.04622s</span></dd>
+  </dl>
+</div>
+<div id="div_group_231" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_231" class="passed">analyses/show</dt>
+    <script type="text/javascript">moveProgressBar('94.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.27119s</span></dd>
+  </dl>
+</div>
+<div id="div_group_232" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_232" class="passed">assumptions/edit</dt>
+  </dl>
+</div>
+<div id="div_group_233" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_233" class="passed">BlankAssumption</dt>
+    <script type="text/javascript">moveProgressBar('94.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.16947s</span></dd>
+  </dl>
+</div>
+<div id="div_group_234" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_234" class="passed">QueryAssumption</dt>
+    <script type="text/javascript">moveProgressBar('94.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.11871s</span></dd>
+  </dl>
+</div>
+<div id="div_group_235" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_235" class="passed">TestAssumption</dt>
+    <script type="text/javascript">moveProgressBar('95.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.12580s</span></dd>
+  </dl>
+</div>
+<div id="div_group_236" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_236" class="passed">assumptions/index</dt>
+    <script type="text/javascript">moveProgressBar('95.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of assumptions</span><span class='duration'>0.05179s</span></dd>
+  </dl>
+</div>
+<div id="div_group_237" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_237" class="passed">assumptions/new</dt>
+  </dl>
+</div>
+<div id="div_group_238" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_238" class="passed">BlankAssumption</dt>
+    <script type="text/javascript">moveProgressBar('95.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.07217s</span></dd>
+  </dl>
+</div>
+<div id="div_group_239" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_239" class="passed">QueryAssumption</dt>
+    <script type="text/javascript">moveProgressBar('95.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.04808s</span></dd>
+  </dl>
+</div>
+<div id="div_group_240" class="example_group passed">
+  <dl style="margin-left: 15px;">
+  <dt id="example_group_240" class="passed">TestAssumption</dt>
+    <script type="text/javascript">moveProgressBar('96.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit assumption form</span><span class='duration'>0.05599s</span></dd>
+  </dl>
+</div>
+<div id="div_group_241" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_241" class="passed">assumptions/show</dt>
+    <script type="text/javascript">moveProgressBar('96.2');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.17351s</span></dd>
+  </dl>
+</div>
+<div id="div_group_242" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_242" class="passed">datasets/edit</dt>
+    <script type="text/javascript">moveProgressBar('96.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit dataset form</span><span class='duration'>0.06070s</span></dd>
+  </dl>
+</div>
+<div id="div_group_243" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_243" class="passed">datasets/index</dt>
+    <script type="text/javascript">moveProgressBar('96.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of datasets</span><span class='duration'>0.05508s</span></dd>
+  </dl>
+</div>
+<div id="div_group_244" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_244" class="passed">datasets/new</dt>
+    <script type="text/javascript">moveProgressBar('96.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders new dataset form</span><span class='duration'>0.02981s</span></dd>
+  </dl>
+</div>
+<div id="div_group_245" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_245" class="passed">datasets/show</dt>
+    <script type="text/javascript">moveProgressBar('97.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.06296s</span></dd>
+  </dl>
+</div>
+<div id="div_group_246" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_246" class="passed">home/index.html.haml</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_246');</script>
+    <script type="text/javascript">makeYellow('example_group_246');</script>
+    <script type="text/javascript">moveProgressBar('97.2');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">add some examples to (or delete) /Users/sebastianzillessen/MEGA/Uni/00_KCL/05_MSc Project/small_data_analyst/spec/views/home/index.html.haml_spec.rb (PENDING: Not yet implemented)</span></dd>
+  </dl>
+</div>
+<div id="div_group_247" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_247" class="passed">models/edit</dt>
+    <script type="text/javascript">moveProgressBar('97.4');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit model form</span><span class='duration'>0.10480s</span></dd>
+  </dl>
+</div>
+<div id="div_group_248" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_248" class="passed">models/index</dt>
+    <script type="text/javascript">moveProgressBar('97.6');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of model names</span><span class='duration'>0.06455s</span></dd>
+  </dl>
+</div>
+<div id="div_group_249" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_249" class="passed">models/new</dt>
+    <script type="text/javascript">moveProgressBar('97.8');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders new model form</span><span class='duration'>0.05197s</span></dd>
+  </dl>
+</div>
+<div id="div_group_250" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_250" class="passed">models/show</dt>
+    <script type="text/javascript">moveProgressBar('98.1');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>1.10257s</span></dd>
+  </dl>
+</div>
+<div id="div_group_251" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_251" class="passed">preferences/edit</dt>
+    <script type="text/javascript">moveProgressBar('98.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit preference form</span><span class='duration'>0.39893s</span></dd>
+  </dl>
+</div>
+<div id="div_group_252" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_252" class="passed">preferences/index</dt>
+    <script type="text/javascript">moveProgressBar('98.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of preferences</span><span class='duration'>0.41387s</span></dd>
+  </dl>
+</div>
+<div id="div_group_253" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_253" class="passed">preferences/new</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_253');</script>
+    <script type="text/javascript">makeYellow('example_group_253');</script>
+    <script type="text/javascript">moveProgressBar('98.7');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">renders new preference form (PENDING: add test)</span></dd>
+  </dl>
+</div>
+<div id="div_group_254" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_254" class="passed">preferences/show</dt>
+    <script type="text/javascript">moveProgressBar('98.9');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.29705s</span></dd>
+  </dl>
+</div>
+<div id="div_group_255" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_255" class="passed">query_assumption_results/update</dt>
+    <script type="text/javascript">makeYellow('rspec-header');</script>
+    <script type="text/javascript">makeYellow('div_group_255');</script>
+    <script type="text/javascript">makeYellow('example_group_255');</script>
+    <script type="text/javascript">moveProgressBar('99.1');</script>
+    <dd class="example not_implemented"><span class="not_implemented_spec_name">renders attributes in &lt;p&gt; (PENDING: write specs)</span></dd>
+  </dl>
+</div>
+<div id="div_group_256" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_256" class="passed">research_questions/edit</dt>
+    <script type="text/javascript">moveProgressBar('99.3');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders the edit research_question form</span><span class='duration'>0.06879s</span></dd>
+  </dl>
+</div>
+<div id="div_group_257" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_257" class="passed">research_questions/index</dt>
+    <script type="text/javascript">moveProgressBar('99.5');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders a list of research_questions</span><span class='duration'>0.04857s</span></dd>
+  </dl>
+</div>
+<div id="div_group_258" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_258" class="passed">research_questions/new</dt>
+    <script type="text/javascript">moveProgressBar('99.7');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders new research_question form</span><span class='duration'>0.04261s</span></dd>
+  </dl>
+</div>
+<div id="div_group_259" class="example_group passed">
+  <dl style="margin-left: 0px;">
+  <dt id="example_group_259" class="passed">research_questions/show</dt>
+    <script type="text/javascript">moveProgressBar('100.0');</script>
+    <dd class="example passed"><span class="passed_spec_name">renders attributes in &lt;p&gt;</span><span class='duration'>0.20565s</span></dd>
+  </dl>
+</div>
+<script type="text/javascript">document.getElementById('duration').innerHTML = "Finished in <strong>65.08165 seconds</strong>";</script>
+<script type="text/javascript">document.getElementById('totals').innerHTML = "475 examples, 0 failures, 108 pending";</script>
+</div>
+</div>
+</body>
+</html>

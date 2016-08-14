@@ -88,6 +88,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'simplecov', :require => false
   gem 'capybara-screenshot'
   gem "codeclimate-test-reporter", require: nil
   gem 'database_cleaner'
