@@ -11,7 +11,7 @@ class Ability
       can :manage, :all
     end
     if user.is_statistician?
-      can :crud, Analysis
+      can :read, Analysis
       can :crud, Assumption
       can :crud, ResearchQuestion
       can :read, Dataset
