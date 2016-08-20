@@ -129,67 +129,70 @@ describe "creating a new analysis" do
           end
         end
 
-        it 'Yes on first query and only one remainign (so no second answer)' do
-          expect(page).not_to have_content("Possible Models after AS1")
+        describe 'not on travis', travis: false do
+          it 'Yes on first query and only one remainign (so no second answer)' do
+            expect(page).not_to have_content("Possible Models after AS1")
 
-          within '#open_questions' do
-            form = find("form.query_assumption_result")
-            # answer question
-            within form do
-              click_link "Yes"
-            end
-          end
-          wait_for_ajax
-
-          # test for answered question and icons
-          within '#answered_questions_parent' do
-            expect(page).to have_content 'a1: non informative censoring'
-            expect(page).to have_css ".glyphicon.glyphicon-ok-sign.text-success"
-          end
-
-          # test for possbile models
-          expect(page).to have_content("Possible Models after AS1")
-          within '#possible_models_as_1' do
-            expect(page).to have_content("Weibull")
-            expect(page).to have_content("Kaplan Meier")
-            expect(page).not_to have_content("Cox")
-          end
-          expect(subject.open_query_assumptions.count).to eq 0
-
-          expect(page).to have_content("Analysis is now complete.")
-          expect(page).not_to have_css('#open_questions')
-          expect(page).not_to have_css('form.query_assumption_result')
-          within '#ignored_questions_parent' do
-            expect(page).to have_content("No ignored query assumptions")
-          end
-
-          expect(page).to have_content('Recommended models')
-          #find('#detailed_model_view_parent [data-toggle="collapse"]').click
-          within '#detailed_model_view' do
-            expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
-            expect(page).to have_css(".list-group-item-danger", text: "Weibull")
-            expect(page).to have_css(".list-group-item-danger", text: "Cox Proportional Hazard")
-            expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS1")
-            expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS2")
-            subject.remaining_models.each do |m|
-              within "#model_#{m.id}" do
-                expect(page).to have_css('.list-group-item-heading.text-success', count: m.assumptions.count)
-                expect(page).to have_css('.list-group-item-heading.text-success', text: "a1")
-                expect(page).to have_css('.list-group-item-heading.text-success', text: "a2")
+            within '#open_questions' do
+              form = find("form.query_assumption_result")
+              # answer question
+              within form do
+                click_link "Yes"
               end
             end
+            wait_for_ajax
 
-            expect(page).to have_css('.list-group-item-danger .text-success', text: "CD1_mild")
-            expect(page).to have_css('.list-group-item-danger .text-danger', text: "a3")
+            # test for answered question and icons
+            within '#answered_questions_parent' do
+              expect(page).to have_content 'a1: non informative censoring'
+              expect(page).to have_css ".glyphicon.glyphicon-ok-sign.text-success"
+            end
+
+            # test for possbile models
+            expect(page).to have_content("Possible Models after AS1")
+            within '#possible_models_as_1' do
+              expect(page).to have_content("Weibull")
+              expect(page).to have_content("Kaplan Meier")
+              expect(page).not_to have_content("Cox")
+            end
+            expect(subject.open_query_assumptions.count).to eq 0
+
+            expect(page).to have_content("Analysis is now complete.")
+            expect(page).not_to have_css('#open_questions')
+            expect(page).not_to have_css('form.query_assumption_result')
+            within '#ignored_questions_parent' do
+              expect(page).to have_content("No ignored query assumptions")
+            end
+
+            expect(page).to have_content('Recommended models')
+            #find('#detailed_model_view_parent [data-toggle="collapse"]').click
+            within '#detailed_model_view' do
+              expect(page).to have_css(".list-group-item-success", text: "Kaplan Meier")
+              expect(page).to have_css(".list-group-item-danger", text: "Weibull")
+              expect(page).to have_css(".list-group-item-danger", text: "Cox Proportional Hazard")
+              expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS1")
+              expect(page).to have_css(".list-group-item-danger", text: "Rejected in: AS2")
+              subject.remaining_models.each do |m|
+                within "#model_#{m.id}" do
+                  expect(page).to have_css('.list-group-item-heading.text-success', count: m.assumptions.count)
+                  expect(page).to have_css('.list-group-item-heading.text-success', text: "a1")
+                  expect(page).to have_css('.list-group-item-heading.text-success', text: "a2")
+                end
+              end
+
+              expect(page).to have_css('.list-group-item-danger .text-success', text: "CD1_mild")
+              expect(page).to have_css('.list-group-item-danger .text-danger', text: "a3")
+            end
+            #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
+            within '#detailed_argumentation_view' do
+              expect(page).to have_css('img.fit-parent', count: 1)
+            end
+
+
+            expect(subject).to be_done
           end
-          #find('#detailed_argumentation_view_parent [data-toggle="collapse"]').click
-          within '#detailed_argumentation_view' do
-            expect(page).to have_css('img.fit-parent', count: 1)
-          end
-
-
-          expect(subject).to be_done
         end
+
       end
 
 

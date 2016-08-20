@@ -14,47 +14,75 @@
         .panel-heading
           Quick Introduction
         .panel-body
-          The "Small Data Analyst" aims to implement an intelligent agent that provides advice based on statistical theory on the analysis of such data.
-          The system depends on the design described in the related papers by
-          %a(href="http://www.dcs.kcl.ac.uk/pg/isassoon/" target='_blank')
-            Sassoon.
+          %p
+            The "Small Data Analyst" aims to implement an intelligent agent that provides advice based on statistical theory on the analysis of such data.
+          %p
+            The system depends on the design described in the related papers by
+            %a(href="http://www.dcs.kcl.ac.uk/pg/isassoon/" target='_blank')
+              Sassoon.
+          %p
+            The intelligence of this application is held in Statistical Knowledge Base that is applied on the provided datasets the user can upload.
+          %p
+            Context sensitive preferences allow to express preferences between multiple possible models to analyse which model should be the preferred one for this particular analysis, given the surrounding criterias.
 
-          The intelligence of this application is held in Statistical Knowledge Base that is applied on the provided datasets the user can upload.
-          Context sensitive preferences allow to express preferences between multiple possible models to analyse which model should be the preferred one for this particular analysis, given the surrounding criterias.
-
+          %h4 In your role as an #{current_user.role} you have the following options:
+          %ul
+            - if current_user.is_admin?
+              = render "intro_admin"
+            - if current_user.is_statistician?
+              = render "intro_statistician"
+            - if current_user.is_clinician?
+              = render "intro_clinician"
+          -  if can? :create, Analysis
+            %p
+              However the most important option is to
+              %br
+              = link_icon_to 'plus',new_analysis_path, class: 'btn-success', text: 'Start a new analysis'
   .col-md-6
     .panel.panel-warning
-      .panel-heading
-        Key principles
-      .panel-body
-        The process of perfoming a general
-        =link_to "Analysis", analyses_path
-        envolves the following key steps:
-        %ol
-          %li
-            Defining a
-            =link_to "Research Question", research_questions_path
-          %li
-            Assigning suitable
-            =link_to "Models", models_path
-            to a Research Question and providing
-            = link_to "Assumptions", assumptions_path
-            that need to hold
-          %li
-            Defining (global)
-            = link_to "Preferences", preferences_path
-            to express a particular order between models in certain contextes that apply if an
-            = link_to "Assumption", assumptions_path
-            holds
-          %li
-            Uploading the
-            = link_to "Dataset", datasets_path
-            that has been aquired during a clinical study.
-          %li
-            Generation a new
-            =link_to "Analysis", analyses_path
-            and providing the answers required by the system to generate a list of possible models
-          %li
-            Answering further data related questions that might arise during the evaluation of the possible models to apply context domain specific preferences on the dataset.
 
-        By applying these steps, clinicians will be able to make data-driven decisions that are based on the expertise entered by a statistician.
+      - unless current_user
+        .panel-heading
+          Please login to proceed
+        .panel-body
+          Authentication of users is essential when dealing with clinical data.
+          Please user your credentials to log-in first or create a new account.
+          %p
+            %b Please remember:
+            Your user account has to be approved before you can use any functionality of this application.
+
+      - else
+        .panel-heading
+          Key principles
+        .panel-body
+          The process of perfoming a general
+          =link_to "Analysis", analyses_path
+          envolves the following key steps:
+          %ol
+            %li
+              Defining a
+              =link_to "Research Question", research_questions_path
+            %li
+              Assigning suitable
+              =link_to "Models", models_path
+              to a Research Question and providing
+              = link_to "Assumptions", assumptions_path
+              that need to hold
+            %li
+              Defining (global)
+              = link_to "Preferences", preferences_path
+              to express a particular order between models in certain contextes that apply if an
+              = link_to "Assumption", assumptions_path
+              holds
+            %li
+              Uploading the
+              = link_to "Dataset", datasets_path
+              that has been aquired during a clinical study.
+            %li
+              Generation a new
+              =link_to "Analysis", analyses_path
+              and providing the answers required by the system to generate a list of possible models
+            %li
+              Answering further data related questions that might arise during the evaluation of the possible models to apply context domain specific preferences on the dataset.
+
+          By applying these steps, clinicians will be able to make data-driven decisions that are based on the expertise entered by a statistician.
