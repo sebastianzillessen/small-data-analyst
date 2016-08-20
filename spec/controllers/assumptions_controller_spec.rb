@@ -19,16 +19,18 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe AssumptionsController, type: :controller do
-  login_user
+  login_admin
   # This should return the minimal set of attributes required to create a valid
   # Assumption. As you add validations to Assumption, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    build(:test_assumption).attributes
   }
 
+  let!(:assumption) { create(:test_assumption) }
+  subject { assumption }
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {test_assumption: {name: ""}}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -38,17 +40,15 @@ RSpec.describe AssumptionsController, type: :controller do
 
   describe "GET #index" do
     it "assigns all assumptions as @assumptions" do
-      assumption = Assumption.create! valid_attributes
       get :index, {}, valid_session
-      expect(assigns(:assumptions)).to eq([assumption])
+      expect(assigns(:assumptions)).to eq([subject])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested assumption as @assumption" do
-      assumption = Assumption.create! valid_attributes
-      get :show, {:id => assumption.to_param}, valid_session
-      expect(assigns(:assumption)).to eq(assumption)
+      get :show, {:id => subject.to_param}, valid_session
+      expect(assigns(:assumption)).to eq(subject)
     end
   end
 
@@ -61,9 +61,8 @@ RSpec.describe AssumptionsController, type: :controller do
 
   describe "GET #edit" do
     it "assigns the requested assumption as @assumption" do
-      assumption = Assumption.create! valid_attributes
-      get :edit, {:id => assumption.to_param}, valid_session
-      expect(assigns(:assumption)).to eq(assumption)
+      get :edit, {:id => subject.to_param}, valid_session
+      expect(assigns(:assumption)).to eq(subject)
     end
   end
 
@@ -71,30 +70,26 @@ RSpec.describe AssumptionsController, type: :controller do
     context "with valid params" do
       it "creates a new Assumption" do
         expect {
-          post :create, {:assumption => valid_attributes}, valid_session
+          post :create, {:test_assumption => valid_attributes}, valid_session
         }.to change(Assumption, :count).by(1)
       end
 
       it "assigns a newly created assumption as @assumption" do
-        post :create, {:assumption => valid_attributes}, valid_session
+        post :create, {:test_assumption => valid_attributes}, valid_session
         expect(assigns(:assumption)).to be_a(Assumption)
         expect(assigns(:assumption)).to be_persisted
       end
 
-      it "redirects to the created assumption" do
-        post :create, {:assumption => valid_attributes}, valid_session
-        expect(response).to redirect_to(Assumption.last)
-      end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved assumption as @assumption" do
-        post :create, {:assumption => invalid_attributes}, valid_session
+        post :create, {:test_assumption => invalid_attributes}, valid_session
         expect(assigns(:assumption)).to be_a_new(Assumption)
       end
 
       it "re-renders the 'new' template" do
-        post :create, {:assumption => invalid_attributes}, valid_session
+        post :create, {:test_assumption => invalid_attributes}, valid_session
         expect(response).to render_template("new")
       end
     end
@@ -103,54 +98,42 @@ RSpec.describe AssumptionsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {test_assumption: {name: "Test"}}
       }
 
       it "updates the requested assumption" do
-        assumption = Assumption.create! valid_attributes
-        put :update, {:id => assumption.to_param, :assumption => new_attributes}, valid_session
+        put :update, {:id => assumption.to_param, :test_assumption => new_attributes}, valid_session
         assumption.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested assumption as @assumption" do
-        assumption = Assumption.create! valid_attributes
-        put :update, {:id => assumption.to_param, :assumption => valid_attributes}, valid_session
+        put :update, {:id => assumption.to_param, :test_assumption => valid_attributes}, valid_session
         expect(assigns(:assumption)).to eq(assumption)
       end
 
       it "redirects to the assumption" do
-        assumption = Assumption.create! valid_attributes
-        put :update, {:id => assumption.to_param, :assumption => valid_attributes}, valid_session
+        put :update, {:id => assumption.to_param, :test_assumption => valid_attributes}, valid_session
         expect(response).to redirect_to(assumption)
       end
     end
 
     context "with invalid params" do
       it "assigns the assumption as @assumption" do
-        assumption = Assumption.create! valid_attributes
-        put :update, {:id => assumption.to_param, :assumption => invalid_attributes}, valid_session
+        put :update, {:id => assumption.to_param, :test_assumption => invalid_attributes}, valid_session
         expect(assigns(:assumption)).to eq(assumption)
-      end
-
-      it "re-renders the 'edit' template" do
-        assumption = Assumption.create! valid_attributes
-        put :update, {:id => assumption.to_param, :assumption => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
 
   describe "DELETE #destroy" do
     it "destroys the requested assumption" do
-      assumption = Assumption.create! valid_attributes
       expect {
         delete :destroy, {:id => assumption.to_param}, valid_session
       }.to change(Assumption, :count).by(-1)
     end
 
     it "redirects to the assumptions list" do
-      assumption = Assumption.create! valid_attributes
       delete :destroy, {:id => assumption.to_param}, valid_session
       expect(response).to redirect_to(assumptions_url)
     end

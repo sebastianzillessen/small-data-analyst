@@ -9,8 +9,6 @@ The following installation guide has been tested on a clean debian OS:
 
 1. Install `postgresql` and `R` with: `sudo apt-get install postgresql r-base`
 2. Install `rvm` following [this guide](https://rvm.io/rvm/install).
-`gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3`
-`\curl -sSL https://get.rvm.io`
 3. Clone the repository: `git clone https://github.com/sebastianzillessen/small-data-analyst.git`
 4. `cd small-data-analyst`
 5. Install the required ruby version as prompted by rvm: `rvm install ruby-2.2.4`
