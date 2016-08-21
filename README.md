@@ -21,7 +21,8 @@ The following installation guide has been tested on a clean debian OS:
         AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYY
         S3_BUCKET_NAME=ZZZZZZZZZZZZZZ
 
-9. Initialise the database: `rake db:create && rake db:setup && rake db:migrate`
+9. Set the database credentials if required in `config/database.yml`.
+10. Initialise the database: `rake db:create && rake db:setup && rake db:migrate`
 10. Start the server with `foreman start`
 11. Create an Admin user: 
 
