@@ -19,12 +19,12 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ResearchQuestionsController, type: :controller do
-  login_user
+  login_statistician
   # This should return the minimal set of attributes required to create a valid
   # ResearchQuestion. As you add validations to ResearchQuestion, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    build(:research_question).attributes
   }
 
   let(:invalid_attributes) {
@@ -35,10 +35,11 @@ RSpec.describe ResearchQuestionsController, type: :controller do
   # in order to pass any filters (e.g. authentication) defined in
   # ResearchQuestionsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+  let!(:research_question) { create(:research_question) }
+  subject { research_question }
 
   describe "GET #index" do
     it "assigns all research_questions as @research_questions" do
-      research_question = ResearchQuestion.create! valid_attributes
       get :index, {}, valid_session
       expect(assigns(:research_questions)).to eq([research_question])
     end
@@ -46,7 +47,6 @@ RSpec.describe ResearchQuestionsController, type: :controller do
 
   describe "GET #show" do
     it "assigns the requested research_question as @research_question" do
-      research_question = ResearchQuestion.create! valid_attributes
       get :show, {:id => research_question.to_param}, valid_session
       expect(assigns(:research_question)).to eq(research_question)
     end
@@ -61,7 +61,6 @@ RSpec.describe ResearchQuestionsController, type: :controller do
 
   describe "GET #edit" do
     it "assigns the requested research_question as @research_question" do
-      research_question = ResearchQuestion.create! valid_attributes
       get :edit, {:id => research_question.to_param}, valid_session
       expect(assigns(:research_question)).to eq(research_question)
     end
@@ -79,11 +78,6 @@ RSpec.describe ResearchQuestionsController, type: :controller do
         post :create, {:research_question => valid_attributes}, valid_session
         expect(assigns(:research_question)).to be_a(ResearchQuestion)
         expect(assigns(:research_question)).to be_persisted
-      end
-
-      it "redirects to the created research_question" do
-        post :create, {:research_question => valid_attributes}, valid_session
-        expect(response).to redirect_to(ResearchQuestion.last)
       end
     end
 
@@ -103,24 +97,21 @@ RSpec.describe ResearchQuestionsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {name: "Test"}
       }
 
       it "updates the requested research_question" do
-        research_question = ResearchQuestion.create! valid_attributes
         put :update, {:id => research_question.to_param, :research_question => new_attributes}, valid_session
         research_question.reload
-        skip("Add assertions for updated state")
+        expect(research_question.name).to eq ("Test")
       end
 
       it "assigns the requested research_question as @research_question" do
-        research_question = ResearchQuestion.create! valid_attributes
         put :update, {:id => research_question.to_param, :research_question => valid_attributes}, valid_session
         expect(assigns(:research_question)).to eq(research_question)
       end
 
       it "redirects to the research_question" do
-        research_question = ResearchQuestion.create! valid_attributes
         put :update, {:id => research_question.to_param, :research_question => valid_attributes}, valid_session
         expect(response).to redirect_to(research_question)
       end
@@ -128,13 +119,11 @@ RSpec.describe ResearchQuestionsController, type: :controller do
 
     context "with invalid params" do
       it "assigns the research_question as @research_question" do
-        research_question = ResearchQuestion.create! valid_attributes
         put :update, {:id => research_question.to_param, :research_question => invalid_attributes}, valid_session
         expect(assigns(:research_question)).to eq(research_question)
       end
 
       it "re-renders the 'edit' template" do
-        research_question = ResearchQuestion.create! valid_attributes
         put :update, {:id => research_question.to_param, :research_question => invalid_attributes}, valid_session
         expect(response).to render_template("edit")
       end
@@ -143,14 +132,12 @@ RSpec.describe ResearchQuestionsController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested research_question" do
-      research_question = ResearchQuestion.create! valid_attributes
       expect {
         delete :destroy, {:id => research_question.to_param}, valid_session
       }.to change(ResearchQuestion, :count).by(-1)
     end
 
     it "redirects to the research_questions list" do
-      research_question = ResearchQuestion.create! valid_attributes
       delete :destroy, {:id => research_question.to_param}, valid_session
       expect(response).to redirect_to(research_questions_url)
     end
