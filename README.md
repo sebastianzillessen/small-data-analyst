@@ -4,6 +4,27 @@ Develop: [![Build Status](https://travis-ci.org/sebastianzillessen/small-data-an
 [![Code Climate](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/gpa.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst)
 [![Test Coverage](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/coverage.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/coverage)
 
+# Abstract
+Data collection has seen a dramatic increase over the last years and researchers agree exploiting the collected data to create data driven decision processes is crucial to generate valuable insights for clinical studies. This generates the requirement to assist clinicians during the design process of their studies with an intelligent support agent performing these analyses for them. 
+
+This project implements an existing approach to apply argumentation on this problem, by representing the statistical models and their assumptions as a statistical knowledge base and implementing the process into a user-friendly web application. The model selection is influenced by expressing preferences applying on different context domains and the close integration of the clinician and insights she/he can give related to the process. This will enable clinicians -- even without a background in statistics or informatics -- to answer their research questions in an appropriate way and to make evidence based decisions. 
+
+# Software related project aims
+Development of an RoR web application that implements the requirements including but not limited to:
+
+- An approach to instantiate and solve AFs and EAFs. 
+- The ability to store, manage and reuse research questions, analysis and pref-
+erences for statistical models on different data sets.
+- An easy to use user interface to upload data collected during clinical studies
+and run analyses in an interactive way.
+- The ability to deal with preferences between models using EAFs while tak-
+ing into account global and personal (end user) preferences. The approach involving context domains will be used. 
+- A user rights management to allow the system to be used by clinicians, statis-
+ticians and super-users (admins). 
+- A small set of statistical models and their assumptions integrated in the
+system.
+- A comprehensive set of unit and integration tests.
+- Hosting at a public accessible provider.
 
 # Installation Guide
 The following installation guide has been tested on a clean debian OS:
