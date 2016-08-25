@@ -98,13 +98,13 @@ RSpec.describe AssumptionsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        {test_assumption: {name: "Test"}}
+        {name: "Test"}
       }
 
       it "updates the requested assumption" do
         put :update, {:id => assumption.to_param, :test_assumption => new_attributes}, valid_session
         assumption.reload
-        skip("Add assertions for updated state")
+        expect(assumption.name).to eq("Test")
       end
 
       it "assigns the requested assumption as @assumption" do
