@@ -4,6 +4,11 @@ Develop: [![Build Status](https://travis-ci.org/sebastianzillessen/small-data-an
 [![Code Climate](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/gpa.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst)
 [![Test Coverage](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/coverage.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/coverage)
 
+# Declaration
+I verify that I am the sole author of the programs contained in this folder, except where explicitly stated to the contrary.
+
+Sebastian Zillessen, 25/08/2016
+
 # Abstract
 Data collection has seen a dramatic increase over the last years and researchers agree exploiting the collected data to create data driven decision processes is crucial to generate valuable insights for clinical studies. This generates the requirement to assist clinicians during the design process of their studies with an intelligent support agent performing these analyses for them. 
 
