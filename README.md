@@ -4,7 +4,8 @@ Develop: [![Build Status](https://travis-ci.org/sebastianzillessen/small-data-an
 [![Code Climate](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/gpa.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst)
 [![Test Coverage](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/badges/coverage.svg)](https://codeclimate.com/github/sebastianzillessen/small-data-analyst/coverage)
 
-### Installation Guide
+
+# Installation Guide
 The following installation guide has been tested on a clean debian OS:
 
 1. Install `postgresql` and `R` with: `sudo apt-get install postgresql r-base`
@@ -32,7 +33,58 @@ The following installation guide has been tested on a clean debian OS:
 
 12. Navigate to `http://localhost:3000` and play around with the application.
 
-### LICENCE
+# Folder structure 
+
+The following should explain to a reader who is not familiar with the naming and folder structure conventions, how the submission is structured.
+
+## app
+This folder contains the core source code and functionality of the application. Ruby on Rails is an MVC framework, so this folders substructure explains the basic purpose of each directory easily.
+
+### app/assets
+Dynamic stylesheets, Javascript files and images are located in here. These will be packed by the `asset pipeline` to provide a single file for each of them to ensure efficient access in production environments. 
+The files `app/assets/javascripts/application.js` and `app/assets/stylesheets/application.css` are key entry points. Sass, Less and Coffeescript are used for more efficient assets generation.
+
+### app/controllers
+This folder contains the controllers which are in charge of orchestrating the model and views. These controllers render the views, which can be found in `app/views/<controller>/<action>`. The file `app/controllers/application_controller.rb` is the parent of all other controllers and defines default behaviour (such as sign-in).
+
+### app/helpers
+Helpers are used in views to generate recurring HTML elements. This functionality is then available during the view processing and can simplify view generation (such as button generation). 
+
+### app/mailers
+Contains controllers for email specific functionality. In this project, emails are only used during the signing-in process and the approval of users. 
+
+### app/models 
+The actual models of the application are defined in here and are usually directly reflected as an entity in the database. Ruby on Rails makes it easy to read and write entities, that are defined in here from the database. 
+
+### app/views
+The views folder contains all the relevant views to render controller actions. The folder structure follows this pattern: `app/views/<controller>/<action>`, so finding the relevant view to a controller can be easily achieved. 
+
+### app/views/layouts
+The general layout of an application is located in here. The different content areas are defined and the import of the assets is done in here. 
+ 
+## config
+This folder contains the configuration files for the application, such as database (`config/database.yml`), Amazon S3, environment specific (`config/environments/<production|testing|development>.rb`) and third-party libraries configuration.
+
+## db
+The relevant files for the database are all located in here. This includes migrations, data seeds and schema definitions.
+
+## Gemfile
+The used third-party libraries are all listed in here. It is used to require the `gem`s from http://rubygems.org.
+
+## spec 
+The defined tests (unit, integration and end-to-end) can be found in this directory. The spec runners can be found in here as well. 
+
+## public 
+Contains public accessible files such as images.
+
+## lib
+This folder contains all application specific libraries. 
+
+### lib/extended_argumentation_framework
+This folder contains the implementation of the solver of for EAFs and AFs. As the original plan was to extract them into a separate `gem `, they have been moved to this directory. 
+
+
+# LICENCE
 This project is licenced under the MIT License.
 
 
